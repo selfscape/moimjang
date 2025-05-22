@@ -19,7 +19,7 @@ Framework
 Web Interface is made with React.
 
 Backend is made with FastAPI.
- - to see more details, please refer to `moimjang/backend/README.rst <moimjang/backend/README.rst>`_
+ - to see more details, please refer to `moimjang/backend/README.rst <backend/README.rst>`_
 
 Infrastructure is set on On-premise.
  - minio(s3)
