@@ -17,6 +17,7 @@ Framework
 ---------
 
 Web Interface is made with React.
+ - to see more details, please refer to `moimjang/frontend/README.md <frontend/README.md>`_
 
 Backend is made with FastAPI.
  - to see more details, please refer to `moimjang/backend/README.rst <backend/README.rst>`_
