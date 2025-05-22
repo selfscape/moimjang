@@ -1,0 +1,65 @@
+version: "3.7"
+
+services:
+  postgres:
+    image: postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: postgres
+    ports:
+      - 5433:5432
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U $${POSTGRES_USER}" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+  migrate:
+    image: webapp
+    build: ./
+    depends_on:
+      - postgres
+    # 마이그레이션 수행 후 컨테이너 종료
+    command: alembic upgrade head
+    restart: "no"
+    volumes:
+      - "./migrations:/code/migrations"
+  mongodb:
+    image: mongo:latest
+    container_name: mongodb
+    ports:
+      - "27017:27017"
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=admin
+      - MONGO_INITDB_ROOT_PASSWORD=password
+    volumes:
+      - mongodb_data:/data/db
+    healthcheck:
+      test: echo 'db.runCommand("ping").ok' | mongosh localhost:27017/test --quiet
+      interval: 10s
+      timeout: 10s
+      retries: 5
+    restart: unless-stopped
+  webapp:
+    depends_on:
+      postgres:
+        condition: service_healthy
+      mongodb:
+        condition: service_healthy
+    build: ./
+    image: webapp
+    ports:
+      - "8001:8000"
+    volumes:
+      - "./:/code"
+      - "./keys:/app/keys"
+    command: uvicorn webapp.application:app --host 0.0.0.0 --port 8000
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
+  mongodb_data:
