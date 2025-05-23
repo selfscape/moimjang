@@ -176,8 +176,8 @@ pyrightconfig.json
 # End of https://www.toptal.com/developers/gitignore/api/python
 
 # Custom
-**/config.yml
-**/config.yaml
+**/config*.yml
+**/config*.yaml
 **/.DS_Store
 *.pem
 **/migrate-mongo-config.js
