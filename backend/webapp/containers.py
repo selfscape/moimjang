@@ -3,6 +3,7 @@
 import os
 from minio import Minio
 from dependency_injector import containers, providers
+from loguru import logger
 
 from .database import Database
 from .repositories import (
@@ -46,7 +47,7 @@ from .services import (
     SurveyResponseDocumentService,
     HostRegistService,
 )
-from .resources import init_mongodb_db
+from .resources import init_mongodb_db, test_database_connection
 from .services.owner import OwnerService
 
 def init_minio_client(
@@ -68,8 +69,14 @@ class Container(containers.DeclarativeContainer):
     config = providers.Configuration()
     
     # 환경 변수에서 설정 파일 경로를 가져옴
-    config_path = os.environ.get('CONFIG_PATH', 'config.yml')
+    config_path = os.environ.get('CONFIG_PATH', 'config_local.yml')
     config.from_yaml(config_path)
+
+    # PostgreSQL 연결 테스트를 리소스로 관리
+    db_connection_test = providers.Resource(
+        test_database_connection,
+        db_url=config.db.url,
+    )
 
     db = providers.Singleton(Database, db_url=config.db.url)
 

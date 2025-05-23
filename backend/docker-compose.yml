@@ -4,19 +4,39 @@ services:
   postgres:
     image: postgres
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: postgres
+      POSTGRES_USER: ${MATCHLOG_POSTGRES_USER}
+      POSTGRES_PASSWORD: ${MATCHLOG_POSTGRES_PASSWORD}
+      POSTGRES_DB: ${MATCHLOG_POSTGRES_DB}
     ports:
-      - 5433:5432
+      - 5432:5432
     volumes:
       - postgres_data:/var/lib/postgresql/data
     healthcheck:
-      test: [ "CMD-SHELL", "pg_isready -U $${POSTGRES_USER}" ]
+      test: [ "CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}" ]
       interval: 10s
       timeout: 5s
       retries: 5
     restart: unless-stopped
+    networks:
+      - matchlog-network
+
+  mongodb:
+    image: mongo:latest
+    ports:
+      - "27017:27017"
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=${MATCHLOG_MONGO_USERNAME}
+      - MONGO_INITDB_ROOT_PASSWORD=${MATCHLOG_MONGO_PASSWORD}
+    volumes:
+      - mongodb_data:/data/db
+    healthcheck:
+      test: echo 'db.runCommand("ping").ok' | mongosh localhost:27017/test --quiet
+      interval: 10s
+      timeout: 10s
+      retries: 5
+    restart: unless-stopped
+    networks:
+      - matchlog-network
 
   migrate:
     image: webapp
@@ -27,23 +47,10 @@ services:
     command: alembic upgrade head
     restart: "no"
     volumes:
-      - "./migrations:/code/migrations"
-  mongodb:
-    image: mongo:latest
-    container_name: mongodb
-    ports:
-      - "27017:27017"
-    environment:
-      - MONGO_INITDB_ROOT_USERNAME=admin
-      - MONGO_INITDB_ROOT_PASSWORD=password
-    volumes:
-      - mongodb_data:/data/db
-    healthcheck:
-      test: echo 'db.runCommand("ping").ok' | mongosh localhost:27017/test --quiet
-      interval: 10s
-      timeout: 10s
-      retries: 5
-    restart: unless-stopped
+      - "./:/code/"
+    networks:
+      - matchlog-network
+
   webapp:
     depends_on:
       postgres:
@@ -58,8 +65,17 @@ services:
       - "./:/code"
       - "./keys:/app/keys"
     command: uvicorn webapp.application:app --host 0.0.0.0 --port 8000
+    environment:
+      - CONFIG_PATH=${MATCHLOG_CONFIG_PATH}
     restart: unless-stopped
+    networks:
+      - matchlog-network
 
 volumes:
   postgres_data:
   mongodb_data:
+
+
+networks:
+  matchlog-network:
+    driver: bridge

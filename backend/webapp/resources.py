@@ -5,6 +5,40 @@ from pymongo.database import Database
 from pymongo.collection import Collection
 from typing import Generator, Callable
 from loguru import logger
+from sqlalchemy import create_engine, text
+from sqlalchemy.exc import SQLAlchemyError
+
+def test_database_connection(db_url: str) -> bool:
+    """
+    PostgreSQL 데이터베이스 연결을 테스트합니다.
+    
+    Args:
+        db_url: 데이터베이스 연결 URL
+        
+    Returns:
+        연결 성공 시 True, 실패 시 False
+        
+    Raises:
+        Exception: 연결 실패 시 예외 발생
+    """
+    try:
+        logger.info(f"PostgreSQL 연결 테스트 시작: {db_url}")
+        engine = create_engine(db_url)
+        
+        # 간단한 쿼리로 연결 테스트
+        with engine.connect() as connection:
+            result = connection.execute(text("SELECT 1"))
+            result.fetchone()
+            
+        logger.info("PostgreSQL 연결 테스트 성공")
+        return True
+        
+    except SQLAlchemyError as e:
+        logger.error(f"PostgreSQL 연결 테스트 실패: {e}")
+        raise Exception(f"PostgreSQL 연결 실패: {e}")
+    except Exception as e:
+        logger.error(f"PostgreSQL 연결 테스트 중 예상치 못한 오류: {e}")
+        raise Exception(f"PostgreSQL 연결 실패: {e}")
 
 def init_mongodb_db(mongodb_uri: str, database: str) -> Generator[Callable[[str], Collection], None, None]:
     """

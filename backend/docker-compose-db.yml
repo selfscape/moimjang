@@ -3,6 +3,7 @@ version: "3.7"
 services:
   postgres:
     image: postgres
+    container_name: matchlog-postgres-local
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
@@ -10,7 +11,7 @@ services:
     ports:
       - "5433:5432"
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - postgres_data_test:/var/lib/postgresql/data
     healthcheck:
       test: [ "CMD-SHELL", "pg_isready -U ${POSTGRES_USER}" ]
       interval: 10s
@@ -19,14 +20,14 @@ services:
 
   mongodb:
     image: mongo:latest
-    container_name: mongodb
+    container_name: matchlog-mongodb-local
     ports:
       - "27018:27017"
     environment:
       - MONGO_INITDB_ROOT_USERNAME=admin
       - MONGO_INITDB_ROOT_PASSWORD=password
     volumes:
-      - mongodb_data:/data/db
+      - mongodb_data_test:/data/db
     healthcheck:
       test: echo 'db.runCommand("ping").ok' | mongosh localhost:27017/test --quiet
       interval: 10s
@@ -34,5 +35,5 @@ services:
       retries: 5
 
 volumes:
-  postgres_data:
-  mongodb_data:
+  postgres_data_test:
+  mongodb_data_test:
