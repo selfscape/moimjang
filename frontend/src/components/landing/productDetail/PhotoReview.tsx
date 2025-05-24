@@ -139,22 +139,6 @@ const ReviewContent = styled.div`
   gap: 4px;
 `;
 
-const ProfileSection = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 8px;
-`;
-
-const ProfileImage = styled.span`
-  font-size: 1.5rem;
-`;
-
-const ReviewerName = styled.span`
-  font-weight: 600;
-  font-size: 0.95rem;
-  color: #333;
-`;
-
 const ReviewText = styled.p`
   font-size: 0.875rem;
   line-height: 1.4;
