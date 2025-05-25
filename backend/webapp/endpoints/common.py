@@ -43,9 +43,9 @@ def super_admin_dependency(
 ):
     return auth_service.require_super_admin(current_user)
 
-def get_owner_id(
+def get_owner_id_required(
     owner_service: OwnerService = Depends(get_owner_service),
-    owner: Optional[str] = Header(None, alias="Owner")
+    owner: str = Header(..., alias="Owner")
 ) -> int:
     """헤더에서 소유자 username을 가져와 해당 사용자의 ID를 반환합니다."""
     return owner_service.get_owner_id(owner)

@@ -9,7 +9,7 @@ from .endpoints_total import (
     current_user_dependency,     
 )
 from .common import (
-    get_owner_id,
+    get_owner_id_required,
     admin_dependency
 )
 
@@ -32,7 +32,7 @@ landing_admin_router = APIRouter(
 @landing_admin_router.put("/uploadImage/main", response_model=ImageResponse)
 def upload_main_image(
     file: UploadFile = File(...),
-    owner_id: int = Depends(get_owner_id),
+    owner_id: int = Depends(get_owner_id_required),
     landing_service: LandingPageService = Depends(get_landing_service)
 ):
     """랜딩 페이지 메인 이미지를 업로드하고 설정합니다."""
@@ -40,7 +40,7 @@ def upload_main_image(
 
 @landing_admin_router.delete("/deleteImage/main", status_code=status.HTTP_204_NO_CONTENT)
 def delete_main_image(
-    owner_id: int = Depends(get_owner_id),
+    owner_id: int = Depends(get_owner_id_required),
     landing_service: LandingPageService = Depends(get_landing_service)
 ):
     """랜딩 페이지 메인 이미지를 삭제합니다."""
@@ -58,7 +58,7 @@ def upload_gallery_image(
 @landing_admin_router.delete("/deleteImage/gallery", status_code=status.HTTP_204_NO_CONTENT)
 def delete_gallery_image(
     image_id: int = Query(..., description="삭제할 이미지 ID"),
-    owner_id: int = Depends(get_owner_id),
+    owner_id: int = Depends(get_owner_id_required),
     landing_service: LandingPageService = Depends(get_landing_service)
 ):
     """랜딩 페이지 갤러리에서 이미지를 삭제합니다."""
@@ -67,7 +67,7 @@ def delete_gallery_image(
 
 @landing_admin_router.get("/mainImage", response_model=Optional[ImageResponse])
 def admin_get_main_image(
-    owner_id: int = Depends(get_owner_id),
+    owner_id: int = Depends(get_owner_id_required),
     landing_service: LandingPageService = Depends(get_landing_service)
 ):
     """현재 설정된 랜딩 페이지 메인 이미지를 조회합니다. (관리자용)"""
@@ -75,7 +75,7 @@ def admin_get_main_image(
 
 @landing_admin_router.get("/galleryImages", response_model=List[ImageResponse])
 def admin_get_gallery_images(
-    owner_id: int = Depends(get_owner_id),
+    owner_id: int = Depends(get_owner_id_required),
     landing_service: LandingPageService = Depends(get_landing_service)
 ):
     """현재 설정된 랜딩 페이지 갤러리 이미지 목록을 조회합니다. (관리자용)"""

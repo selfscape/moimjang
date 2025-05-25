@@ -99,7 +99,7 @@ from .common import (
     super_admin_dependency,
     get_user_service,
     get_auth_service,
-    get_owner_id,
+    get_owner_id_required,
     get_owner_id_unless_super_admin,
 )
 ########################################################
@@ -122,7 +122,7 @@ auth_router = APIRouter(prefix="/auth", tags=["auth"])
 def signup(
     user_req: UserRequest, 
     auth_service: AuthService = Depends(get_auth_service),
-    owner_id: Optional[int] = Depends(get_owner_id_unless_super_admin),
+    owner_id: Optional[int] = Depends(get_owner_id_required),
 ):
     return auth_service.signup(user_req, owner_id)
 
@@ -1368,7 +1368,7 @@ def get_survey_response_service(
 )
 def get_survey_form_by_brand(
     brand_id: int = Query(..., description="조회할 브랜드 ID"),
-    owner_id: int = Depends(get_owner_id),
+    owner_id: int = Depends(get_owner_id_required),
     service: SurveyDocumentService = Depends(get_survey_document_service)
 ):
     survey = service.list(brand_id, owner_id)
@@ -1386,7 +1386,7 @@ def create_survey_response(
     survey_id: str = Query(..., description="설문 문서 ID"),
     req: SurveyResponseCreateRequest = Body(...),
     service: SurveyResponseDocumentService = Depends(get_survey_response_service),
-    owner_id: int = Depends(get_owner_id),
+    owner_id: int = Depends(get_owner_id_required),
 ) -> SurveyResponseResponse:
     """
     Document-DB 기반으로 설문 응답을 생성합니다.
@@ -1426,7 +1426,7 @@ def get_landing_channels(
     service: ChannelService = Depends(get_channel_service),
     offset: int = Query(0, description="페이지네이션 시작 위치"),
     limit: int = Query(100, description="페이지네이션 크기"),
-    owner_id: Optional[int] = Depends(get_owner_id),
+    owner_id: int = Depends(get_owner_id_required),
 ) -> ChannelListResponse:
     return service.get_channels(sort_by, descending,
         brand_id=brand_id,
@@ -1454,7 +1454,7 @@ def get_landing_brands(
     descending: bool = Query(False),
     offset: int = Query(0, description="페이지네이션 시작 위치"),
     limit: int = Query(100, description="페이지네이션 크기"),
-    owner_id: Optional[int] = Depends(get_owner_id),
+    owner_id: int = Depends(get_owner_id_required),
 ) -> BrandListResponse:
     return service.get_all_brands(
         state=state,
@@ -1487,7 +1487,7 @@ def get_landing_brand(
 ########################################################
 @landing_page_router.get("/mainImage", response_model=Optional[ImageResponse])
 def get_main_image(
-    owner_id: int = Depends(get_owner_id),
+    owner_id: int = Depends(get_owner_id_required),
     landing_service: LandingPageService = Depends(get_landing_service)
 ):
     """현재 설정된 랜딩 페이지 메인 이미지를 조회합니다."""
@@ -1495,7 +1495,7 @@ def get_main_image(
 
 @landing_page_router.get("/galleryImages", response_model=List[ImageResponse])
 def get_gallery_images(
-    owner_id: int = Depends(get_owner_id),
+    owner_id: int = Depends(get_owner_id_required),
     landing_service: LandingPageService = Depends(get_landing_service)
 ):
     """현재 설정된 랜딩 페이지 갤러리 이미지 목록을 조회합니다."""
@@ -1503,7 +1503,7 @@ def get_gallery_images(
 
 @landing_page_router.get("/brandReviews", response_model=BrandReviewUrlListResponse)
 def get_brand_reviews(
-    owner_id: int = Depends(get_owner_id),
+    owner_id: int = Depends(get_owner_id_required),
     brand_review_service: BrandReviewService = Depends(get_brand_review_service)
 ):
     """현재 설정된 랜딩 페이지 브랜드 리뷰 목록을 조회합니다."""
@@ -1594,7 +1594,7 @@ def delete_survey_document(
 def create_response(
     survey_id: str = Query(..., description="설문 문서 ID"),
     req: SurveyResponseCreateRequest = Body(...),
-    owner_id: int = Depends(get_owner_id),
+    owner_id: int = Depends(get_owner_id_required),
     service: SurveyResponseDocumentService = Depends(get_survey_response_service),
 ) -> SurveyResponseResponse:
     created = service.create(survey_id, req.model_dump(), owner_id)
