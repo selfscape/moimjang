@@ -99,6 +99,7 @@ from .common import (
     super_admin_dependency,
     get_user_service,
     get_auth_service,
+    get_owner_id,
     get_owner_id_required,
     get_owner_id_unless_super_admin,
 )
@@ -122,7 +123,7 @@ auth_router = APIRouter(prefix="/auth", tags=["auth"])
 def signup(
     user_req: UserRequest, 
     auth_service: AuthService = Depends(get_auth_service),
-    owner_id: Optional[int] = Depends(get_owner_id_required),
+    owner_id: Optional[int] = Depends(get_owner_id),
 ):
     return auth_service.signup(user_req, owner_id)
 
