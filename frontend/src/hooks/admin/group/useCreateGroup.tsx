@@ -35,7 +35,7 @@ const useCreateGroup = () => {
   return useMutation<Group, Error, CreateGroupInput>({
     mutationFn: createGroup,
     onSuccess: () =>
-      queryClient.invalidateQueries({ queryKey: GET_SERACH_GROUPS }),
+      queryClient.invalidateQueries({ queryKey: [GET_SERACH_GROUPS] }),
   });
 };
 

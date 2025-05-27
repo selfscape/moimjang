@@ -10,11 +10,6 @@ import { GraphQLClient } from "graphql-request";
 export const client = new GraphQLClient(`${SERVER_URI}/graphql`);
 const queryClient = new QueryClient();
 
-// dev 환경일 때만 mock 실행
-// if (NODE_ENV === "development") {
-//   worker.start();
-// }
-
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
