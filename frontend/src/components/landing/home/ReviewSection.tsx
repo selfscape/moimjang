@@ -1,7 +1,6 @@
 import React from "react";
 import styled from "styled-components";
 
-import useGetBrandReviews from "api/admin/brand/hooks/useGetBrandReviews";
 import { getReviews } from "utils/landing/brandLanding/normalizeData";
 import PhotoReview from "../productDetail/PhotoReview";
 import useGetLandingBrandReviews from "api/landing/hook/useGetLandingBrandReviews";

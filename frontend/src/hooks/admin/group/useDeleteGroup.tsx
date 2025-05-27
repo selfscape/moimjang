@@ -8,7 +8,7 @@ const useDeleteGroup = () => {
   return useMutation<void, Error, number>({
     mutationFn: deleteGroup,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: GET_CHANNELS });
+      queryClient.invalidateQueries({ queryKey: [GET_CHANNELS] });
     },
   });
 };

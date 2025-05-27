@@ -18,7 +18,7 @@ const useEditGroup = () => {
   return useMutation<EditGroupOutput, Error, EditChannelVariables>({
     mutationFn: ({ group_id, groupData }) => editGroup(group_id, groupData),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: GET_CHANNELS });
+      queryClient.invalidateQueries({ queryKey: [GET_CHANNELS] });
     },
   });
 };

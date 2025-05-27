@@ -69,7 +69,7 @@ export interface SurveyResponse {
   surveyId: string;
   channelId: number;
   userId: number | null;
-  submittedAt: string; // ISO 문자열 (필요시 Date로 변환 가능)
+  submittedAt: string;
   registState: SurveyRegistState;
   answers: Array<{ questionId: string; answerValue: string }>;
 }

@@ -36,7 +36,7 @@ const useCreateGameParis = () => {
   return useMutation<Array<Game>, AxiosError, IRequestBody>({
     mutationFn: (requestBody) => createGamePairs(requestBody),
     onSuccess: () =>
-      queryClient.invalidateQueries({ queryKey: GET_SEARCH_GAMES }),
+      queryClient.invalidateQueries({ queryKey: [GET_SEARCH_GAMES] }),
   });
 };
 
