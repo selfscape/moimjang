@@ -8,7 +8,7 @@ const useDeleteGame = () => {
   return useMutation<void, Error, string>({
     mutationFn: (gameId) => deleteGame(gameId),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: GET_SEARCH_GAMES });
+      queryClient.invalidateQueries({ queryKey: [GET_SEARCH_GAMES] });
     },
   });
 };

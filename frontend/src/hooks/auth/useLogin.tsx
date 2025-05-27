@@ -1,6 +1,6 @@
 import { useMutation } from "@tanstack/react-query";
 import axios, { AxiosError } from "axios";
-import { ACCEESS_TOKEN, serverUrl, USER_EMAIL, USER_ROLE } from "configs";
+import { ACCEESS_TOKEN, serverUrl } from "configs";
 import { User } from "interfaces/user";
 
 export interface LoginOutput {
