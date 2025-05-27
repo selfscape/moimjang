@@ -12,7 +12,7 @@ const useCreateChannel = () => {
   return useMutation<void, AxiosError, CreateChannelInput>({
     mutationFn: createChannel,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: GET_CHANNELS });
+      queryClient.invalidateQueries({ queryKey: [GET_CHANNELS] });
     },
   });
 };

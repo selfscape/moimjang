@@ -26,7 +26,7 @@ const useEditUserToGroup = () => {
     mutationFn: ({ group_id, user_id, requestBody }) =>
       editGroupToUser(user_id, group_id, requestBody),
     onSuccess: () =>
-      queryClient.invalidateQueries({ queryKey: GET_SERACH_GROUPS }),
+      queryClient.invalidateQueries({ queryKey: [GET_SERACH_GROUPS] }),
   });
 };
 

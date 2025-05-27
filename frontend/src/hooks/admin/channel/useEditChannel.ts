@@ -15,7 +15,7 @@ const useEditChannel = () => {
       editChannel(channel_id, channelData),
 
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: GET_CHANNELS });
+      queryClient.invalidateQueries({ queryKey: [GET_CHANNELS] });
     },
   });
 };

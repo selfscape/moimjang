@@ -9,7 +9,7 @@ const useJoinChannel = () => {
   return useMutation<void, AxiosError, JoinChannelInput>({
     mutationFn: ({ userId, channelId }) => joinChannel(userId, channelId),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: GET_USERS });
+      queryClient.invalidateQueries({ queryKey: [GET_USERS] });
     },
   });
 };

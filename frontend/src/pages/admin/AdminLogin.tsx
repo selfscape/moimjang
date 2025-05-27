@@ -125,14 +125,12 @@ const Container = styled.div`
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  background: ${({ theme }) => (theme.mode === "dark" ? "#1E1E1E" : "#F2F2F2")};
 `;
 
 const LoginBox = styled.div`
   width: 90%;
   max-width: 400px;
   padding: 2rem;
-  background: ${({ theme }) => (theme.mode === "dark" ? "#2A2A2A" : "#FFFFFF")};
   box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
   border-radius: 10px;
   display: flex;
@@ -144,13 +142,11 @@ const LoginBox = styled.div`
 const Title = styled.h1`
   font-size: 1.5rem;
   font-weight: 700;
-  color: ${({ theme }) => (theme.mode === "dark" ? "#FFFFFF" : "#111827")};
   margin-bottom: 0.5rem;
 `;
 
 const Subtitle = styled.p`
   font-size: 1rem;
-  color: ${({ theme }) => (theme.mode === "dark" ? "#D1D5DB" : "#374151")};
   margin-bottom: 1.5rem;
 `;
 
@@ -163,7 +159,6 @@ const Form = styled.form`
 const Label = styled.label`
   font-size: 0.9rem;
   font-weight: 500;
-  color: ${({ theme }) => (theme.mode === "dark" ? "#D1D5DB" : "#374151")};
   margin-bottom: 0.5rem;
 `;
 
@@ -172,10 +167,6 @@ const Input = styled.input`
   padding: 0.8rem;
   font-size: 1rem;
   border-radius: 8px;
-  border: 1px solid
-    ${({ theme }) => (theme.mode === "dark" ? "#4B5563" : "#D1D5DB")};
-  background: ${({ theme }) => (theme.mode === "dark" ? "#3B3B3B" : "#F9FAFB")};
-  color: ${({ theme }) => (theme.mode === "dark" ? "#FFFFFF" : "#111827")};
   margin-bottom: 1rem;
   outline: none;
   transition: border 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
