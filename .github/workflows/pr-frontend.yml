@@ -5,6 +5,7 @@ on:
     branches: [ main ]
     paths:
       - 'frontend/**'
+      - '.github/workflows/pr-frontend.yml'
 
 env:
   REACT_APP_SERVER_URI: ${{ vars.REACT_APP_SERVER_URI }}
@@ -18,6 +19,7 @@ env:
 jobs:
   build-and-push:
     runs-on: ubuntu-24.04
+    environment: 'production'
     
     steps:
     - name: Checkout code

@@ -5,6 +5,7 @@ on:
     branches: [ main ]
     paths:
       - 'frontend/**'
+      - '.github/workflows/deploy-frontend.yml'
   workflow_dispatch:  # 수동 배포 버튼 활성화
     inputs:
       image_tag:
@@ -26,6 +27,7 @@ env:
 jobs:
   deploy:
     runs-on: [self-hosted, home]
+    environment: 'production'
     
     steps:
     - name: Set deployment parameters
@@ -40,18 +42,18 @@ jobs:
         echo "Using image tag: ${{ env.IMAGE_TAG || 'latest' }}"
         echo "Using port: ${{ env.DEPLOY_PORT || '3133' }}"
         
-    - name: Configure AWS credentials
-      uses: aws-actions/configure-aws-credentials@v4
-      with:
-        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        aws-region: us-east-1
+    # - name: Configure AWS credentials
+    #   uses: aws-actions/configure-aws-credentials@v4
+    #   with:
+    #     aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+    #     aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+    #     aws-region: us-east-1
         
-    - name: Login to Amazon ECR Public
-      id: login-ecr-public
-      uses: aws-actions/amazon-ecr-login@v2
-      with:
-        registry-type: public
+    # - name: Login to Amazon ECR Public
+    #   id: login-ecr-public
+    #   uses: aws-actions/amazon-ecr-login@v2
+    #   with:
+    #     registry-type: public
         
     - name: Pull image from ECR
       run: |
