@@ -2,7 +2,7 @@ name: Deploy Frontend to Self-hosted
 
 on:
   push:
-    branches: [ fix/fr/make_available_cicd ]
+    branches: [ main ]
     paths:
       - 'frontend/**'
       - '.github/workflows/deploy-frontend.yml'
