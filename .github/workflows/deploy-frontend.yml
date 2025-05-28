@@ -2,9 +2,10 @@ name: Deploy Frontend to Self-hosted
 
 on:
   push:
-    branches: [ main ]
+    branches: [ dev ]
     paths:
       - 'frontend/**'
+      - '.github/workflows/deploy-frontend.yml'
   workflow_dispatch:  # 수동 배포 버튼 활성화
     inputs:
       image_tag:
