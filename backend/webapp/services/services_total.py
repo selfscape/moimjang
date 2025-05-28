@@ -1372,7 +1372,7 @@ class SurveyService:
 
 
 class SurveyFormService(FileHandlerMixin):
-    def __init__(self, minio_repository):
+    def __init__(self, minio_repository: MinioRepository):
         """
         minio_repository를 주입받아 파일 업로드 기능에 활용합니다.
         """
@@ -1389,7 +1389,7 @@ class SurveyFormService(FileHandlerMixin):
         )
         return {
             "imagePath": new_image_path,
-            "imageUrl": self._minio_repository.get_presigned_url(new_image_path)
+            "imageUrl": self._minio_repository.get_img_proxy_url(new_image_path)
         }
 
 
