@@ -31,10 +31,10 @@ pyenv를 사용한 로컬 개발 환경 설정 방법입니다.
 .. code-block:: bash
 
    # 가상 환경 생성
-   pyenv virtualenv 3.11 matchlog-server
+   pyenv virtualenv 3.11 moimjang-server
    
    # 가상 환경 활성화
-   pyenv activate matchlog-server
+   pyenv activate moimjang-server
    
    # 패키지 설치
    pip install -r requirements.txt
