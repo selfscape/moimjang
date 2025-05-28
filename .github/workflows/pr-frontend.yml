@@ -5,6 +5,7 @@ on:
     branches: [ dev ]
     paths:
       - 'frontend/**'
+      - '.github/workflows/pr-frontend.yml'
 
 env:
   REACT_APP_SERVER_URI: ${{ vars.REACT_APP_SERVER_URI }}
