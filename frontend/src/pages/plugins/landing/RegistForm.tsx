@@ -42,6 +42,7 @@ const RegistForm: React.FC = () => {
   const navigate = useNavigate();
 
   const [currentIndex, setCurrentIndex] = useState<number>(0);
+
   const [answers, setAnswers] = useState<Record<string, any>>({});
   const { showErrorModal } = useSystemModal();
 
@@ -121,10 +122,13 @@ const RegistForm: React.FC = () => {
 
   return (
     <BrandingLayout style={{ marginTop: "60px" }}>
+      {/* Header */}
       <HeaderContainer>
         <LogoImage src={landingBrandData?.thumbnailImage?.url} />
       </HeaderContainer>
+
       <SurveySection>
+        {/* ProgressBar */}
         <ProgressBar>
           <RoundPrevButton
             onClick={handlePrevious}
@@ -136,6 +140,8 @@ const RegistForm: React.FC = () => {
             <ProgressBarStyled progress={progressPercentage} />
           </ProgressContainer>
         </ProgressBar>
+
+        {/* SurveyContainer */}
         <SurveyContainer>
           <QuizCount>Q{currentIndex + 1}번</QuizCount>
           <AnimatedQuestionWrapper>

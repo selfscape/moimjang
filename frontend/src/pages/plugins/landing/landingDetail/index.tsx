@@ -194,14 +194,6 @@ const Title = styled.h1`
   margin-bottom: 15px;
 `;
 
-const Price = styled.p`
-  margin-top: 12px;
-  font-weight: 600;
-  font-size: 1rem;
-  line-height: 1.5rem;
-  color: rgb(0, 0, 0);
-`;
-
 const InfoContainer = styled.div`
   display: flex;
   flex-direction: column;

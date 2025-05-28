@@ -18,7 +18,7 @@ const useAddGroup = () => {
   return useMutation<AddGroupOutput, Error, AddGroupVariables>({
     mutationFn: ({ user_id, groupData }) => addGroup(user_id, groupData),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: GET_CHANNELS });
+      queryClient.invalidateQueries({ queryKey: [GET_CHANNELS] });
     },
   });
 };

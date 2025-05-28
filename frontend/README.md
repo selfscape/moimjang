@@ -52,3 +52,16 @@ npm run build
 • msw의 워커는 public/ 디렉토리에 위치합니다.
 • 개발 환경에서 mock API를 사용하기 위해 브라우저 기반 서비스 워커가 실행됩니다.
 ```
+
+## 배포하기
+1. 배포 환경 변수 설정
+```bash
+cp .env.example .env
+```
+
+2. 배포
+```bash
+docker build -t moimjang-frontend .
+docker run -d -p 80:80 moimjang-frontend
+```
+

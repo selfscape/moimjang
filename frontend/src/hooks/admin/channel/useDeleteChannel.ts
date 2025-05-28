@@ -9,7 +9,7 @@ const useDeleteChannel = () => {
   return useMutation<void, AxiosError, string>({
     mutationFn: (channelId) => deleteChannel(channelId),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: GET_CHANNELS });
+      queryClient.invalidateQueries({ queryKey: [GET_CHANNELS] });
     },
   });
 };

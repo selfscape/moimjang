@@ -16,7 +16,7 @@ const useDeleteUserToGroup = () => {
   return useMutation<unknown, AxiosError, DeleteUsersToGroupVariable>({
     mutationFn: ({ group_id, user_id }) => deleteUserToGroup(user_id, group_id),
     onSuccess: () =>
-      queryClient.invalidateQueries({ queryKey: GET_SERACH_GROUPS }),
+      queryClient.invalidateQueries({ queryKey: [GET_SERACH_GROUPS] }),
   });
 };
 

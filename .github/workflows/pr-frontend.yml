@@ -1,0 +1,84 @@
+name: PR Frontend Build and Push
+
+on:
+  pull_request:
+    branches: [ main ]
+    paths:
+      - 'frontend/**'
+      - '.github/workflows/pr-frontend.yml'
+
+env:
+  REACT_APP_SERVER_URI: ${{ vars.REACT_APP_SERVER_URI }}
+  REACT_APP_NODE_ENV: ${{ vars.REACT_APP_NODE_ENV }}
+  REACT_APP_DANGEROUSLY_DISABLE_HOST_CHECK: ${{ vars.REACT_APP_DANGEROUSLY_DISABLE_HOST_CHECK }}
+  REACT_APP_ENVIRONMENT: ${{ vars.REACT_APP_ENVIRONMENT }}
+  REACT_APP_SITE_URL: ${{ vars.REACT_APP_SITE_URL }}
+  ECR_REGISTRY: public.ecr.aws/x2l9m6x8/selfscape/moimjang
+  IMAGE_NAME: moimjang-frontend
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-24.04
+    environment: 'production'
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v4
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: us-east-1
+        
+    - name: Login to Amazon ECR Public
+      id: login-ecr-public
+      uses: aws-actions/amazon-ecr-login@v2
+      with:
+        registry-type: public
+      
+    - name: Verify environment variables
+      run: |
+        echo "Environment variables loaded:"
+        echo "REACT_APP_SERVER_URI: ${{ env.REACT_APP_SERVER_URI }}"
+        echo "REACT_APP_NODE_ENV: ${{ env.REACT_APP_NODE_ENV }}"
+        echo "REACT_APP_DANGEROUSLY_DISABLE_HOST_CHECK: ${{ env.REACT_APP_DANGEROUSLY_DISABLE_HOST_CHECK }}"
+        echo "REACT_APP_ENVIRONMENT: ${{ env.REACT_APP_ENVIRONMENT }}"
+        echo "REACT_APP_SITE_URL: ${{ env.REACT_APP_SITE_URL }}"
+      
+    - name: Build Docker image
+      run: |
+        cd frontend
+        docker build \
+          --build-arg REACT_APP_SERVER_URI="${{ env.REACT_APP_SERVER_URI }}" \
+          --build-arg REACT_APP_NODE_ENV="${{ env.REACT_APP_NODE_ENV }}" \
+          --build-arg REACT_APP_DANGEROUSLY_DISABLE_HOST_CHECK="${{ env.REACT_APP_DANGEROUSLY_DISABLE_HOST_CHECK }}" \
+          --build-arg REACT_APP_ENVIRONMENT="${{ env.REACT_APP_ENVIRONMENT }}" \
+          --build-arg REACT_APP_SITE_URL="${{ env.REACT_APP_SITE_URL }}" \
+          -t ${{ env.IMAGE_NAME }} .
+          
+    - name: Tag Docker images
+      run: |
+        # Get today's date in YYYY-MM-DD format
+        TODAY=$(date +%Y-%m-%d)
+        
+        # Tag with latest and today's date
+        docker tag ${{ env.IMAGE_NAME }} ${{ env.ECR_REGISTRY }}:latest
+        docker tag ${{ env.IMAGE_NAME }} ${{ env.ECR_REGISTRY }}:$TODAY
+        
+        echo "Tagged images:"
+        echo "- ${{ env.ECR_REGISTRY }}:latest"
+        echo "- ${{ env.ECR_REGISTRY }}:$TODAY"
+        
+    - name: Push to ECR
+      run: |
+        TODAY=$(date +%Y-%m-%d)
+        
+        # Push both tags
+        docker push ${{ env.ECR_REGISTRY }}:latest
+        docker push ${{ env.ECR_REGISTRY }}:$TODAY
+        
+        echo "Successfully pushed to ECR:"
+        echo "- ${{ env.ECR_REGISTRY }}:latest"
+        echo "- ${{ env.ECR_REGISTRY }}:$TODAY" 
