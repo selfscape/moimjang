@@ -4,9 +4,9 @@ services:
   postgres:
     image: postgres
     environment:
-      POSTGRES_USER: ${MATCHLOG_POSTGRES_USER}
-      POSTGRES_PASSWORD: ${MATCHLOG_POSTGRES_PASSWORD}
-      POSTGRES_DB: ${MATCHLOG_POSTGRES_DB}
+      POSTGRES_USER: ${MOIMJANG_POSTGRES_USER}
+      POSTGRES_PASSWORD: ${MOIMJANG_POSTGRES_PASSWORD}
+      POSTGRES_DB: ${MOIMJANG_POSTGRES_DB}
     ports:
       - 5432:5432
     volumes:
@@ -18,15 +18,15 @@ services:
       retries: 5
     restart: unless-stopped
     networks:
-      - matchlog-network
+      - moimjang-network
 
   mongodb:
     image: mongo:latest
     ports:
       - "27017:27017"
     environment:
-      - MONGO_INITDB_ROOT_USERNAME=${MATCHLOG_MONGO_USERNAME}
-      - MONGO_INITDB_ROOT_PASSWORD=${MATCHLOG_MONGO_PASSWORD}
+      - MONGO_INITDB_ROOT_USERNAME=${MOIMJANG_MONGO_USERNAME}
+      - MONGO_INITDB_ROOT_PASSWORD=${MOIMJANG_MONGO_PASSWORD}
     volumes:
       - mongodb_data:/data/db
     healthcheck:
@@ -36,7 +36,7 @@ services:
       retries: 5
     restart: unless-stopped
     networks:
-      - matchlog-network
+      - moimjang-network
 
   migrate:
     image: webapp
@@ -49,7 +49,7 @@ services:
     volumes:
       - "./:/code/"
     networks:
-      - matchlog-network
+      - moimjang-network
 
   webapp:
     depends_on:
@@ -66,16 +66,18 @@ services:
       - "./keys:/app/keys"
     command: uvicorn webapp.application:app --host 0.0.0.0 --port 8000
     environment:
-      - CONFIG_PATH=${MATCHLOG_CONFIG_PATH}
+      - CONFIG_PATH=${MOIMJANG_CONFIG_PATH}
     restart: unless-stopped
     networks:
-      - matchlog-network
+      - moimjang-network
 
 volumes:
   postgres_data:
+    name: moimjang-postgres-data
   mongodb_data:
-
+    name: moimjang-mongodb-data
 
 networks:
-  matchlog-network:
+  moimjang-network:
     driver: bridge
+    name: moimjang-network-default

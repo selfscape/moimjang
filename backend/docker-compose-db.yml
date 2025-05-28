@@ -3,7 +3,7 @@ version: "3.7"
 services:
   postgres:
     image: postgres
-    container_name: matchlog-postgres-local
+    container_name: moimjang-postgres-local
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
@@ -20,7 +20,7 @@ services:
 
   mongodb:
     image: mongo:latest
-    container_name: matchlog-mongodb-local
+    container_name: moimjang-mongodb-local
     ports:
       - "27018:27017"
     environment:
@@ -36,4 +36,6 @@ services:
 
 volumes:
   postgres_data_test:
+    name: moimjang-postgres-data-test
   mongodb_data_test:
+    name: moimjang-mongodb-data-test
