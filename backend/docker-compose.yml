@@ -74,6 +74,7 @@ services:
     restart: unless-stopped
     networks:
       - moimjang-network
+      - minio_minio_network
 
 volumes:
   postgres_data:
@@ -85,3 +86,5 @@ networks:
   moimjang-network:
     driver: bridge
     name: moimjang-network-default
+  minio_minio_network:
+    external: true
