@@ -1,0 +1,3 @@
+{
+  "/(afterLogin)/page": "app/(afterLogin)/page.js"
+}

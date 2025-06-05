@@ -1,0 +1,16 @@
+{
+  "pages": {
+    "/(afterLogin)/layout": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/css/app/(afterLogin)/layout.css",
+      "static/chunks/app/(afterLogin)/layout.js"
+    ],
+    "/(afterLogin)/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/css/app/(afterLogin)/page.css",
+      "static/chunks/app/(afterLogin)/page.js"
+    ]
+  }
+}
