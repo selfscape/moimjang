@@ -1,0 +1,3 @@
+export const GET_MAIN_IMAGE = "GET_MAIN_IMAGE";
+export const GET_GALLERY_IMAGES = "GET_GALLERY_IMAGES";
+export const GET_SURVEYS = "GET_SURVEYS";
