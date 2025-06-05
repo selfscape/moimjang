@@ -1,7 +1,0 @@
-.cardContainer {
-  display: flex;
-  flex-direction: column;
-  border-radius: 12px;
-  width: 100%;
-  gap: 1.5rem;
-}
