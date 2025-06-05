@@ -1,0 +1,152 @@
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 1rem;
+  background: #f8f8f8;
+}
+
+.cardContainer {
+  background: #fff;
+  border-radius: 12px;
+  padding: 2rem;
+  width: 100%;
+  max-width: 500px;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+  margin: 0 auto;
+}
+
+@media (max-width: 500px) {
+  .cardContainer {
+    padding: 1.5rem;
+  }
+}
+
+.formTitle {
+  text-align: center;
+  margin-bottom: 1.5rem;
+  font-size: 1.4rem;
+  font-weight: bold;
+  color: #333;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+}
+
+.stepContainer {
+  margin-bottom: 1rem;
+}
+
+.field {
+  margin-bottom: 1rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.label {
+  font-size: 0.9rem;
+  margin-bottom: 0.5rem;
+  color: #555;
+}
+
+.input {
+  padding: 0.75rem;
+  font-size: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  transition: border 0.3s;
+}
+
+.input:focus {
+  border-color: #6b46c1;
+  outline: none;
+}
+
+.select {
+  padding: 0.75rem;
+  font-size: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  transition: border 0.3s;
+}
+
+.select:focus {
+  border-color: #6b46c1;
+  outline: none;
+}
+
+.radioGroup {
+  display: flex;
+  gap: 1rem;
+}
+
+.radioGroup label {
+  font-size: 1rem;
+  color: #555;
+  display: flex;
+  align-items: center;
+}
+
+.radioGroup input {
+  margin-right: 0.5rem;
+}
+
+.buttonContainer {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 1.5rem;
+}
+
+.primaryButton {
+  background: linear-gradient(135deg, #6b46c1, #805ad5);
+  border: none;
+  border-radius: 8px;
+  color: #fff;
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: transform 0.3s;
+}
+
+.primaryButton:hover {
+  transform: scale(1.02);
+}
+
+.secondaryButton {
+  background: #eee;
+  border: none;
+  border-radius: 8px;
+  color: #333;
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: transform 0.3s;
+}
+
+.secondaryButton:hover {
+  transform: scale(1.02);
+}
+
+.errorMessage {
+  color: red;
+  font-size: 0.8rem;
+  margin-top: 0.25rem;
+}
+
+.usernameLabel {
+  display: flex;
+  flex-direction: column;
+  font-size: 1rem;
+  margin-bottom: 8px;
+  color: #555;
+}
+
+.usernameNote {
+  font-size: 0.8rem;
+  line-height: 1.6;
+  color: #888;
+  margin-bottom: 16px;
+}

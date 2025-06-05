@@ -1,0 +1,20 @@
+.channelInfo {
+  background-color: #fdf7ed;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+.channelInfoContent {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.channelName {
+  font-size: 1.25rem;
+  font-weight: bold;
+  color: #5f3f20;
+}
+.channelDescription {
+  color: #8d6b3e;
+  line-height: 1.4;
+}
