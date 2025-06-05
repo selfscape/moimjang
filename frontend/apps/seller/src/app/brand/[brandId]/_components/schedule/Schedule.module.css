@@ -1,0 +1,92 @@
+.container {
+  margin-bottom: 24px;
+}
+.scheduleWrapper {
+  margin-top: 24px;
+}
+
+.scheduleTitle {
+  margin-bottom: 12px;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #111;
+}
+
+.scheduleList {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.scheduleItem {
+  display: flex;
+  align-items: center;
+  padding: 16px;
+  border: 2px solid #ddd;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: border-color 0.2s;
+}
+
+.scheduleItem:hover {
+  border-color: #111;
+}
+
+.selected {
+  border-color: #111;
+}
+
+.radioButton {
+  margin-right: 12px;
+  cursor: pointer;
+  accent-color: #111;
+}
+
+.dateInfo {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-right: auto;
+}
+
+.day {
+  font-size: 0.875rem;
+  color: #333;
+}
+
+.dateText {
+  font-size: 1.25rem;
+  font-weight: bold;
+  color: #333;
+}
+
+.timeInfo {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #666;
+}
+
+.applyButton {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 24px auto 0;
+  padding: 12px 24px;
+  font-size: 16px;
+  border: none;
+  border-radius: 4px;
+  color: #fff;
+  background-color: #111;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.applyButton:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+.applyButton:not(:disabled):hover {
+  /* retains the same hover look as non-disabled */
+  background-color: #111;
+}

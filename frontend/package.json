@@ -1,0 +1,50 @@
+{
+  "name": "moimjang-monorepo",
+  "version": "1.0.0",
+  "main": "index.js",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "tree": "struct",
+    "tree:i": "struct -i dist -o new.tree",
+    "tree:build": "struct build structure.tree -d ./generated",
+    "dev:admin": "npm run start --workspace=apps/admin",
+    "dev:seller": "npm run dev --workspace=apps/seller",
+    "dev:contents": "npm run dev --workspace=apps/contents",
+    "dev:admin-b": "npm run build --workspace=apps/admin",
+    "dev:seller-b": "npm run build --workspace=apps/seller",
+    "dev:contents-b": "npm run build --workspace=apps/contents"
+  },
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "@emotion/react": "^11.14.0",
+    "@emotion/server": "^11.11.0",
+    "@emotion/styled": "^11.14.0",
+    "@structure-codes/cli": "^0.0.6",
+    "@tanstack/react-query": "^5.76.2",
+    "@tanstack/react-query-devtools": "^5.77.2",
+    "axios": "^1.9.0",
+    "clsx": "^2.1.1",
+    "immer": "^10.1.1",
+    "msw": "^2.8.5",
+    "next": "^15.1.8",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-icons": "^5.5.0",
+    "react-spinners": "^0.17.0",
+    "swiper": "^11.2.8",
+    "zustand": "^5.0.5"
+  },
+  "devDependencies": {
+    "@types/node": "^22.15.21",
+    "@types/react": "^18.3.22",
+    "@types/react-dom": "^18.3.7",
+    "typescript": "^5.8.3"
+  }
+}

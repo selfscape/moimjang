@@ -1,0 +1,89 @@
+.profilePage {
+  background-color: #fff;
+  height: 100vh;
+  padding-bottom: 20px;
+}
+
+.profileContent {
+  padding: 24px 16px;
+}
+
+.profileHeader {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.avatar {
+  font-size: 48px;
+  margin-bottom: 12px;
+}
+
+.userName {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.actionButton {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: none;
+  border-radius: 8px;
+  padding: 1rem;
+  margin: 0 auto 16px;
+  font-size: 1rem;
+  gap: 0.5rem;
+  cursor: pointer;
+  background-color: #dbeafe;
+  color: #2563eb;
+  transition: background-color 0.2s ease-in-out, transform 0.1s ease-in-out;
+}
+
+.actionButton:hover {
+  transform: translateY(-1px);
+}
+
+.profileInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.profileCard {
+  background-color: #fff;
+  border-radius: 8px;
+  padding: 16px;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.05);
+  animation: popUp 0.3s ease forwards;
+}
+
+.profileCard:hover {
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.08);
+}
+
+.infoRow {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.label {
+  color: #6b7280;
+}
+
+.value {
+  font-weight: 500;
+}
+
+@keyframes popUp {
+  0% {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

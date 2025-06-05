@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@seller/*": ["apps/seller/src/*"],
+      "@contents/*": ["apps/contents/src/*"],
+      "@admin/*": ["apps/admin/src/*"],
+      "@ui/*": ["packages/ui/src/*"],
+      "@utils/*": ["packages/utils/src/*"],
+      "@mocks/*": ["packages/mocks/src/*"],
+      "@constants/*": ["packages/constants/src/*"],
+      "@model/*": ["packages/model/src/*"]
+    }
+  }
+}

@@ -1,0 +1,30 @@
+.questionSection {
+  margin-bottom: 32px;
+  padding: 16px 0;
+  background-color: #fff;
+  border-radius: 8px;
+}
+
+.label {
+  font-size: 1.2em;
+  font-weight: 500;
+  margin-bottom: 12px;
+  color: #2d3748;
+  line-height: 1.4;
+}
+
+.input {
+  width: 100%;
+  padding: 14px 16px;
+  border: 1px solid #cbd5e0;
+  border-radius: 8px;
+  background-color: #f7fafc;
+  font-size: 1rem;
+  color: #2d3748;
+  transition: border-color 0.2s;
+}
+
+.input:focus {
+  outline: none;
+  border-color: #3182ce;
+}

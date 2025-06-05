@@ -1,0 +1,83 @@
+.reviewSection {
+  margin: 12px 0;
+  padding: 20px;
+  background-color: #fff;
+}
+
+.reviewTitle {
+  margin-bottom: 16px;
+  font-size: 1.125rem;
+}
+
+.reviewCard {
+  background-color: #fafafa;
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 20px;
+}
+
+.imageList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.imageWrapper {
+  position: relative;
+  cursor: pointer;
+}
+
+.reviewImage {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 6px;
+}
+
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 80px;
+  height: 80px;
+  background-color: rgba(0, 0, 0, 0.6);
+  color: #fff;
+  font-size: 1rem;
+  font-weight: bold;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.reviewContent {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.reviewText {
+  font-size: 0.875rem;
+  line-height: 1.4;
+  color: #555;
+}
+
+.moreReviewsButton {
+  display: block;
+  margin: 0 auto;
+  width: 100%;
+  padding: 10px 20px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  background-color: #111;
+  border: none;
+  color: #fff;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.moreReviewsButton:hover {
+  background-color: #222;
+}
