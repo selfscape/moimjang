@@ -7,7 +7,7 @@ type Config = {
   visible: boolean;
 };
 
-export default function HeaderConfigurator({ config }: { config: Config }) {
+export default function NavigationConfigurator({ config }: { config: Config }) {
   const { handler } = useNavigationStore();
 
   useEffect(() => {
@@ -15,7 +15,7 @@ export default function HeaderConfigurator({ config }: { config: Config }) {
     return () => {
       handler(true);
     };
-  }, [config.visible]);
+  }, [config.visible, handler]);
 
   return null;
 }

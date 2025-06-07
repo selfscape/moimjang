@@ -88,7 +88,7 @@ const MultiStepSignUpForm: React.FC = () => {
       nextStep();
     } else {
       signUp(formData, {
-        onSuccess: (data) => {
+        onSuccess: () => {
           open({
             isOpen: true,
             title: "회원가입이 성공적으로 완료되었습니다! 🎉",

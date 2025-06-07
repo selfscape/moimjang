@@ -7,6 +7,7 @@ import "swiper/css";
 import { Navigation, Pagination } from "swiper/modules";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
+import OptimizedNextImage from "@ui/components/Image/OptimizedNextImage";
 
 interface ImageModalProps {
   images: string[];
@@ -27,7 +28,7 @@ const ImageModal: React.FC<ImageModalProps> = (props) => {
           ×
         </button>
         {images.length === 1 ? (
-          <img
+          <OptimizedNextImage
             className={styles.modalImage}
             src={images[0]}
             alt="Enlarged view"
@@ -43,7 +44,7 @@ const ImageModal: React.FC<ImageModalProps> = (props) => {
             >
               {images.map((image, index) => (
                 <SwiperSlide key={index}>
-                  <img
+                  <OptimizedNextImage
                     className={styles.modalImage}
                     src={image}
                     alt={`Enlarged view ${index}`}

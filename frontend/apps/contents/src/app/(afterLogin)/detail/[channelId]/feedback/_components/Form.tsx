@@ -22,7 +22,6 @@ import { useSystemModalStore } from "@ui/store/useSystemModalStore";
 import pathnames from "@/app/_constant/pathnames";
 import useCreateReview from "../_api/useCreateReview";
 import { USER_DATA } from "@/app/_constant/auth";
-import { User } from "@model/user";
 
 export default function Form() {
   const router = useRouter();
@@ -167,10 +166,10 @@ export default function Form() {
           }}
         >
           <option value="">선택해주세요</option>
-          {groupMembers.map(({ id, user_name, gender }) => (
+          {groupMembers.map(({ id, username, gender }) => (
             <option key={id} value={id}>
               {gender === "male" ? "🙋‍♂️" : "🙋‍♀️"}
-              {user_name}
+              {username}
             </option>
           ))}
         </select>

@@ -30,10 +30,10 @@ export default function InputSection({
   const socialingId = useSearchParams().get("socialingId");
   const owner = useCookie(OWNER);
   const router = useRouter();
-  const [answers, setAnswers] = useState<Record<string, any>>({});
+  const [answers, setAnswers] = useState<Record<string, unknown>>({});
   const { mutate: registForm } = useRegistForm();
 
-  const handleAnswerChange = (questionId: string, value: any) => {
+  const handleAnswerChange = (questionId: string, value: unknown) => {
     setAnswers((prev) => ({
       ...prev,
       [questionId]: value,

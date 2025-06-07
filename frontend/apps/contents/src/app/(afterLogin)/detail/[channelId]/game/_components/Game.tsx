@@ -14,6 +14,7 @@ import explainGameRule2 from "@/app/_asset/game-2.png";
 import ErrorBox from "@ui/components/Error/ErrorBox";
 import Loading from "@ui/components/Spinner/FadeLoader";
 import HeaderConfigurator from "@ui/components/Header/HeaderConfigurator";
+import OptimizedNextImage from "@ui/components/Image/OptimizedNextImage";
 
 export default function Game() {
   const { channelId } = useParams();
@@ -37,7 +38,7 @@ export default function Game() {
       />
       <div className={styles.container}>
         <div className={`${styles.imageWrapper} ${styles.bottomMargin}`}>
-          <img
+          <OptimizedNextImage
             className={styles.memberImage}
             src={explainGameRule0.src}
             alt="매치 유저 설명"
@@ -54,12 +55,12 @@ export default function Game() {
           </div>
         </div>
         <div className={styles.imageWrapper}>
-          <img
+          <OptimizedNextImage
             className={styles.image}
             src={explainGameRule1.src}
             alt="누가? 누구를"
           />
-          <img
+          <OptimizedNextImage
             className={styles.image}
             src={explainGameRule2.src}
             alt="누가? 누구를"

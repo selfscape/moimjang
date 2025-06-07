@@ -18,7 +18,7 @@ export default function ScheduleContainer({ brandId }: Props) {
     (id: number) => {
       setSelectedSession(id);
     },
-    [selectedSession]
+    [setSelectedSession]
   );
 
   const handleRegistButtonClick = (selectedSession: number | null) => {

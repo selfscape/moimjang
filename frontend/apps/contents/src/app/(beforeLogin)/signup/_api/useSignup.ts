@@ -1,6 +1,4 @@
-import { AxiosError } from "axios";
 import { useMutation } from "@tanstack/react-query";
-import { SurveyRegistState } from "@model/form";
 import useCookie from "@util/hooks/useCookie";
 import { OWNER } from "@constants/auth";
 import { serverUrl } from "@constants/config";

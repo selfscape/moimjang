@@ -13,6 +13,7 @@ import { uploadBrandReviewImage } from "../_api/uploadBrandReviewImage";
 import { useParams } from "next/navigation";
 import pathnames from "@/app/_constant/pathnames";
 import { USER_DATA } from "@/app/_constant/auth";
+import OptimizedNextImage from "@ui/components/Image/OptimizedNextImage";
 
 const MAX_IMAGES = 6;
 
@@ -93,9 +94,10 @@ export default function Form() {
         <div className={styles.imageWrapper}>
           {images.map((img, idx) => (
             <div key={idx} className={styles.imageItem}>
-              <img
+              <OptimizedNextImage
                 src={URL.createObjectURL(img)}
                 className={styles.imagePreview}
+                alt="리뷰이미지"
               />
               <button
                 className={styles.deleteButton}

@@ -38,7 +38,11 @@ export default function Profile() {
             <div className={styles.infoRow}>
               <span className={styles.label}>성별</span>
               <span className={styles.value}>
-                {user?.gender === "male" ? "남성" : "여성" || "정보 없음"}
+                {user?.gender === "male"
+                  ? "남성"
+                  : user?.gender === "female"
+                  ? "여성"
+                  : "정보 없음"}
               </span>
             </div>
             <div className={styles.infoRow}>

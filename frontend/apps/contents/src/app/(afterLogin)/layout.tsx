@@ -5,12 +5,12 @@ import HeaderRoot from "@ui/components/Header/HeaderRoot";
 import RQProvider from "../_components/RQProvider";
 import NavigationRoot from "./_components/Navigation/NavigationRoot";
 import styles from "./layout.module.css";
+import { Suspense } from "react";
 
 export const metadata = {
   title: "모임장",
   description:
     "호스트가 모임을 쉽게 생성·관리하고, 참가자와 소통할 수 있는 소셜 모임 관리 플랫폼",
-  themeColor: "#ffffff",
   icons: {
     icon: [
       "/favicon/favicon.ico", // 일반 아이콘 (브라우저 탭)
@@ -30,6 +30,10 @@ export const metadata = {
   },
 };
 
+export const viewport = {
+  themeColor: "#ffffff",
+};
+
 export default function RootLayout({
   children,
 }: {
@@ -39,7 +43,9 @@ export default function RootLayout({
     <html lang="ko">
       <body className={styles.layout}>
         <HeaderRoot />
-        <RQProvider>{children}</RQProvider>
+        <Suspense>
+          <RQProvider>{children}</RQProvider>
+        </Suspense>
         <NavigationRoot />
         <SystemModal />
       </body>

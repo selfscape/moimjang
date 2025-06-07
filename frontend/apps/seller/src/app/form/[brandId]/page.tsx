@@ -9,11 +9,9 @@ import { OWNER } from "@constants/auth";
 import { getLandingBrandById } from "@/app/brand/[brandId]/_api/useGetLandingBrandById";
 import HeaderConfigurator from "@ui/components/Header/HeaderConfigurator";
 
-type Props = {
-  params: { brandId: string };
-};
+type PageParams = Promise<{ brandId: string }>;
 
-export default async function Page({ params }: Props) {
+export default async function Page({ params }: { params: PageParams }) {
   const cookieStore = await cookies();
   const owner = cookieStore.get(OWNER)?.value ?? "";
 

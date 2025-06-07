@@ -57,7 +57,7 @@ export default function Group() {
                 <div className={styles.memberGender}>
                   {getGenderEmoji(member.gender)}
                 </div>
-                <span className={styles.memberName}>{member.user_name}</span>
+                <span className={styles.memberName}>{member.username}</span>
               </div>
             ))}
           </div>

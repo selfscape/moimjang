@@ -2,6 +2,7 @@ import React from "react";
 import { FaImage, FaTrash, FaArrowsRotate } from "react-icons/fa6";
 import styles from "./QuestionType.module.css";
 import { ImageQuestion } from "@model/form";
+import OptimizedNextImage from "@ui/components/Image/OptimizedNextImage";
 
 interface ImageProps {
   question: ImageQuestion;
@@ -33,7 +34,7 @@ const Image: React.FC<ImageProps> = ({ question, answer, onChange }) => {
       />
       {answer ? (
         <div className={styles.imagePreviewContainer}>
-          <img
+          <OptimizedNextImage
             className={styles.imagePreview}
             src={previewUrl!}
             alt="preview"

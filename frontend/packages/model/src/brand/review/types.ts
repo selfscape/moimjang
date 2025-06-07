@@ -1,5 +1,5 @@
-import { Image } from "@/common";
-import { User } from "@/user";
+import { Image } from "../../common/index";
+import { User } from "../../user/index";
 
 export interface BrandReview {
   id: number;

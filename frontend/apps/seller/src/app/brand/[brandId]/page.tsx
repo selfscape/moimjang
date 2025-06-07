@@ -17,15 +17,16 @@ import DetailImageSection from "./_components/detailImages/DetailImageSection";
 import ScheduleContainer from "./_components/schedule/ScheduleContainer";
 import HeaderConfigurator from "@ui/components/Header/HeaderConfigurator";
 
-type Props = {
-  params: { brandId: string };
-};
+type PageParams = Promise<{ brandId: string }>;
 
-const Page: React.FC<Props> = async ({ params }: Props) => {
+export default async function Page({ params }: { params: PageParams }) {
   const cookieStore = await cookies();
   const owner = cookieStore.get(OWNER)?.value ?? "";
 
   const { brandId } = await params;
+
+  if (!brandId) return <></>;
+
   const queryClient = new QueryClient();
 
   await queryClient.prefetchQuery({
@@ -77,6 +78,4 @@ const Page: React.FC<Props> = async ({ params }: Props) => {
       </div>
     </>
   );
-};
-
-export default Page;
+}

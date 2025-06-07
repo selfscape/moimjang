@@ -1,7 +1,7 @@
 import React from "react";
 import styles from "./Header.module.css";
 import { FaArrowLeft, FaArrowRotateLeft } from "react-icons/fa6";
-import { RefetchFunction } from "@/store/useHeaderStore";
+import { RefetchFunction } from "../../store/useHeaderStore";
 
 interface HeaderProps {
   title: string;

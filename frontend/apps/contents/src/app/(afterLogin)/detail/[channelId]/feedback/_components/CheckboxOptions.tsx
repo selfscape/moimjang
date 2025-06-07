@@ -5,7 +5,7 @@ import { useReviewStore } from "../_store/useReviewStore";
 
 interface Props {
   options: string[];
-  field: keyof ReviewField;
+  field: "style" | "impression" | "conversation" | "keywords";
   label: string;
   refProp?: React.Ref<HTMLDivElement>;
   errors: Partial<Record<keyof ReviewField, string>>;

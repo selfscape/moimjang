@@ -3,17 +3,15 @@
 import React, { useEffect, useState } from "react";
 import useErrorStore from "../_store/useErrorMessageStore";
 import styles from "./LoginForm.module.css";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import pathnames from "@/app/_constant/pathnames";
 import useLogin from "../_api/useLogin";
 import useCookie from "@util/hooks/useCookie";
 import { OWNER } from "@constants/auth";
 import { USER_DATA } from "@/app/_constant/auth";
-interface Props {
-  redirectUrl: string | undefined;
-}
 
-export default function LoginForm({ redirectUrl }: Props) {
+export default function LoginForm() {
+  const redirectUrl = useSearchParams().get("redirectUrl");
   const router = useRouter();
   const owner = useCookie(OWNER);
   const { mutate: login } = useLogin(owner);
@@ -62,7 +60,7 @@ export default function LoginForm({ redirectUrl }: Props) {
 
   useEffect(() => {
     return clearErrorMessage();
-  }, []);
+  }, [clearErrorMessage]);
 
   return (
     <form className={styles.form} onSubmit={handleLogin}>

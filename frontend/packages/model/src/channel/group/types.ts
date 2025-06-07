@@ -1,4 +1,4 @@
-import { User } from "@/user";
+import { User } from "../../user/index";
 
 export interface Group {
   id: number;

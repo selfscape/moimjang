@@ -23,7 +23,7 @@ const Select: React.FC<Props> = ({ question, answer, onChange }) => {
         <p className={styles.description}>{question.description}</p>
       )}
       <div className={styles.optionsContainer}>
-        {question.options.map((option: string, idx: number) => {
+        {question.options.map((option: string) => {
           const isSelected = isMulti
             ? Array.isArray(currentValue) && currentValue.includes(option)
             : currentValue === option;
