@@ -7,6 +7,7 @@ import AdminLayout from "components/common/AdminLayout";
 import Controller from "components/submission/Controller";
 import Pagination from "components/common/Pagination";
 import SubmissionTable from "components/submission/SubmissionTable";
+import RequireAuth from "components/common/RequireAuth";
 
 const Submission = () => {
   const [filter, setFilter] = useState<{
@@ -52,4 +53,4 @@ const Container = styled.div`
   padding: 16px 0px;
 `;
 
-export default Submission;
+export default RequireAuth(Submission);

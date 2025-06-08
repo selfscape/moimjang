@@ -10,6 +10,7 @@ import AdminLayout from "components/common/AdminLayout";
 import Pagination from "components/common/Pagination";
 import Controller from "components/channel/Controller";
 import ChannelTable from "components/channel/ChannelTable";
+import RequireAuth from "components/common/RequireAuth";
 
 const Channel = () => {
   const [searchParams] = useSearchParams();
@@ -57,4 +58,4 @@ const Container = styled.div`
   padding: 16px;
 `;
 
-export default Channel;
+export default RequireAuth(Channel);

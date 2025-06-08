@@ -2,6 +2,7 @@ import styled from "styled-components";
 import AdminLayout from "components/common/AdminLayout";
 import useCreateHostRegist from "api/hostRegist/useCreateHostRegist";
 import useSystemModal from "hooks/common/components/useSystemModal";
+import RequireAuth from "components/common/RequireAuth";
 
 const GuestPage = () => {
   const { mutate: createHostRegist } = useCreateHostRegist();
@@ -144,4 +145,4 @@ const ApplyButton = styled.button`
   }
 `;
 
-export default GuestPage;
+export default RequireAuth(GuestPage);
