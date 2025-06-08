@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, useNavigate } from "react-router-dom";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { ThemeProvider } from "styled-components";
@@ -23,6 +23,7 @@ import userState from "recoils/atoms/auth/userState";
 import useStoreOwnerFromQuery from "hooks/auth/useStoreOwnerFromQuery";
 import AdminSignUpForm from "pages/SignUpForm";
 import Login from "pages/Login";
+import RoleBasedHome from "pages/home/RoleBasedHome";
 
 function App() {
   useStoreOwnerFromQuery();
@@ -35,18 +36,7 @@ function App() {
         <ThemeProvider theme={theme}>
           <GlobalStyles />
           <Routes>
-            <Route
-              path={Pathnames.Home}
-              element={
-                isAdmin ? (
-                  <Host />
-                ) : isSuperAdmin ? (
-                  <Submission />
-                ) : (
-                  isUser && <GuestPage />
-                )
-              }
-            />
+            <Route path={Pathnames.Home} element={<RoleBasedHome />} />
             <Route path={Pathnames.Login} element={<Login />} />
             <Route path={Pathnames.SignUp} element={<AdminSignUpForm />} />
             <Route path={Pathnames.Host} element={<Host />} />

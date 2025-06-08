@@ -9,6 +9,7 @@ import AdminLayout from "components/common/AdminLayout";
 import Pagination from "components/common/Pagination";
 import Controller from "components/user/Controller";
 import UserTable from "components/user/UserTable";
+import RequireAuth from "components/common/RequireAuth";
 
 const User = () => {
   const [searchParams] = useSearchParams();
@@ -58,4 +59,4 @@ const User = () => {
 
 const Container = styled.div``;
 
-export default User;
+export default RequireAuth(User);

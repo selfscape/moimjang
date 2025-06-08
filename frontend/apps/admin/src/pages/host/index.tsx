@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { OWNER, siteUrl } from "configs";
 
 import AdminLayout from "components/common/AdminLayout";
+import RequireAuth from "components/common/RequireAuth";
 
 const Host = () => {
   const userName = localStorage.getItem(OWNER);
@@ -137,4 +138,4 @@ const Notice = styled.p`
   padding: 0 24px;
 `;
 
-export default Host;
+export default RequireAuth(Host);

@@ -33,6 +33,7 @@ const Login = () => {
         {
           onSuccess: (data) => {
             const { user } = data;
+
             setUserData(user);
             navigate(Pathnames.Home);
           },
