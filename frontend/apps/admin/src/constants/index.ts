@@ -1,7 +1,7 @@
 export enum Pathnames {
   Login = "/login",
   SignUp = "/signup",
-  Home = "",
+  Home = "/",
   Social = "/social",
   CreateSocial = "/social/create",
   User = "/user",

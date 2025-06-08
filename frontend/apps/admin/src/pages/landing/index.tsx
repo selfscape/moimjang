@@ -7,6 +7,7 @@ import SectionToggle, {
 } from "components/landing/SectionToggle";
 import MainImage from "components/landing/MainImage";
 import Gallery from "components/landing/Gallery";
+import RequireAuth from "components/common/RequireAuth";
 
 const Landing = () => {
   const [landingSection, setLandingSection] = useState<LandingSection>(
@@ -35,4 +36,4 @@ const Container = styled.div`
   background-color: #fff;
 `;
 
-export default Landing;
+export default RequireAuth(Landing);

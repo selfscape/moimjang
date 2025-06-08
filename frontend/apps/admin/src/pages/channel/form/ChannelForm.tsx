@@ -13,6 +13,7 @@ import SectionToggle, {
 import Application from "components/channel/channelDetail/application";
 import Game from "components/channel/channelDetail/game";
 import Socialing from "components/channel/channelDetail/socialing";
+import RequireAuth from "components/common/RequireAuth";
 
 export interface FormData {
   title: string;
@@ -98,4 +99,4 @@ const MainContent = styled.main`
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
 `;
 
-export default ChannelForm;
+export default RequireAuth(ChannelForm);

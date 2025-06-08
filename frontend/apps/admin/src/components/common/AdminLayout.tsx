@@ -13,7 +13,7 @@ interface Props {
 }
 
 const AdminLayout = ({ children }: Props) => {
-  const [userData, setUserData] = useRecoilState(userState);
+  const [userData] = useRecoilState(userState);
   const { isUser } = useCheckUserRole(userData?.role);
 
   return (

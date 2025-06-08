@@ -10,6 +10,7 @@ import AdminLayout from "components/common/AdminLayout";
 import Controller from "components/brand/Controller";
 import BrandTable from "components/brand/BrandTable";
 import Pagination from "components/common/Pagination";
+import RequireAuth from "components/common/RequireAuth";
 
 const Brand = () => {
   const [searchParams] = useSearchParams();
@@ -53,4 +54,4 @@ const Brand = () => {
 
 const Container = styled.div``;
 
-export default Brand;
+export default RequireAuth(Brand);

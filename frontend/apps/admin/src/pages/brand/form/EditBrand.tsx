@@ -7,6 +7,7 @@ import { Brand } from "interfaces/brand";
 
 import AdminLayout from "components/common/AdminLayout";
 import EditBrandForm from "components/brand/EditBrandForm";
+import RequireAuth from "components/common/RequireAuth";
 
 export type EditBrandInputType = Pick<
   Brand,
@@ -77,4 +78,4 @@ const EditBrand = () => {
   );
 };
 
-export default EditBrand;
+export default RequireAuth(EditBrand);
