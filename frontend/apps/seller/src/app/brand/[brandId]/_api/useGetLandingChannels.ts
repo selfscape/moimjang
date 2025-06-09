@@ -1,8 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
 import { OWNER } from "@constants/auth";
-import { serverUrl } from "@constants/config";
+import { serverUrl } from "@/app/_constant/config";
 import { Channel, ChannelState } from "@model/channel";
-import { GET_LANDING_CHANNELS } from "@/constant/channel/queryKey";
+import { GET_LANDING_CHANNELS } from "@/app/_constant/channel/queryKey";
 import useCookie from "@util/hooks/useCookie";
 
 export interface Params {

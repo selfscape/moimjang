@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { GET_MATCHED_USER } from "@/app/_constant/queryKeys";
 
 import { ACCEESS_TOKEN } from "@constants/auth";
-import { serverUrl } from "@constants/config";
+import { serverUrl } from "@/app/_constant/config";
 import { Game } from "@model/channel/game";
 import { User } from "@model/user";
 

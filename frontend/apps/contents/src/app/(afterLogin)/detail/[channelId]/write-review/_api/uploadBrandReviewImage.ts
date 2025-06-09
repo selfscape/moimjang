@@ -1,5 +1,5 @@
 import { ACCEESS_TOKEN } from "@constants/auth";
-import { serverUrl } from "@constants/config";
+import { serverUrl } from "@/app/_constant/config";
 
 export interface Response {
   imageUrl: string;

@@ -3,7 +3,7 @@
 import React from "react";
 import styles from "./HomeButton.module.css";
 import { useRouter } from "next/navigation";
-import pathnames from "@/constant/pathnames";
+import pathnames from "@/app/_constant/pathnames";
 
 export default function HomeButton() {
   const router = useRouter();

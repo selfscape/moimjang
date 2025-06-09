@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { GET_GROUPS } from "@/app/_constant/queryKeys";
 import { useState, useEffect } from "react";
 import { Group } from "@model/channel/group";
-import { serverUrl } from "@constants/config";
+import { serverUrl } from "@/app/_constant/config";
 import { ACCEESS_TOKEN } from "@constants/auth";
 
 export const getGroups = async (

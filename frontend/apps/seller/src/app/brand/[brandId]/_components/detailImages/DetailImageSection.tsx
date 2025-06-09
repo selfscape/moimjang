@@ -1,6 +1,6 @@
 import React from "react";
 import styles from "./DetailImages.module.css";
-import { GET_LANDING_BRAND_BY_ID } from "@/constant/barnd/queryKey";
+import { GET_LANDING_BRAND_BY_ID } from "@/app/_constant/barnd/queryKey";
 import { QueryClient } from "@tanstack/react-query";
 import { Brand } from "@model/brand";
 import OptimizedNextImage from "@ui/components/Image/OptimizedNextImage";
