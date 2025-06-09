@@ -32,7 +32,7 @@ const SubmissionTable = () => {
       if (entry.state === HostRegistState.ACCEPT && entry.user?.email) {
         setHashUrls((prev) => ({
           ...prev,
-          [entry.id]: `${siteUrl}/admin/login?host=${entry.user.username}`,
+          [entry.id]: `https://admin.moimjang.com/login?host=${entry.user.username}`,
         }));
       }
     });
