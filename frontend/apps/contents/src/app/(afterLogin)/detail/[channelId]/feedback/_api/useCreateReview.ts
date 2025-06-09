@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useMutation } from "@tanstack/react-query";
-import { serverUrl } from "@constants/config";
+import { serverUrl } from "@/app/_constant/config";
 import { ACCEESS_TOKEN } from "@constants/auth";
 
 export interface RequestBody {

@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { ACCEESS_TOKEN } from "@constants/auth";
-import { serverUrl } from "@constants/config";
+import { serverUrl } from "@/app/_constant/config";
 import { ApiError, ErrorType } from "@model/error/index";
 
 export const joinChannel = async (

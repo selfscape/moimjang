@@ -21,7 +21,7 @@
     ],
     "paths": {
       "@/*": ["./src/*"],
-      "@/constant": ["./src/constant/*"],
+      "@/constant": ["src/app/_constant/*"],
       "@/model": ["./src/model/*"],
       "@/store": ["./src/store/*"],
       "@/api": ["./src/api/*"],

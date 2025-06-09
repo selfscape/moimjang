@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { GET_QUESTION_CATEGORIES } from "@/app/_constant/queryKeys";
 import { ACCEESS_TOKEN } from "@constants/auth";
-import { serverUrl } from "@constants/config";
+import { serverUrl } from "@/app/_constant/config";
 
 export interface GetQuestionCardsOutput {
   cardCategoryId: number;

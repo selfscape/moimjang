@@ -6,7 +6,6 @@ import { useQueryClient } from "@tanstack/react-query";
 import useUpdateHostRegist from "api/hostRegist/useUpdateHostRegist";
 import type { GetHostRegistsOutput } from "api/hostRegist/useGetHostRegistAdmin";
 import { GET_HOST_REGIST_ADMIN } from "constants/queryKeys";
-import { siteUrl } from "configs";
 import { useSubmissionContext } from "hooks/submission/context/useSubmissionContext";
 import useSystemModal from "hooks/common/components/useSystemModal";
 import useCheckUserRole from "hooks/auth/useCheckUserRole";

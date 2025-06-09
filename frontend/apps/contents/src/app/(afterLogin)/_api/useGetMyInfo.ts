@@ -3,7 +3,7 @@ import { GET_MY_INFO } from "@/app/_constant/queryKeys";
 import { useState, useEffect } from "react";
 import { User } from "@model/user";
 import { ACCEESS_TOKEN } from "@constants/auth";
-import { serverUrl } from "@constants/config";
+import { serverUrl } from "@/app/_constant/config";
 
 export const getMyInfo = async (token: string | null): Promise<User> => {
   const result = await fetch(`${serverUrl}/customers/my_info`, {

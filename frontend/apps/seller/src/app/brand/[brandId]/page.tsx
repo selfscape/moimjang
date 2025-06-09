@@ -8,8 +8,8 @@ import {
 import { cookies } from "next/headers";
 import { getLandingChannels } from "./_api/useGetLandingChannels";
 import { getLandingBrandById } from "./_api/useGetLandingBrandById";
-import { GET_LANDING_CHANNELS } from "@/constant/channel/queryKey";
-import { GET_LANDING_BRAND_BY_ID } from "@/constant/barnd/queryKey";
+import { GET_LANDING_CHANNELS } from "@/app/_constant/channel/queryKey";
+import { GET_LANDING_BRAND_BY_ID } from "@/app/_constant/barnd/queryKey";
 import { OWNER } from "@constants/auth";
 import { ChannelState } from "@model/channel";
 import BrandInfo from "./_components/BrandInfo";
