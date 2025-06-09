@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { GET_QUESTION_CATEGORIES } from "@/app/_constant/queryKeys";
-import { serverUrl } from "@constants/config";
+import { serverUrl } from "@/app/_constant/config";
 import { ACCEESS_TOKEN } from "@constants/auth";
 
 export interface Response {

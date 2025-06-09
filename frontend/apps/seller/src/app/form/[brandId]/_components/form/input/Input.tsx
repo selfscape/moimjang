@@ -9,7 +9,9 @@ import { isAnswered, isSurveyArray } from "../../../_util";
 import RenderQuestion from "./Questions";
 import processAnswers from "../../../_util/processAnswers";
 import useRegistForm from "../../../_api/useRegistForm";
-import pathnames from "@/constant/pathnames";
+// import pathnames from "@/app/constant/pathnames";
+import pathnames from "@/app/_constant/pathnames";
+
 import useCookie from "@util/hooks/useCookie";
 import { OWNER } from "@constants/auth";
 import { useSystemModalStore } from "@ui/store/useSystemModalStore";

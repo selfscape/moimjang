@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { GET_CHANNEL_LIST } from "@/app/_constant/queryKeys";
 import { ACCEESS_TOKEN } from "@constants/auth";
-import { serverUrl } from "@constants/config";
+import { serverUrl } from "@/app/_constant/config";
 import { Channel, ChannelState } from "@model/channel";
 
 export interface Output {

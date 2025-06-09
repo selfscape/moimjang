@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { ACCEESS_TOKEN } from "@constants/auth";
-import { serverUrl } from "@constants/config";
+// import { serverUrl } from "@/app/_constant/config";
 import { User } from "@model/user";
+import { serverUrl } from "@/app/_constant/config";
 
 export interface Response {
   access_token: string;

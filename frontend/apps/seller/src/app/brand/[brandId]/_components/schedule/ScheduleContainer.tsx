@@ -4,7 +4,7 @@ import React, { useCallback, useState } from "react";
 import styles from "./Schedule.module.css";
 import Schedules from "./Schedule";
 import { useRouter } from "next/navigation";
-import pathnames from "@/constant/pathnames";
+import pathnames from "@/app/_constant/pathnames";
 
 interface Props {
   brandId: string;
