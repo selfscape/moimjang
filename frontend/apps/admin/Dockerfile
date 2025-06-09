@@ -1,5 +1,5 @@
 # 멀티 스테이지 빌드를 사용하여 최적화된 프로덕션 이미지 생성
-# 사용법: cd frontend/apps/admin && docker build -f Dockerfile -t moimjang/admin ../../
+# 사용법: cd <root_project_path>/frontend && docker build -f apps/admin/Dockerfile -t moimjang/admin .
 
 # 1단계: 빌드 스테이지
 FROM node:18-alpine AS builder
