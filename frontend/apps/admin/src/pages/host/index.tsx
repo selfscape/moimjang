@@ -1,15 +1,15 @@
 import { useCallback } from "react";
 import styled from "styled-components";
-import { OWNER, siteUrl } from "configs";
+import { OWNER } from "configs";
 
 import AdminLayout from "components/common/AdminLayout";
 import RequireAuth from "components/common/RequireAuth";
 
 const Host = () => {
   const userName = localStorage.getItem(OWNER);
-  const contentSiteUrl = `${siteUrl}/?host=${userName}`;
-  const landingSiteUrl = `${siteUrl}/landing?host=${userName}`;
-  const adminSiteUrl = `${siteUrl}/admin/login?host=${userName}`;
+  const contentSiteUrl = `https://contents.moimjang.com/?host=${userName}`;
+  const sellerSiteUrl = `https://seller.moimjang.com?host=${userName}`;
+  const adminSiteUrl = `https://admin.moimjang.com/login?host=${userName}`;
 
   const handleCopy = useCallback((url: string) => {
     navigator.clipboard.writeText(url);
@@ -38,14 +38,14 @@ const Host = () => {
             <InfoContent>
               <InfoLabel>소개 페이지 URL</InfoLabel>
               <InfoLink
-                href={landingSiteUrl}
+                href={sellerSiteUrl}
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                {landingSiteUrl}
+                {sellerSiteUrl}
               </InfoLink>
             </InfoContent>
-            <CopyButton onClick={() => handleCopy(landingSiteUrl)}>
+            <CopyButton onClick={() => handleCopy(sellerSiteUrl)}>
               Copy
             </CopyButton>
           </InfoCard>
