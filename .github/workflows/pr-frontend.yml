@@ -2,7 +2,7 @@ name: PR Frontend Build and Push
 
 on:
   pull_request:
-    branches: [ bugfix/modify_action_for_nextJS ]
+    branches: [ dev ]
     paths:
       - 'frontend/**'
       - '.github/workflows/pr-frontend.yml'
