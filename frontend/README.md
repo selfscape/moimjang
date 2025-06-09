@@ -94,3 +94,62 @@ npm run dev:admin     # 어드민 실행
 npm run dev:seller    # 판매자 도메인 실행
 npm run dev:contents  # 소비자 도메인 실행
 ```
+
+### **🚢 배포 방법**
+
+#### **1. Admin 앱 (React + nginx)**
+```bash
+cd frontend
+
+# 빌드
+docker build \
+  --build-arg REACT_APP_SERVER_URI=https://matchlog.chanyoung.site \
+  --build-arg REACT_APP_NODE_ENV=production \
+  --build-arg REACT_APP_ENVIRONMENT=production \
+  --build-arg REACT_APP_SITE_URL=https://admin.moimjang.site \
+  -f apps/admin/Dockerfile \
+  -t moimjang/admin .
+
+# 실행 (포트 3131)
+docker run -d --name moimjang-admin -p 3131:80 moimjang/admin
+```
+
+#### **2. Contents 앱 (Next.js + Node.js)**
+```bash
+cd frontend
+
+# 빌드
+docker build \
+  --build-arg NEXT_PUBLIC_SERVER_URL=https://matchlog.chanyoung.site \
+  --build-arg NEXT_PUBLIC_NODE_ENV=production \
+  --build-arg NEXT_PUBLIC_ENVIRONMENT=production \
+  --build-arg NEXT_PUBLIC_SITE_URL=https://contents.moimjang.site \
+  -f apps/contents/Dockerfile \
+  -t moimjang/contents .
+
+# 실행 (포트 3133)
+docker run -d --name moimjang-contents -p 3133:3000 moimjang/contents
+```
+
+#### **3. Seller 앱 (Next.js + Node.js)**
+```bash
+cd frontend
+
+# 빌드
+docker build \
+  --build-arg NEXT_PUBLIC_SERVER_URL=https://matchlog.chanyoung.site \
+  --build-arg NEXT_PUBLIC_NODE_ENV=production \
+  --build-arg NEXT_PUBLIC_ENVIRONMENT=production \
+  --build-arg NEXT_PUBLIC_SITE_URL=https://seller.moimjang.site \
+  -f apps/seller/Dockerfile \
+  -t moimjang/seller .
+
+# 실행 (포트 3132)
+docker run -d --name moimjang-seller -p 3132:3000 moimjang/seller
+```
+
+> **주의사항**: 
+> - Admin 앱은 `REACT_APP_*` 환경변수를 사용합니다 (React)
+> - Contents/Seller 앱은 `NEXT_PUBLIC_*` 환경변수를 사용합니다 (Next.js)
+> - Admin 앱은 nginx로 서빙되어 포트 80을 사용합니다
+> - Contents/Seller 앱은 Node.js로 서빙되어 포트 3000을 사용합니다

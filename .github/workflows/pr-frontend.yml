@@ -2,83 +2,193 @@ name: PR Frontend Build and Push
 
 on:
   pull_request:
-    branches: [ main ]
+    branches: [ dev ]
     paths:
       - 'frontend/**'
       - '.github/workflows/pr-frontend.yml'
 
 env:
-  REACT_APP_SERVER_URI: ${{ vars.REACT_APP_SERVER_URI }}
-  REACT_APP_NODE_ENV: ${{ vars.REACT_APP_NODE_ENV }}
-  REACT_APP_DANGEROUSLY_DISABLE_HOST_CHECK: ${{ vars.REACT_APP_DANGEROUSLY_DISABLE_HOST_CHECK }}
-  REACT_APP_ENVIRONMENT: ${{ vars.REACT_APP_ENVIRONMENT }}
-  REACT_APP_SITE_URL: ${{ vars.REACT_APP_SITE_URL }}
   ECR_REGISTRY: public.ecr.aws/x2l9m6x8/selfscape/moimjang
-  IMAGE_NAME: moimjang-frontend
 
 jobs:
-  build-and-push:
+  # 변경된 앱 감지
+  detect-changes:
     runs-on: ubuntu-24.04
-    environment: 'production'
-    
+    outputs:
+      admin-changed: ${{ steps.changes.outputs.admin }}
+      contents-changed: ${{ steps.changes.outputs.contents }}
+      seller-changed: ${{ steps.changes.outputs.seller }}
+      packages-changed: ${{ steps.changes.outputs.packages }}
+
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
       
+    - name: Detect changes
+      uses: dorny/paths-filter@v3
+      id: changes
+      with:
+        filters: |
+          admin:
+            - 'frontend/apps/admin/**'
+          contents:
+            - 'frontend/apps/contents/**'
+          seller:
+            - 'frontend/apps/seller/**'
+          packages:
+            - 'frontend/packages/**'
+
+  # 앱별 빌드
+  build-and-push:
+    needs: detect-changes
+    if: needs.detect-changes.outputs.admin-changed == 'true' || needs.detect-changes.outputs.contents-changed == 'true' || needs.detect-changes.outputs.seller-changed == 'true' || needs.detect-changes.outputs.packages-changed == 'true'
+    runs-on: ubuntu-24.04
+    environment: 'production'
+    
+    strategy:
+      matrix:
+        include:
+          - app: admin
+            condition: ${{ needs.detect-changes.outputs.admin-changed == 'true' || needs.detect-changes.outputs.packages-changed == 'true' }}
+            env_prefix: REACT_APP
+            port: 80
+          - app: contents  
+            condition: ${{ needs.detect-changes.outputs.contents-changed == 'true' || needs.detect-changes.outputs.packages-changed == 'true' }}
+            env_prefix: NEXT_PUBLIC
+            port: 3000
+          - app: seller
+            condition: ${{ needs.detect-changes.outputs.seller-changed == 'true' || needs.detect-changes.outputs.packages-changed == 'true' }}
+            env_prefix: NEXT_PUBLIC
+            port: 3000
+    
+    steps:
+    - name: Skip if no changes
+      if: matrix.condition == 'false'
+      run: |
+        echo "No changes detected for ${{ matrix.app }} app, skipping build"
+        exit 0
+        
+    - name: Checkout code
+      if: matrix.condition == 'true'
+      uses: actions/checkout@v4
+      
     - name: Configure AWS credentials
+      if: matrix.condition == 'true'
       uses: aws-actions/configure-aws-credentials@v4
       with:
         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        aws-region: us-east-1
+        aws-region: ap-northeast-2
         
     - name: Login to Amazon ECR Public
+      if: matrix.condition == 'true'
       id: login-ecr-public
       uses: aws-actions/amazon-ecr-login@v2
       with:
         registry-type: public
       
-    - name: Verify environment variables
+    - name: Set environment variables
+      if: matrix.condition == 'true'
       run: |
-        echo "Environment variables loaded:"
-        echo "REACT_APP_SERVER_URI: ${{ env.REACT_APP_SERVER_URI }}"
-        echo "REACT_APP_NODE_ENV: ${{ env.REACT_APP_NODE_ENV }}"
-        echo "REACT_APP_DANGEROUSLY_DISABLE_HOST_CHECK: ${{ env.REACT_APP_DANGEROUSLY_DISABLE_HOST_CHECK }}"
-        echo "REACT_APP_ENVIRONMENT: ${{ env.REACT_APP_ENVIRONMENT }}"
-        echo "REACT_APP_SITE_URL: ${{ env.REACT_APP_SITE_URL }}"
+        # 앱별로 다른 환경변수 접두사 설정
+        if [ "${{ matrix.env_prefix }}" = "REACT_APP" ]; then
+          echo "SERVER_URI_ARG=REACT_APP_SERVER_URI" >> $GITHUB_ENV
+          echo "NODE_ENV_ARG=REACT_APP_NODE_ENV" >> $GITHUB_ENV
+          echo "HOST_CHECK_ARG=REACT_APP_DANGEROUSLY_DISABLE_HOST_CHECK" >> $GITHUB_ENV
+          echo "ENVIRONMENT_ARG=REACT_APP_ENVIRONMENT" >> $GITHUB_ENV
+          echo "SITE_URL_ARG=REACT_APP_SITE_URL" >> $GITHUB_ENV
+          
+          echo "SERVER_URI_VAL=${{ vars.REACT_APP_SERVER_URI }}" >> $GITHUB_ENV
+          echo "NODE_ENV_VAL=${{ vars.REACT_APP_NODE_ENV }}" >> $GITHUB_ENV
+          echo "HOST_CHECK_VAL=${{ vars.REACT_APP_DANGEROUSLY_DISABLE_HOST_CHECK }}" >> $GITHUB_ENV
+          echo "ENVIRONMENT_VAL=${{ vars.REACT_APP_ENVIRONMENT }}" >> $GITHUB_ENV
+          echo "SITE_URL_VAL=${{ vars.REACT_APP_SITE_URL }}" >> $GITHUB_ENV
+        else
+          echo "SERVER_URI_ARG=NEXT_PUBLIC_SERVER_URL" >> $GITHUB_ENV
+          echo "NODE_ENV_ARG=NEXT_PUBLIC_NODE_ENV" >> $GITHUB_ENV
+          echo "HOST_CHECK_ARG=NEXT_PUBLIC_DANGEROUSLY_DISABLE_HOST_CHECK" >> $GITHUB_ENV
+          echo "ENVIRONMENT_ARG=NEXT_PUBLIC_ENVIRONMENT" >> $GITHUB_ENV
+          echo "SITE_URL_ARG=NEXT_PUBLIC_SITE_URL" >> $GITHUB_ENV
+          
+          echo "SERVER_URI_VAL=${{ vars.REACT_APP_SERVER_URI }}" >> $GITHUB_ENV
+          echo "NODE_ENV_VAL=${{ vars.REACT_APP_NODE_ENV }}" >> $GITHUB_ENV
+          echo "HOST_CHECK_VAL=${{ vars.REACT_APP_DANGEROUSLY_DISABLE_HOST_CHECK }}" >> $GITHUB_ENV
+          echo "ENVIRONMENT_VAL=${{ vars.REACT_APP_ENVIRONMENT }}" >> $GITHUB_ENV
+          echo "SITE_URL_VAL=${{ vars.REACT_APP_SITE_URL }}" >> $GITHUB_ENV
+        fi
+      
+    - name: Verify environment variables
+      if: matrix.condition == 'true'
+      run: |
+        echo "Building ${{ matrix.app }} with ${{ matrix.env_prefix }} environment variables:"
+        echo "${{ env.SERVER_URI_ARG }}: ${{ env.SERVER_URI_VAL }}"
+        echo "${{ env.NODE_ENV_ARG }}: ${{ env.NODE_ENV_VAL }}"
+        echo "${{ env.HOST_CHECK_ARG }}: ${{ env.HOST_CHECK_VAL }}"
+        echo "${{ env.ENVIRONMENT_ARG }}: ${{ env.ENVIRONMENT_VAL }}"
+        echo "${{ env.SITE_URL_ARG }}: ${{ env.SITE_URL_VAL }}"
       
     - name: Build Docker image
+      if: matrix.condition == 'true'
       run: |
         cd frontend
+        echo "Building ${{ matrix.app }} app..."
         docker build \
-          --build-arg REACT_APP_SERVER_URI="${{ env.REACT_APP_SERVER_URI }}" \
-          --build-arg REACT_APP_NODE_ENV="${{ env.REACT_APP_NODE_ENV }}" \
-          --build-arg REACT_APP_DANGEROUSLY_DISABLE_HOST_CHECK="${{ env.REACT_APP_DANGEROUSLY_DISABLE_HOST_CHECK }}" \
-          --build-arg REACT_APP_ENVIRONMENT="${{ env.REACT_APP_ENVIRONMENT }}" \
-          --build-arg REACT_APP_SITE_URL="${{ env.REACT_APP_SITE_URL }}" \
-          -t ${{ env.IMAGE_NAME }} .
+          --build-arg ${{ env.SERVER_URI_ARG }}="${{ env.SERVER_URI_VAL }}" \
+          --build-arg ${{ env.NODE_ENV_ARG }}="${{ env.NODE_ENV_VAL }}" \
+          --build-arg ${{ env.HOST_CHECK_ARG }}="${{ env.HOST_CHECK_VAL }}" \
+          --build-arg ${{ env.ENVIRONMENT_ARG }}="${{ env.ENVIRONMENT_VAL }}" \
+          --build-arg ${{ env.SITE_URL_ARG }}="${{ env.SITE_URL_VAL }}" \
+          -f apps/${{ matrix.app }}/Dockerfile \
+          -t moimjang-${{ matrix.app }} .
           
     - name: Tag Docker images
+      if: matrix.condition == 'true'
       run: |
         # Get today's date in YYYY-MM-DD format
         TODAY=$(date +%Y-%m-%d)
+        PR_NUMBER=${{ github.event.number }}
         
-        # Tag with latest and today's date
-        docker tag ${{ env.IMAGE_NAME }} ${{ env.ECR_REGISTRY }}:latest
-        docker tag ${{ env.IMAGE_NAME }} ${{ env.ECR_REGISTRY }}:$TODAY
+        # Tag with PR number, latest and today's date
+        docker tag moimjang-${{ matrix.app }} ${{ env.ECR_REGISTRY }}-${{ matrix.app }}:pr-$PR_NUMBER
+        docker tag moimjang-${{ matrix.app }} ${{ env.ECR_REGISTRY }}-${{ matrix.app }}:latest
+        docker tag moimjang-${{ matrix.app }} ${{ env.ECR_REGISTRY }}-${{ matrix.app }}:$TODAY
         
-        echo "Tagged images:"
-        echo "- ${{ env.ECR_REGISTRY }}:latest"
-        echo "- ${{ env.ECR_REGISTRY }}:$TODAY"
+        echo "Tagged images for ${{ matrix.app }}:"
+        echo "- ${{ env.ECR_REGISTRY }}-${{ matrix.app }}:pr-$PR_NUMBER"
+        echo "- ${{ env.ECR_REGISTRY }}-${{ matrix.app }}:latest"
+        echo "- ${{ env.ECR_REGISTRY }}-${{ matrix.app }}:$TODAY"
         
     - name: Push to ECR
+      if: matrix.condition == 'true'
       run: |
         TODAY=$(date +%Y-%m-%d)
+        PR_NUMBER=${{ github.event.number }}
         
-        # Push both tags
-        docker push ${{ env.ECR_REGISTRY }}:latest
-        docker push ${{ env.ECR_REGISTRY }}:$TODAY
+        # Push all tags
+        docker push ${{ env.ECR_REGISTRY }}-${{ matrix.app }}:pr-$PR_NUMBER
+        docker push ${{ env.ECR_REGISTRY }}-${{ matrix.app }}:latest
+        docker push ${{ env.ECR_REGISTRY }}-${{ matrix.app }}:$TODAY
         
-        echo "Successfully pushed to ECR:"
-        echo "- ${{ env.ECR_REGISTRY }}:latest"
-        echo "- ${{ env.ECR_REGISTRY }}:$TODAY" 
+        echo "Successfully pushed ${{ matrix.app }} to ECR:"
+        echo "- ${{ env.ECR_REGISTRY }}-${{ matrix.app }}:pr-$PR_NUMBER"
+        echo "- ${{ env.ECR_REGISTRY }}-${{ matrix.app }}:latest"
+        echo "- ${{ env.ECR_REGISTRY }}-${{ matrix.app }}:$TODAY"
+        
+    - name: Test built image
+      if: matrix.condition == 'true'
+      run: |
+        echo "Testing ${{ matrix.app }} image..."
+        # 컨테이너 실행 후 기본적인 헬스체크
+        docker run -d --name test-${{ matrix.app }} -p 8080:${{ matrix.port }} moimjang-${{ matrix.app }}
+        sleep 10
+        
+        # 컨테이너 로그 확인
+        echo "Container logs:"
+        docker logs test-${{ matrix.app }} --tail 10
+        
+        # 컨테이너 상태 확인
+        docker ps | grep test-${{ matrix.app }} || echo "Container might have stopped"
+        
+        # 정리
+        docker stop test-${{ matrix.app }} || true
+        docker rm test-${{ matrix.app }} || true 
