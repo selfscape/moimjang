@@ -65,8 +65,8 @@ jobs:
     - name: Stop Existing Admin Container
       run: |
         echo "🛑 Stopping existing admin container..."
-        docker stop test-moimjang-frontend-admin || echo "No running admin container found"
-        docker rm test-moimjang-frontend-admin || echo "No admin container to remove"
+        docker stop moimjang-admin || echo "No running admin container found"
+        docker rm moimjang-admin || echo "No admin container to remove"
         echo "✅ Existing admin container stopped and removed"
       continue-on-error: true
       
@@ -75,7 +75,7 @@ jobs:
         IMAGE_TAG="${{ github.event.inputs.image_tag || 'latest' }}"
         echo "🚀 Starting new admin container..."
         docker run -d \
-          --name test-moimjang-frontend-admin \
+          --name moimjang-admin \
           --restart unless-stopped \
           -p 4131:80 \
           ${{ env.ECR_REGISTRY }}-admin:$IMAGE_TAG
@@ -85,7 +85,7 @@ jobs:
       run: |
         echo "🔍 Performing health check for admin app..."
         sleep 10
-        if curl -f http://localhost:4131 > /dev/null 2>&1; then
+        if curl -f http://localhost:3131 > /dev/null 2>&1; then
           echo "✅ Admin app is healthy and responding"
         else
           echo "❌ Admin app health check failed"
@@ -124,8 +124,8 @@ jobs:
     - name: Stop Existing Contents Container
       run: |
         echo "🛑 Stopping existing contents container..."
-        docker stop test-moimjang-frontend-contents || echo "No running contents container found"
-        docker rm test-moimjang-frontend-contents || echo "No contents container to remove"
+        docker stop moimjang-contents || echo "No running contents container found"
+        docker rm moimjang-contents || echo "No contents container to remove"
         echo "✅ Existing contents container stopped and removed"
       continue-on-error: true
       
@@ -134,9 +134,9 @@ jobs:
         IMAGE_TAG="${{ github.event.inputs.image_tag || 'latest' }}"
         echo "🚀 Starting new contents container..."
         docker run -d \
-          --name test-moimjang-frontend-contents \
+          --name moimjang-contents \
           --restart unless-stopped \
-          -p 4132:3000 \
+          -p 3132:3000 \
           ${{ env.ECR_REGISTRY }}-contents:$IMAGE_TAG
         echo "✅ New contents container started successfully"
           
@@ -144,7 +144,7 @@ jobs:
       run: |
         echo "🔍 Performing health check for contents app..."
         sleep 10
-        if curl -f http://localhost:4132 > /dev/null 2>&1; then
+        if curl -f http://localhost:3132 > /dev/null 2>&1; then
           echo "✅ Contents app is healthy and responding"
         else
           echo "❌ Contents app health check failed"
@@ -183,8 +183,8 @@ jobs:
     - name: Stop Existing Seller Container
       run: |
         echo "🛑 Stopping existing seller container..."
-        docker stop test-moimjang-frontend-seller || echo "No running seller container found"
-        docker rm test-moimjang-frontend-seller || echo "No seller container to remove"
+        docker stop moimjang-seller || echo "No running seller container found"
+        docker rm moimjang-seller || echo "No seller container to remove"
         echo "✅ Existing seller container stopped and removed"
       continue-on-error: true
       
@@ -193,9 +193,9 @@ jobs:
         IMAGE_TAG="${{ github.event.inputs.image_tag || 'latest' }}"
         echo "🚀 Starting new seller container..."
         docker run -d \
-          --name test-moimjang-frontend-seller \
+          --name moimjang-seller \
           --restart unless-stopped \
-          -p 4133:3000 \
+          -p 3133:3000 \
           ${{ env.ECR_REGISTRY }}-seller:$IMAGE_TAG
         echo "✅ New seller container started successfully"
           
@@ -203,7 +203,7 @@ jobs:
       run: |
         echo "🔍 Performing health check for seller app..."
         sleep 10
-        if curl -f http://localhost:4133 > /dev/null 2>&1; then
+        if curl -f http://localhost:3133 > /dev/null 2>&1; then
           echo "✅ Seller app is healthy and responding"
         else
           echo "❌ Seller app health check failed"
@@ -223,7 +223,7 @@ jobs:
         echo ""
         
         if [[ "${{ needs.deploy-admin.result }}" == "success" ]]; then
-          echo "✅ Admin App: 배포 성공 (포트: 4131)"
+          echo "✅ Admin App: 배포 성공 (포트: 3131)"
         elif [[ "${{ needs.deploy-admin.result }}" == "failure" ]]; then
           echo "❌ Admin App: 배포 실패"
         elif [[ "${{ needs.deploy-admin.result }}" == "skipped" ]]; then
@@ -231,7 +231,7 @@ jobs:
         fi
         
         if [[ "${{ needs.deploy-contents.result }}" == "success" ]]; then
-          echo "✅ Contents App: 배포 성공 (포트: 4132)"
+          echo "✅ Contents App: 배포 성공 (포트: 3132)"
         elif [[ "${{ needs.deploy-contents.result }}" == "failure" ]]; then
           echo "❌ Contents App: 배포 실패"
         elif [[ "${{ needs.deploy-contents.result }}" == "skipped" ]]; then
@@ -239,7 +239,7 @@ jobs:
         fi
         
         if [[ "${{ needs.deploy-seller.result }}" == "success" ]]; then
-          echo "✅ Seller App: 배포 성공 (포트: 4133)"
+          echo "✅ Seller App: 배포 성공 (포트: 3133)"
         elif [[ "${{ needs.deploy-seller.result }}" == "failure" ]]; then
           echo "❌ Seller App: 배포 실패"
         elif [[ "${{ needs.deploy-seller.result }}" == "skipped" ]]; then
