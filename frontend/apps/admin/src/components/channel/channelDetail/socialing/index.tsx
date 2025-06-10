@@ -11,6 +11,8 @@ import useCreateChannel from "hooks/channel/useCreateChannel";
 import useEditChannel from "hooks/channel/useEditChannel";
 import { ChannelState } from "interfaces/channels";
 import { ChannelFeatureButton } from "constants/common";
+import { OWNER } from "configs";
+import useSystemModal from "hooks/common/components/useSystemModal";
 
 interface Errors {
   title?: string;
@@ -31,6 +33,9 @@ interface ChannelPayload {
 const Socialing = () => {
   const { isEditMode, formData, setFormData, channelId } =
     useChannelFormContext();
+  const { showAnyMessageModal } = useSystemModal();
+  const owner = localStorage.getItem(OWNER);
+  const isTester = owner === "tester";
 
   const { showSaveBar, closeSaveBar } = useSaveBar();
   const { data } = useGetBrands({
@@ -69,6 +74,11 @@ const Socialing = () => {
   };
 
   const handleCheckboxChange = (value: ChannelFeatureButton) => {
+    if (isTester) {
+      showAnyMessageModal("테스터 계정은 권한이 없습니다");
+      return;
+    }
+
     setFormData((prevData) => {
       const updatedComponents = prevData.visible_components.includes(value)
         ? prevData.visible_components.filter((item) => item !== value)
@@ -78,6 +88,11 @@ const Socialing = () => {
   };
 
   const handleSubmit = () => {
+    if (isTester) {
+      showAnyMessageModal("테스터 계정은 권한이 없습니다");
+      return;
+    }
+
     const requiredFields: (keyof FormData)[] = [
       "title",
       "description",

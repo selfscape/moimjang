@@ -26,7 +26,7 @@ function RQProvider({ children }: Props) {
 
   useEffect(() => {
     const host = searchParams.get("host");
-    if (host) {
+    if (host && document) {
       document.cookie = `owner=${host}; path=/; max-age=${60 * 60 * 24}`;
     }
   }, [searchParams]);

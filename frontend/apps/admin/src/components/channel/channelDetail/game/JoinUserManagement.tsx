@@ -8,6 +8,7 @@ import useDeleteChannelUser from "hooks/users/useDeleteChannelUser";
 import { FaTrash } from "react-icons/fa";
 import { useParams } from "react-router-dom";
 import useSystemModal from "hooks/common/components/useSystemModal";
+import { OWNER } from "configs";
 
 interface Props {
   users: Array<User>;
@@ -88,7 +89,10 @@ const Participant = ({
 }) => {
   const { channelId } = useParams();
   const { mutate: deleteChannelUser } = useDeleteChannelUser();
-  const { openModal, showErrorModal } = useSystemModal();
+  const { openModal, showErrorModal, showAnyMessageModal } = useSystemModal();
+
+  const owner = localStorage.getItem(OWNER);
+  const isTester = owner === "tester";
 
   const [{ isDragging }, drag] = useDrag(() => ({
     type: PARTICIPANT,
@@ -97,6 +101,11 @@ const Participant = ({
   }));
 
   const handleDeleteUserButtonClick = (user_id: number, username: string) => {
+    if (isTester) {
+      showAnyMessageModal("테스터 계정은 권한이 없습니다");
+      return;
+    }
+
     openModal({
       isOpen: true,
       title: `${username}님을 소셜링에서 내보내시겠어요?`,

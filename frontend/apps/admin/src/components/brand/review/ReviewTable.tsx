@@ -7,18 +7,27 @@ import { useBrandReviewContext } from "hooks/brand/context/useBrandReviewContext
 import useSystemModal from "hooks/common/components/useSystemModal";
 import { BRAND_REVIEWS } from "constants/queryKeys";
 import OptimizedImage from "components/common/image/OptimizedImage";
+import { OWNER } from "configs";
 
 const ReviewTable = () => {
   const { isLoading, brandReviews, error, setEnlargedImageUrl } =
     useBrandReviewContext();
-
   const queryClient = useQueryClient();
+  const owner = localStorage.getItem(OWNER);
+  const isTester = owner === "tester";
+
   const { mutate: deleteBrandReview } = useDeleteBrandReview();
   const { mutate: updateBrandReview } = useUpdateBrandReview();
 
-  const { openModal, showErrorModal, closeModal } = useSystemModal();
+  const { openModal, showErrorModal, closeModal, showAnyMessageModal } =
+    useSystemModal();
 
   const handleDeleteReview = (id: number) => {
+    if (isTester) {
+      showAnyMessageModal("테스터 계정은 권한이 없습니다");
+      return;
+    }
+
     openModal({
       isOpen: true,
       confirmText: "삭제하기",
@@ -46,6 +55,11 @@ const ReviewTable = () => {
   };
 
   const handleToggleDisplay = (review: any) => {
+    if (isTester) {
+      showAnyMessageModal("테스터 계정은 권한이 없습니다");
+      return;
+    }
+
     updateBrandReview(
       {
         requestBody: {

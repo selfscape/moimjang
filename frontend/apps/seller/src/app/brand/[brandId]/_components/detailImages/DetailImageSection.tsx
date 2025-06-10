@@ -23,6 +23,7 @@ export default function DetailImageSection({
   ]);
 
   const detailImages = data?.detailImages;
+
   if (!detailImages?.length) return <></>;
 
   return (

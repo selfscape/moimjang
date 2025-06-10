@@ -15,6 +15,7 @@ import { Table, TableContainer } from "../common/Table";
 import Button from "../common/Button";
 import OptimizedImage from "components/common/image/OptimizedImage";
 import { GetBrandOutput } from "hooks/brand/useGetBrands";
+import { OWNER } from "configs";
 
 const brandStateLabels: Record<BrandState, string> = {
   [BrandState.ONGOING]: "진행중",
@@ -24,15 +25,22 @@ const brandStateLabels: Record<BrandState, string> = {
 const BrandTable = () => {
   const [searchParams] = useSearchParams();
   const page = Number(searchParams.get("page")) || 1;
+  const owner = localStorage.getItem(OWNER);
+  const isTester = owner === "tester";
 
   const queryClient = useQueryClient();
   const { brands, refetch, filter } = useBrandTable();
   const navigate = useNavigate();
   const { mutate: deleteBrand } = useDeleteBrand();
-  const { openModal, showErrorModal, showAnyMessageModal } = useSystemModal();
   const { mutate: updateBrandState } = useUpdateBrandState();
+  const { openModal, showErrorModal, showAnyMessageModal } = useSystemModal();
 
   const handleDeleteButtonClick = (id: number, brandname: string) => {
+    if (isTester) {
+      showAnyMessageModal("테스터 계정은 브랜드 삭제 권한이 없습니다");
+      return;
+    }
+
     const queryKey = [
       GET_BRANDS,
       {
@@ -73,6 +81,11 @@ const BrandTable = () => {
   };
 
   const handleStateChange = (brandId: number, newState: BrandState) => {
+    if (isTester) {
+      showAnyMessageModal("테스터 계정은 권한이 없습니다");
+      return;
+    }
+
     updateBrandState(
       { brand_id: brandId, brand_state: newState },
       {
