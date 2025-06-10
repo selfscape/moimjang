@@ -6,9 +6,9 @@
 
 독립적인 3개의 웹 도메인(소비자, 판매자, 콘텐츠 관리자)으로 구성되어 있으며, 각 도메인은 목적에 따라 역할이 구분되어 있습니다.
 
-- 소비자(유저) 사이트: [www.naver.com](https://www.naver.com/)
-- 판매자(호스트) 사이트: [www.naver.com](https://www.naver.com/)
-- 콘텐츠 관리자(어드민) 사이트: [www.naver.com](https://www.naver.com/)
+- 소비자(유저) 사이트: [https://contents.moimjang.com](https://https://contents.moimjang.com)
+- 판매자(호스트) 사이트: [https://seller.moimjang.com](https://https://seller.moimjang.com)
+- 콘텐츠 관리자(어드민) 사이트: [https://admin.moimjang.com](https://https://admin.moimjang.com)
 
 **테스트 계정**
 
@@ -98,6 +98,7 @@ npm run dev:contents  # 소비자 도메인 실행
 ### **🚢 배포 방법**
 
 #### **1. Admin 앱 (React + nginx)**
+
 ```bash
 cd frontend
 
@@ -115,6 +116,7 @@ docker run -d --name moimjang-admin -p 3131:80 moimjang/admin
 ```
 
 #### **2. Contents 앱 (Next.js + Node.js)**
+
 ```bash
 cd frontend
 
@@ -132,6 +134,7 @@ docker run -d --name moimjang-contents -p 3133:3000 moimjang/contents
 ```
 
 #### **3. Seller 앱 (Next.js + Node.js)**
+
 ```bash
 cd frontend
 
@@ -148,7 +151,8 @@ docker build \
 docker run -d --name moimjang-seller -p 3132:3000 moimjang/seller
 ```
 
-> **주의사항**: 
+> **주의사항**:
+>
 > - Admin 앱은 `REACT_APP_*` 환경변수를 사용합니다 (React)
 > - Contents/Seller 앱은 `NEXT_PUBLIC_*` 환경변수를 사용합니다 (Next.js)
 > - Admin 앱은 nginx로 서빙되어 포트 80을 사용합니다
