@@ -1,3 +1,4 @@
+import OwnerCookieSetter from "@util/hooks/OwnerCookieSetter";
 import AnimatedSection from "./_components/AnimatedSection";
 import BrandSection from "./_components/landingBrand/BrandSection";
 import GallerySection from "./_components/landingBrand/GallerySection";
@@ -7,6 +8,8 @@ import ReviewSection from "./_components/landingBrand/ReviewSection";
 export default function Home() {
   return (
     <main>
+      <OwnerCookieSetter />
+
       <AnimatedSection>
         <MainSection />
       </AnimatedSection>

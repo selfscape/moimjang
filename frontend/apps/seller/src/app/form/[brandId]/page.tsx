@@ -8,6 +8,7 @@ import Form from "./_components/form/Form";
 import { OWNER } from "@constants/auth";
 import { getLandingBrandById } from "@/app/brand/[brandId]/_api/useGetLandingBrandById";
 import HeaderConfigurator from "@ui/components/Header/HeaderConfigurator";
+import OwnerCookieSetter from "@util/hooks/OwnerCookieSetter";
 
 type PageParams = Promise<{ brandId: string }>;
 
@@ -21,6 +22,7 @@ export default async function Page({ params }: { params: PageParams }) {
 
   return (
     <>
+      <OwnerCookieSetter />
       <HeaderConfigurator
         config={{
           title: "",

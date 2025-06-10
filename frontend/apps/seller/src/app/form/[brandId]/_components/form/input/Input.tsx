@@ -9,7 +9,6 @@ import { isAnswered, isSurveyArray } from "../../../_util";
 import RenderQuestion from "./Questions";
 import processAnswers from "../../../_util/processAnswers";
 import useRegistForm from "../../../_api/useRegistForm";
-// import pathnames from "@/app/constant/pathnames";
 import pathnames from "@/app/_constant/pathnames";
 
 import useCookie from "@util/hooks/useCookie";
@@ -84,7 +83,7 @@ export default function InputSection({
   const currentQuestionObj = questions[currentIndex];
   const currentAnswer = answers[currentQuestionObj.id];
   const isCurrentQuestionAnswered = isAnswered(currentAnswer);
-  const totalQuestions = surveys[0].questions.length;
+  const totalQuestions = surveys[0]?.questions?.length;
 
   return (
     <div className={styles.inputContainer}>

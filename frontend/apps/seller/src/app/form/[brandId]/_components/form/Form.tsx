@@ -18,7 +18,7 @@ export default function Form({ surveys }: Props) {
       setCurrentIndex(currentIndex - 1);
     }
   };
-  const totalQuestions = surveys[0].questions.length;
+  const totalQuestions = surveys[0]?.questions?.length;
   const progressPercentage =
     totalQuestions > 1 ? (currentIndex / (totalQuestions - 1)) * 100 : 100;
 

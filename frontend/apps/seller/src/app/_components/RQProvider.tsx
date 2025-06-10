@@ -3,7 +3,6 @@
 import React, { useState } from "react";
 import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
-import { useSearchParams } from "next/navigation";
 
 type Props = {
   children: React.ReactNode;
@@ -22,12 +21,6 @@ function RQProvider({ children }: Props) {
       },
     })
   );
-  const searchParams = useSearchParams();
-  const host = searchParams.get("host") ?? "";
-
-  if (host) {
-    document.cookie = `owner=${host}; path=/; max-age=${60 * 60 * 24}`;
-  }
 
   return (
     <QueryClientProvider client={client}>

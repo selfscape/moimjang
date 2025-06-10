@@ -16,6 +16,7 @@ import BrandInfo from "./_components/BrandInfo";
 import DetailImageSection from "./_components/detailImages/DetailImageSection";
 import ScheduleContainer from "./_components/schedule/ScheduleContainer";
 import HeaderConfigurator from "@ui/components/Header/HeaderConfigurator";
+import OwnerCookieSetter from "@util/hooks/OwnerCookieSetter";
 
 type PageParams = Promise<{ brandId: string }>;
 
@@ -52,6 +53,8 @@ export default async function Page({ params }: { params: PageParams }) {
 
   return (
     <>
+      <OwnerCookieSetter />
+
       <HeaderConfigurator
         config={{
           title: "",
