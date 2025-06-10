@@ -6,9 +6,9 @@
 
 독립적인 3개의 웹 도메인(소비자, 판매자, 콘텐츠 관리자)으로 구성되어 있으며, 각 도메인은 목적에 따라 역할이 구분되어 있습니다.
 
-- 소비자(유저) 사이트: [https://contents.moimjang.com](https://https://contents.moimjang.com)
-- 판매자(호스트) 사이트: [https://seller.moimjang.com](https://https://seller.moimjang.com)
-- 콘텐츠 관리자(어드민) 사이트: [https://admin.moimjang.com](https://https://admin.moimjang.com)
+- 소비자(유저) 사이트: [https://contents.moimjang.com](https://contents.moimjang.com/?host=tester)
+- 판매자(호스트) 사이트: [https://seller.moimjang.com](https://seller.moimjang.com/?host=tester)
+- 콘텐츠 관리자(어드민) 사이트: [https://admin.moimjang.com](https://admin.moimjang.com/?host=tester)
 
 **테스트 계정**
 
