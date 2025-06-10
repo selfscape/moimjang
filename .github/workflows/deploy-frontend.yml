@@ -2,7 +2,7 @@ name: Deploy Frontend Apps to Self-Host
 
 on:
   push:
-    branches: [ feature/infra/activate_deploy_front_apps ]
+    branches: [ dev ]
     paths:
       - 'frontend/**'
       - '.github/workflows/deploy-frontend.yml'
