@@ -24,7 +24,7 @@
       "@/constant": ["src/app/_constant/*"],
       "@/model": ["./src/model/*"],
       "@/store": ["./src/store/*"],
-      "@/api": ["./src/api/*"],
+      "@/api": ["src/app/_api/*"],
       "@/style": ["./src/style/*"],
 
       "@ui/*": ["../../packages/ui/src/*"],

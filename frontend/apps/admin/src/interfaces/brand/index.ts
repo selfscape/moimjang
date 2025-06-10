@@ -1,5 +1,3 @@
-// 브랜드 상태 Enum 및 한글 라벨 매핑
-
 export enum BrandState {
   ONGOING = "ONGOING",
   FINISH = "FINISH",

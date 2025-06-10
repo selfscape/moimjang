@@ -8,6 +8,8 @@ import { JoinedUser } from "interfaces/group";
 import GameCard from "./GameCard";
 import matchValidation from "utils/channel/matchValidation";
 import useDeleteGame from "hooks/game/useDeleteGame";
+import { OWNER } from "configs";
+import useSystemModal from "hooks/common/components/useSystemModal";
 
 interface Props {
   gameList: Array<Game>;
@@ -17,6 +19,10 @@ interface Props {
 
 const GameContainer = ({ gameList, setGameList, joinedUsers }: Props) => {
   const { mutateAsync: deleteGame } = useDeleteGame();
+  const { showAnyMessageModal } = useSystemModal();
+
+  const owner = localStorage.getItem(OWNER);
+  const isTester = owner === "tester";
 
   // gameList나 joinedUsers가 없으면 파생 상태 계산하지 않음
   const structuredGame = useMemo<StructuredGame[]>(() => {
@@ -30,6 +36,11 @@ const GameContainer = ({ gameList, setGameList, joinedUsers }: Props) => {
   }, [gameList, joinedUsers, structuredGame]);
 
   const handleDeleteButtonClick = async () => {
+    if (isTester) {
+      showAnyMessageModal("테스터 계정은 권한이 없습니다");
+      return;
+    }
+
     try {
       await Promise.all(gameList.map((game) => deleteGame(String(game.id))));
       // 삭제 후 부모 상태를 비움
@@ -73,7 +84,6 @@ const GameContainer = ({ gameList, setGameList, joinedUsers }: Props) => {
 
 export default GameContainer;
 
-/* Styled Components */
 const Container = styled.div`
   padding: 40px 30px;
   background-color: #f4f6f9;

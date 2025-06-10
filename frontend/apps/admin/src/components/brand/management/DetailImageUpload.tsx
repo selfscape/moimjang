@@ -8,10 +8,15 @@ import { useBrandFormContext } from "hooks/brand/context/useBrandFormContext";
 
 import ProductImage from "components/common/image/ProductImage";
 import AddImageInput from "components/common/image/addImageInput";
+import { OWNER } from "configs";
+import useSystemModal from "hooks/common/components/useSystemModal";
 
-type DetailImage = { id?: number; url: string };
 const DetailImageUpload = () => {
   const { brandId, setBrand, brand } = useBrandFormContext();
+
+  const owner = localStorage.getItem(OWNER);
+  const isTester = owner === "tester";
+  const { showAnyMessageModal } = useSystemModal();
 
   const images =
     brand.detailImages && brand.detailImages.length > 0
@@ -27,6 +32,11 @@ const DetailImageUpload = () => {
 
   const handleImageChange = useCallback(
     async (index: number, file: File) => {
+      if (isTester) {
+        showAnyMessageModal("테스터 계정은 이미지 변경 권한이 없습니다");
+        return;
+      }
+
       if (!file) return;
       try {
         const uploadedImage = await uploadDetailImage(file, brandId);
@@ -46,6 +56,11 @@ const DetailImageUpload = () => {
 
   const handleDeleteImage = useCallback(
     async (index: number) => {
+      if (isTester) {
+        showAnyMessageModal("테스터 계정은 브랜드 삭제 권한이 없습니다");
+        return;
+      }
+
       const image = images[index];
       if (image.id) {
         try {

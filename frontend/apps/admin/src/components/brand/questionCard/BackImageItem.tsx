@@ -13,6 +13,7 @@ import { QuestionCard } from "interfaces/questionCardCategory";
 
 import AddImageInput from "components/common/image/addImageInput";
 import ProductImage from "components/common/image/ProductImage";
+import { OWNER } from "configs";
 
 interface BackImageItemProps {
   cardIndex: number;
@@ -27,13 +28,21 @@ const BackImageItem: React.FC<BackImageItemProps> = ({
 }) => {
   const { brandId } = useParams();
   const queryClient = useQueryClient();
-  const { showErrorModal } = useSystemModal();
+  const { showErrorModal, showAnyMessageModal } = useSystemModal();
+
+  const owner = localStorage.getItem(OWNER);
+  const isTester = owner === "tester";
 
   const { mutate: deleteQuestionCard } = useDeleteQuestionCard();
   const { mutate: updateQuestionCard } = useUpdateQuestionCard();
   const { mutate: uploadCardImage } = useUploadCardImage();
 
   const handleUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (isTester) {
+      showAnyMessageModal("테스터 계정은 권한이 없습니다");
+      return;
+    }
+
     if (!e.target.files) return;
     const file = e.target.files[0];
 
@@ -83,6 +92,11 @@ const BackImageItem: React.FC<BackImageItemProps> = ({
   };
 
   const handleClear = () => {
+    if (isTester) {
+      showAnyMessageModal("테스터 계정은 권한이 없습니다");
+      return;
+    }
+
     queryClient.setQueryData(
       [GET_QUESTION_CATEGORIES, brandId],
       (prevData: QuestionCategoriesOutput | undefined) => {
@@ -113,6 +127,11 @@ const BackImageItem: React.FC<BackImageItemProps> = ({
   };
 
   const handleToggleVisibility = () => {
+    if (isTester) {
+      showAnyMessageModal("테스터 계정은 권한이 없습니다");
+      return;
+    }
+
     updateQuestionCard(
       {
         card_id: questionCardInfo.id,
@@ -163,6 +182,11 @@ const BackImageItem: React.FC<BackImageItemProps> = ({
   };
 
   const handleDelete = (question_card_id: number) => {
+    if (isTester) {
+      showAnyMessageModal("테스터 계정은 권한이 없습니다");
+      return;
+    }
+
     deleteQuestionCard(question_card_id, {
       onSuccess: () => {
         queryClient.setQueryData(
