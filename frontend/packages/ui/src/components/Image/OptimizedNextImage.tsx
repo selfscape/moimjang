@@ -38,8 +38,8 @@ const OptimizedNextImage: React.FC<OptimizedNextImageProps> = ({
     <Image
       src={src}
       alt={alt}
-      width={width || 300}
-      height={height || 300}
+      width={width || 430}
+      height={height || 430}
       className={className}
       priority={priority}
       quality={quality}
