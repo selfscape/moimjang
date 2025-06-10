@@ -8,6 +8,7 @@ import useSystemModal from "hooks/common/components/useSystemModal";
 
 import ProductImage from "components/common/image/ProductImage";
 import AddImageInput from "components/common/image/addImageInput";
+import { OWNER } from "configs";
 
 type GalleryImage = { id?: number; url: string };
 const emptyImage: GalleryImage = { id: null, url: "" };
@@ -17,7 +18,10 @@ const Gallery = () => {
   const { mutate: uploadGalleryImage } = useUploadGalleryImage();
   const { mutate: deleteGalleryImage } = useDeleteGalleryImage();
 
-  const { showErrorModal } = useSystemModal();
+  const owner = localStorage.getItem(OWNER);
+  const isTester = owner === "tester";
+
+  const { showErrorModal, showAnyMessageModal } = useSystemModal();
   const [images, setImages] = useState<GalleryImage[]>([emptyImage]);
 
   const handleAddImage = useCallback(() => {
@@ -26,6 +30,11 @@ const Gallery = () => {
 
   const handleImageChange = useCallback(
     (index: number) => (e: React.ChangeEvent<HTMLInputElement>) => {
+      if (isTester) {
+        showAnyMessageModal("테스터 계정은 권한이 없습니다");
+        return;
+      }
+
       const file = e.target.files?.[0];
       if (!file) return;
       uploadGalleryImage(file, {
@@ -46,6 +55,11 @@ const Gallery = () => {
 
   const handleDeleteImage = useCallback(
     (index: number) => {
+      if (isTester) {
+        showAnyMessageModal("테스터 계정은 권한이 없습니다");
+        return;
+      }
+
       const image = images[index];
       if (!image.id) {
         setImages((prev) => prev.filter((_, i) => i !== index));

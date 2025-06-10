@@ -4,6 +4,8 @@ import { FaDeleteLeft } from "react-icons/fa6";
 import { StructuredGame } from "utils/channel/structureGameData";
 import useDeleteGame from "hooks/game/useDeleteGame";
 import { Game } from "interfaces/game";
+import { OWNER } from "configs";
+import useSystemModal from "hooks/common/components/useSystemModal";
 
 interface GameCardProps {
   game: StructuredGame;
@@ -12,8 +14,17 @@ interface GameCardProps {
 
 const GameCard: React.FC<GameCardProps> = ({ game, setGameList }) => {
   const { mutate: deleteGame } = useDeleteGame();
+  const { showAnyMessageModal } = useSystemModal();
+
+  const owner = localStorage.getItem(OWNER);
+  const isTester = owner === "tester";
 
   const handleDelete = (id: number) => {
+    if (isTester) {
+      showAnyMessageModal("테스터 계정은 권한이 없습니다");
+      return;
+    }
+
     deleteGame(String(id), {
       onSuccess: () => {
         setGameList((prev) => prev.filter((game) => game.id !== id));
@@ -66,7 +77,6 @@ const GameCard: React.FC<GameCardProps> = ({ game, setGameList }) => {
 
 export default GameCard;
 
-/* Styled Components */
 const Card = styled.div`
   display: flex;
   align-items: center;

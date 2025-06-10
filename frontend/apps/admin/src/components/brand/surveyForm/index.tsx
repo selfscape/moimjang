@@ -11,6 +11,7 @@ import useSurveyBuilder from "hooks/brand/context/useSurveyBuilder";
 
 import Preview from "./preview";
 import Builder from "./builder";
+import { OWNER } from "configs";
 
 const SurveyFormSection: React.FC = () => {
   const { brandId } = useBrandFormContext();
@@ -21,7 +22,15 @@ const SurveyFormSection: React.FC = () => {
   const { showSaveBar, closeSaveBar } = useSaveBar();
   const { showErrorModal, showAnyMessageModal } = useSystemModal();
 
+  const owner = localStorage.getItem(OWNER);
+  const isTester = owner === "tester";
+
   const handleSubmit = () => {
+    if (isTester) {
+      showAnyMessageModal("테스터 계정은 권한이 없습니다");
+      return;
+    }
+
     const payload = {
       brand_id: brandId,
       title: "",

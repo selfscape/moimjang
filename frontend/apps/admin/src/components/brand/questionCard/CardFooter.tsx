@@ -9,6 +9,7 @@ import { QuestionCardDeck } from "interfaces/questionCardCategory";
 import useDeleteCategory from "hooks/questionCard/category/useDeleteCategory";
 import useUpdateCategory from "hooks/questionCard/category/useUpdateCategory";
 import useSystemModal from "hooks/common/components/useSystemModal";
+import { OWNER } from "configs";
 
 interface Props {
   cardIndex: number;
@@ -18,12 +19,19 @@ interface Props {
 const CardFooter = ({ cardIndex, card }: Props) => {
   const queryClient = useQueryClient();
   const { brandId } = useParams();
-  const { openModal, showErrorModal } = useSystemModal();
+  const owner = localStorage.getItem(OWNER);
+  const isTester = owner === "tester";
+  const { openModal, showErrorModal, showAnyMessageModal } = useSystemModal();
 
   const { mutate: deleteCategory } = useDeleteCategory();
   const { mutate: updateCategory } = useUpdateCategory();
 
   const handleToggleVisibility = () => {
+    if (isTester) {
+      showAnyMessageModal("테스터 계정은 브랜드 삭제 권한이 없습니다");
+      return;
+    }
+
     updateCategory(
       {
         question_card_category_id: card.id,
@@ -56,6 +64,11 @@ const CardFooter = ({ cardIndex, card }: Props) => {
   };
 
   const handleDeleteButtonClick = () => {
+    if (isTester) {
+      showAnyMessageModal("테스터 계정은 브랜드 삭제 권한이 없습니다");
+      return;
+    }
+
     openModal({
       isOpen: true,
       showCancel: true,

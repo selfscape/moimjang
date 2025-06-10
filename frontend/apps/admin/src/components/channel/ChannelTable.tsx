@@ -8,6 +8,7 @@ import useDeleteChannel from "hooks/channel/useDeleteChannel";
 import useSystemModal from "hooks/common/components/useSystemModal";
 import { useChannelTableContext } from "hooks/channel/context/useChannelTableContext";
 import Button from "components/common/Button";
+import { OWNER } from "configs";
 
 const channelStateLabels: Record<ChannelState, string> = {
   [ChannelState.PENDING]: "대기",
@@ -23,11 +24,19 @@ const ChannelTable = () => {
   const { mutate: updateChannelState } = useUpdateChannelState();
   const { channelData, refetch } = useChannelTableContext();
 
+  const owner = localStorage.getItem(OWNER);
+  const isTester = owner === "tester";
+
   const handleTableRowClick = (channelId: number) => {
     navigate(`${Pathnames.EditChannel}/${channelId}`);
   };
 
   const handleDeleteButtonClick = (channelId: number, channelName: string) => {
+    if (isTester) {
+      showAnyMessageModal("테스터 계정은 권한이 없습니다");
+      return;
+    }
+
     openModal({
       isOpen: true,
       title: `${channelName}을 정말로 삭제하시겠어요?`,
@@ -56,6 +65,11 @@ const ChannelTable = () => {
   };
 
   const handleStateChange = (channelId: number, newState: ChannelState) => {
+    if (isTester) {
+      showAnyMessageModal("테스터 계정은 권한이 없습니다");
+      return;
+    }
+
     updateChannelState(
       { channel_id: channelId, channel_state: newState },
       {

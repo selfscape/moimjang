@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import useGetBrandReviews from "@/api/brand/useGetBrandReviews";
+import useGetBrandReviews from "@/app/_api/brand/useGetBrandReviews";
 import PhotoReview from "@/app/_components/PhotoReview";
 import { getPhotoReviews } from "@/app/util/getPhotoReviews";
 import LoadingSpinner from "@ui/components/Spinner/FadeLoader";

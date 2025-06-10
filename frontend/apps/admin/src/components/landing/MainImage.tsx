@@ -10,17 +10,26 @@ import useSystemModal from "hooks/common/components/useSystemModal";
 
 import AddImageInput from "components/common/image/addImageInput";
 import ProductImage from "../common/image/ProductImage";
+import { OWNER } from "configs";
 
 const MainImage = () => {
   const { mutate: uploadMainImage } = useUploadMainImage();
   const { mutate: deleteMainImgae } = useDeleteMainImage();
   const queryClient = useQueryClient();
   const { data } = useGetMainImage();
-  const { showErrorModal } = useSystemModal();
+  const { showErrorModal, showAnyMessageModal } = useSystemModal();
+
+  const owner = localStorage.getItem(OWNER);
+  const isTester = owner === "tester";
 
   const handleMainImageUpload = async (
     e: React.ChangeEvent<HTMLInputElement>
   ) => {
+    if (isTester) {
+      showAnyMessageModal("테스터 계정은 권한이 없습니다");
+      return;
+    }
+
     if (!e.target.files) return;
     const file = e.target.files[0];
 
@@ -35,6 +44,11 @@ const MainImage = () => {
   };
 
   const handleRemove = async () => {
+    if (isTester) {
+      showAnyMessageModal("테스터 계정은 권한이 없습니다");
+      return;
+    }
+
     deleteMainImgae(null, {
       onSuccess: () => {
         queryClient.setQueryData([GET_MAIN_IMAGE], { id: null, url: "" });

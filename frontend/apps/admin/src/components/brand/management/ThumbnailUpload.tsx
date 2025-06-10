@@ -7,9 +7,15 @@ import { useBrandFormContext } from "hooks/brand/context/useBrandFormContext";
 
 import AddImageInput from "components/common/image/addImageInput";
 import ProductImage from "components/common/image/ProductImage";
+import { OWNER } from "configs";
+import useSystemModal from "hooks/common/components/useSystemModal";
 
 const ThumbnailUpload: React.FC = () => {
   const { brandId, setBrand, brand } = useBrandFormContext();
+  const { showAnyMessageModal } = useSystemModal();
+  const owner = localStorage.getItem(OWNER);
+  const isTester = owner === "tester";
+
   const [preview, setPreview] = useState<string>(
     brand?.thumbnailImage?.url || ""
   );
@@ -17,6 +23,11 @@ const ThumbnailUpload: React.FC = () => {
   const handleThumbnailUpload = async (
     e: React.ChangeEvent<HTMLInputElement>
   ) => {
+    if (isTester) {
+      showAnyMessageModal("테스터 계정은 권한이 없습니다");
+      return;
+    }
+
     if (!e.target.files) return;
     const file = e.target.files[0];
     const base64 = await convertFileToBase64(file);
@@ -37,6 +48,11 @@ const ThumbnailUpload: React.FC = () => {
   };
 
   const handleRemove = () => {
+    if (isTester) {
+      showAnyMessageModal("테스터 계정은 권한이 없습니다");
+      return;
+    }
+
     setPreview("");
     setBrand((prev) => ({
       ...prev,

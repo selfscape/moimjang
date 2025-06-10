@@ -1,10 +1,9 @@
 import styled from "styled-components";
-import { useQueryClient } from "@tanstack/react-query";
-
 import useUpdateSurveyState from "api/survey/hook/useUpdateSurveyState";
 import useSystemModal from "hooks/common/components/useSystemModal";
 import { useApplicationTableContext } from "hooks/channel/context/useApplicationTableContext";
 import { SurveyRegistState } from "interfaces/landing";
+import { OWNER } from "configs";
 
 const Table = () => {
   const { setEnlargedImageUrl, surveyResponses, survey, refetch } =
@@ -13,7 +12,15 @@ const Table = () => {
   const { mutate: updateSurveyResponse } = useUpdateSurveyState();
   const { showErrorModal, openModal, showAnyMessageModal } = useSystemModal();
 
+  const owner = localStorage.getItem(OWNER);
+  const isTester = owner === "tester";
+
   const handleUpdateButtonClick = (id: string, state: SurveyRegistState) => {
+    if (isTester) {
+      showAnyMessageModal("테스터 계정은 권한이 없습니다");
+      return;
+    }
+
     const action =
       state === SurveyRegistState.ACCEPT
         ? "수락"

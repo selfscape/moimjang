@@ -1,4 +1,4 @@
-import { serverUrl } from "@constants/config";
+import { serverUrl } from "@/app/_constant/config";
 
 export const uploadSurveyImage = async (file: File, owner: string) => {
   const formData = new FormData();

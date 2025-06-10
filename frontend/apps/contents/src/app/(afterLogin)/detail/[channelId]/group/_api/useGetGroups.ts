@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { GET_GROUPS } from "@/app/_constant/queryKeys";
 import { Group } from "@model/channel/group";
 import { ACCEESS_TOKEN } from "@constants/auth";
-import { serverUrl } from "@constants/config";
+import { serverUrl } from "@/app/_constant/config";
 
 export const getGroups = async (
   channelId: string | string[] | undefined,
