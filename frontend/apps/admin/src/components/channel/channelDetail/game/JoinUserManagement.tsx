@@ -9,6 +9,7 @@ import { FaTrash } from "react-icons/fa";
 import { useParams } from "react-router-dom";
 import useSystemModal from "hooks/common/components/useSystemModal";
 import { OWNER } from "configs";
+import useOwnerCookie from "hooks/auth/useOwnerCookie";
 
 interface Props {
   users: Array<User>;
@@ -91,7 +92,7 @@ const Participant = ({
   const { mutate: deleteChannelUser } = useDeleteChannelUser();
   const { openModal, showErrorModal, showAnyMessageModal } = useSystemModal();
 
-  const owner = localStorage.getItem(OWNER);
+  const owner = useOwnerCookie();
   const isTester = owner === "tester";
 
   const [{ isDragging }, drag] = useDrag(() => ({

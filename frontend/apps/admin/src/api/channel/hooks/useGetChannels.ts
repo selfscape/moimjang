@@ -5,6 +5,7 @@ import axiosInstance from "api/axiosInstance";
 import { ACCEESS_TOKEN, OWNER, serverUrl, USER_EMAIL } from "configs";
 import { GET_CHANNELS } from "constants/queryKeys";
 import { Channel, ChannelState } from "interfaces/channels/index";
+import { getCookie } from "hooks/auth/useOwnerCookie";
 
 export interface Output {
   channels: Array<Channel>;
@@ -22,7 +23,7 @@ export interface Params {
 
 export const getChannels = async (params: Params): Promise<Output> => {
   const token = localStorage.getItem(ACCEESS_TOKEN);
-  const owner = localStorage.getItem(OWNER);
+  const owner = getCookie(OWNER);
 
   const response = await axiosInstance.get(`${serverUrl}/channels`, {
     headers: {

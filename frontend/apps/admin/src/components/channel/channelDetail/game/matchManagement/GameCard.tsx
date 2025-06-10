@@ -6,6 +6,7 @@ import useDeleteGame from "hooks/game/useDeleteGame";
 import { Game } from "interfaces/game";
 import { OWNER } from "configs";
 import useSystemModal from "hooks/common/components/useSystemModal";
+import useOwnerCookie from "hooks/auth/useOwnerCookie";
 
 interface GameCardProps {
   game: StructuredGame;
@@ -16,7 +17,7 @@ const GameCard: React.FC<GameCardProps> = ({ game, setGameList }) => {
   const { mutate: deleteGame } = useDeleteGame();
   const { showAnyMessageModal } = useSystemModal();
 
-  const owner = localStorage.getItem(OWNER);
+  const owner = useOwnerCookie();
   const isTester = owner === "tester";
 
   const handleDelete = (id: number) => {

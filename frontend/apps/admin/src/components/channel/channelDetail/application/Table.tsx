@@ -4,6 +4,7 @@ import useSystemModal from "hooks/common/components/useSystemModal";
 import { useApplicationTableContext } from "hooks/channel/context/useApplicationTableContext";
 import { SurveyRegistState } from "interfaces/landing";
 import { OWNER } from "configs";
+import useOwnerCookie from "hooks/auth/useOwnerCookie";
 
 const Table = () => {
   const { setEnlargedImageUrl, surveyResponses, survey, refetch } =
@@ -12,7 +13,7 @@ const Table = () => {
   const { mutate: updateSurveyResponse } = useUpdateSurveyState();
   const { showErrorModal, openModal, showAnyMessageModal } = useSystemModal();
 
-  const owner = localStorage.getItem(OWNER);
+  const owner = useOwnerCookie();
   const isTester = owner === "tester";
 
   const handleUpdateButtonClick = (id: string, state: SurveyRegistState) => {

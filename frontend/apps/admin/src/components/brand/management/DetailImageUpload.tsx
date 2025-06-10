@@ -8,13 +8,13 @@ import { useBrandFormContext } from "hooks/brand/context/useBrandFormContext";
 
 import ProductImage from "components/common/image/ProductImage";
 import AddImageInput from "components/common/image/addImageInput";
-import { OWNER } from "configs";
 import useSystemModal from "hooks/common/components/useSystemModal";
+import useOwnerCookie from "hooks/auth/useOwnerCookie";
 
 const DetailImageUpload = () => {
   const { brandId, setBrand, brand } = useBrandFormContext();
 
-  const owner = localStorage.getItem(OWNER);
+  const owner = useOwnerCookie();
   const isTester = owner === "tester";
   const { showAnyMessageModal } = useSystemModal();
 

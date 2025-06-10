@@ -3,12 +3,13 @@ import { AxiosError } from "axios";
 import { ACCEESS_TOKEN, OWNER, serverUrl } from "configs";
 
 import axiosInstance from "api/axiosInstance";
+import { getCookie } from "hooks/auth/useOwnerCookie";
 
 export const fetchDeleteGalleryImage = async (
   image_id: number
 ): Promise<void> => {
   const token = localStorage.getItem(ACCEESS_TOKEN);
-  const owner = localStorage.getItem(OWNER);
+  const owner = getCookie(OWNER);
 
   const result = await axiosInstance.delete(
     `${serverUrl}/landingAdmin/deleteImage/gallery`,

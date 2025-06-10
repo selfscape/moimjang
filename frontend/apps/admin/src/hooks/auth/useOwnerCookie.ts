@@ -1,3 +1,4 @@
+import { OWNER } from "configs";
 import { useState, useEffect } from "react";
 
 export function getCookie(name: string): string | null {
@@ -15,7 +16,7 @@ export default function useOwnerCookie() {
   const [owner, setOwner] = useState<string | null>(null);
 
   useEffect(() => {
-    const value = getCookie("owner");
+    const value = getCookie(OWNER);
     setOwner(value);
   }, []);
 

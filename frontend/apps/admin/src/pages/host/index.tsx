@@ -1,15 +1,16 @@
 import { useCallback } from "react";
 import styled from "styled-components";
-import { OWNER } from "configs";
 
 import AdminLayout from "components/common/AdminLayout";
 import RequireAuth from "components/common/RequireAuth";
+import useOwnerCookie from "hooks/auth/useOwnerCookie";
 
 const Host = () => {
-  const userName = localStorage.getItem(OWNER);
-  const contentSiteUrl = `https://contents.moimjang.com/?host=${userName}`;
-  const sellerSiteUrl = `https://seller.moimjang.com?host=${userName}`;
-  const adminSiteUrl = `https://admin.moimjang.com/login?host=${userName}`;
+  const hostName = useOwnerCookie();
+
+  const contentSiteUrl = `https://contents.moimjang.com/?host=${hostName}`;
+  const sellerSiteUrl = `https://seller.moimjang.com?host=${hostName}`;
+  const adminSiteUrl = `https://admin.moimjang.com/login?host=${hostName}`;
 
   const handleCopy = useCallback((url: string) => {
     navigator.clipboard.writeText(url);

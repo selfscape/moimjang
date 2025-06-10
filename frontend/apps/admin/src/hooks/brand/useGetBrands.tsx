@@ -5,6 +5,7 @@ import axiosInstance from "api/axiosInstance";
 import { GET_BRANDS } from "constants/queryKeys";
 import { ACCEESS_TOKEN, OWNER, serverUrl } from "configs";
 import { Brand, BrandState } from "interfaces/brand";
+import { getCookie } from "hooks/auth/useOwnerCookie";
 
 export interface GetBrandOutput {
   brands: Array<Brand>;
@@ -23,7 +24,7 @@ export const getBrands = async (
   params: GetBrandParams
 ): Promise<GetBrandOutput> => {
   const token = localStorage.getItem(ACCEESS_TOKEN);
-  const owner = localStorage.getItem(OWNER);
+  const owner = getCookie(OWNER);
 
   const response = await axiosInstance.get(`${serverUrl}/brands`, {
     headers: {

@@ -3,6 +3,7 @@ import { GET_SERACH_GROUPS } from "constants/queryKeys";
 import { Group } from "interfaces/group";
 import { ACCEESS_TOKEN, OWNER, serverUrl } from "configs";
 import axiosInstance from "api/axiosInstance";
+import { getCookie } from "hooks/auth/useOwnerCookie";
 
 export interface CreateGroupInput {
   channel_id: number;
@@ -13,7 +14,7 @@ export const createGroup = async (
   requestBody: CreateGroupInput
 ): Promise<Group> => {
   const token = localStorage.getItem(ACCEESS_TOKEN);
-  const owner = localStorage.getItem(OWNER);
+  const owner = getCookie(OWNER);
 
   const response = await axiosInstance.post(
     `${serverUrl}/groups`,

@@ -4,13 +4,14 @@ import { useQuery } from "@tanstack/react-query";
 
 import axiosInstance from "api/axiosInstance";
 import { GET_MAIN_IMAGE } from "constants/queryKeys";
+import { getCookie } from "hooks/auth/useOwnerCookie";
 
 export const fetchGetMainImage = async (): Promise<{
   id: number;
   url: string;
 }> => {
   const token = localStorage.getItem(ACCEESS_TOKEN);
-  const owner = localStorage.getItem(OWNER);
+  const owner = getCookie(OWNER);
 
   const response = await axiosInstance.get(
     `${serverUrl}/landingAdmin/mainImage`,
