@@ -9,6 +9,7 @@ import useSystemModal from "hooks/common/components/useSystemModal";
 import { useChannelTableContext } from "hooks/channel/context/useChannelTableContext";
 import Button from "components/common/Button";
 import { OWNER } from "configs";
+import useOwnerCookie from "hooks/auth/useOwnerCookie";
 
 const channelStateLabels: Record<ChannelState, string> = {
   [ChannelState.PENDING]: "대기",
@@ -24,7 +25,7 @@ const ChannelTable = () => {
   const { mutate: updateChannelState } = useUpdateChannelState();
   const { channelData, refetch } = useChannelTableContext();
 
-  const owner = localStorage.getItem(OWNER);
+  const owner = useOwnerCookie();
   const isTester = owner === "tester";
 
   const handleTableRowClick = (channelId: number) => {

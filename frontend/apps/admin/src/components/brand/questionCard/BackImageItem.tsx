@@ -14,6 +14,7 @@ import { QuestionCard } from "interfaces/questionCardCategory";
 import AddImageInput from "components/common/image/addImageInput";
 import ProductImage from "components/common/image/ProductImage";
 import { OWNER } from "configs";
+import useOwnerCookie from "hooks/auth/useOwnerCookie";
 
 interface BackImageItemProps {
   cardIndex: number;
@@ -30,7 +31,7 @@ const BackImageItem: React.FC<BackImageItemProps> = ({
   const queryClient = useQueryClient();
   const { showErrorModal, showAnyMessageModal } = useSystemModal();
 
-  const owner = localStorage.getItem(OWNER);
+  const owner = useOwnerCookie();
   const isTester = owner === "tester";
 
   const { mutate: deleteQuestionCard } = useDeleteQuestionCard();

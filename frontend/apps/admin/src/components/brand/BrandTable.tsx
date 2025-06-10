@@ -15,7 +15,7 @@ import { Table, TableContainer } from "../common/Table";
 import Button from "../common/Button";
 import OptimizedImage from "components/common/image/OptimizedImage";
 import { GetBrandOutput } from "hooks/brand/useGetBrands";
-import { OWNER } from "configs";
+import useOwnerCookie from "hooks/auth/useOwnerCookie";
 
 const brandStateLabels: Record<BrandState, string> = {
   [BrandState.ONGOING]: "진행중",
@@ -25,7 +25,7 @@ const brandStateLabels: Record<BrandState, string> = {
 const BrandTable = () => {
   const [searchParams] = useSearchParams();
   const page = Number(searchParams.get("page")) || 1;
-  const owner = localStorage.getItem(OWNER);
+  const owner = useOwnerCookie();
   const isTester = owner === "tester";
 
   const queryClient = useQueryClient();

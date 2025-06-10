@@ -4,6 +4,7 @@ import { ACCEESS_TOKEN, OWNER, serverUrl } from "configs";
 
 import axiosInstance from "../../axiosInstance";
 import { Question } from "interfaces/brand/survey";
+import { getCookie } from "hooks/auth/useOwnerCookie";
 
 export interface SurveyType {
   brand_id: string;
@@ -17,7 +18,7 @@ export const fetchUpdateSurvey = async (
   survey_id: string
 ): Promise<SurveyType> => {
   const token = localStorage.getItem(ACCEESS_TOKEN);
-  const owner = localStorage.getItem(OWNER);
+  const owner = getCookie(OWNER);
 
   const result = await axiosInstance.put(
     `${serverUrl}/surveys/${survey_id}`,

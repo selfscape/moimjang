@@ -4,6 +4,7 @@ import { User } from "interfaces/user";
 
 import axios from "axios";
 import { OWNER, serverUrl } from "configs";
+import useOwnerCookie, { getCookie } from "./useOwnerCookie";
 
 export interface SignUpInput {
   username: string;
@@ -21,7 +22,7 @@ export interface SignUpInput {
 }
 
 export const signUp = async (userData: SignUpInput): Promise<User> => {
-  const owner = localStorage.getItem(OWNER);
+  const owner = getCookie(OWNER);
 
   const result = await axios.post(`${serverUrl}/auth/signup`, userData, {
     headers: {

@@ -2,6 +2,7 @@ import { AxiosError } from "axios";
 import { useMutation } from "@tanstack/react-query";
 import { ACCEESS_TOKEN, OWNER, serverUrl } from "configs";
 import axiosInstance from "api/axiosInstance";
+import { getCookie } from "hooks/auth/useOwnerCookie";
 
 export interface Output {
   id: number;
@@ -10,7 +11,7 @@ export interface Output {
 
 export const fetchUploadMainImage = async (file: File): Promise<Output> => {
   const token = localStorage.getItem(ACCEESS_TOKEN);
-  const owner = localStorage.getItem(OWNER);
+  const owner = getCookie(OWNER);
 
   const formData = new FormData();
   formData.append("file", file);

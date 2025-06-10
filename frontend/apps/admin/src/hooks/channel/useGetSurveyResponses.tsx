@@ -5,6 +5,7 @@ import { GET_SURVEY_RESPONSES } from "constants/queryKeys";
 import { SurveyResponse } from "interfaces/landing";
 import { ACCEESS_TOKEN, OWNER, serverUrl } from "configs";
 import axiosInstance from "api/axiosInstance";
+import { getCookie } from "hooks/auth/useOwnerCookie";
 
 export interface GetSurveyResponseParams {
   survey_id: string;
@@ -24,7 +25,7 @@ export const getSurveyResponses = async (
   params: GetSurveyResponseParams
 ): Promise<GetSurveyResponseOutput> => {
   const token = localStorage.getItem(ACCEESS_TOKEN);
-  const owner = localStorage.getItem(OWNER);
+  const owner = getCookie(OWNER);
 
   const response = await axiosInstance.get(`${serverUrl}/surveysResponses`, {
     headers: {

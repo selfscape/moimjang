@@ -5,12 +5,13 @@ import { ACCEESS_TOKEN, OWNER, serverUrl } from "configs";
 import axiosInstance from "api/axiosInstance";
 import { GET_SURVEYS } from "constants/queryKeys";
 import { Survey } from "interfaces/brand/survey";
+import { getCookie } from "hooks/auth/useOwnerCookie";
 
 export const fetchGetSurvey = async (
   brand_id: string
 ): Promise<Array<Survey>> => {
   const token = localStorage.getItem(ACCEESS_TOKEN);
-  const owner = localStorage.getItem(OWNER);
+  const owner = getCookie(OWNER);
 
   const response = await axiosInstance.get(`${serverUrl}/surveys`, {
     headers: {

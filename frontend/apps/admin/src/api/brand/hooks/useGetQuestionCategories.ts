@@ -5,6 +5,7 @@ import { GET_QUESTION_CATEGORIES } from "constants/queryKeys";
 import { ACCEESS_TOKEN, OWNER, serverUrl } from "configs";
 import { QuestionCardDeck } from "interfaces/questionCardCategory";
 import axiosInstance from "api/axiosInstance";
+import { getCookie } from "hooks/auth/useOwnerCookie";
 
 export interface QuestionCategoriesOutput {
   id: number;
@@ -21,7 +22,7 @@ export const getQuestionCategories = async (
   brand_id: string
 ): Promise<QuestionCategoriesOutput> => {
   const token = localStorage.getItem(ACCEESS_TOKEN);
-  const owner = localStorage.getItem(OWNER);
+  const owner = getCookie(OWNER);
 
   const response = await axiosInstance.get(
     `${serverUrl}/brands/${brand_id}/questionCardCategories/questionCards`,

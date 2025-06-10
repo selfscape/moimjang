@@ -7,13 +7,13 @@ import { useBrandFormContext } from "hooks/brand/context/useBrandFormContext";
 
 import AddImageInput from "components/common/image/addImageInput";
 import ProductImage from "components/common/image/ProductImage";
-import { OWNER } from "configs";
 import useSystemModal from "hooks/common/components/useSystemModal";
+import useOwnerCookie from "hooks/auth/useOwnerCookie";
 
 const ThumbnailUpload: React.FC = () => {
   const { brandId, setBrand, brand } = useBrandFormContext();
   const { showAnyMessageModal } = useSystemModal();
-  const owner = localStorage.getItem(OWNER);
+  const owner = useOwnerCookie();
   const isTester = owner === "tester";
 
   const [preview, setPreview] = useState<string>(

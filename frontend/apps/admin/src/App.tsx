@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route, useNavigate } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { ThemeProvider } from "styled-components";
@@ -6,8 +6,6 @@ import { ThemeProvider } from "styled-components";
 import { Pathnames } from "constants/index";
 import GlobalStyles from "styles/GlobalStyles";
 import theme from "styles/Theme";
-import useCheckUserRole from "hooks/auth/useCheckUserRole";
-
 import User from "pages/user";
 import Channel from "pages/channel";
 import UserDetail from "pages/user/UserDetail";
@@ -16,20 +14,12 @@ import Brand from "pages/brand";
 import EditBrand from "pages/brand/form/EditBrand";
 import Landing from "pages/landing";
 import Submission from "pages/submission";
-import GuestPage from "pages/guest";
 import Host from "pages/host";
-import { useRecoilState } from "recoil";
-import userState from "recoils/atoms/auth/userState";
-import useStoreOwnerFromQuery from "hooks/auth/useStoreOwnerFromQuery";
 import AdminSignUpForm from "pages/SignUpForm";
 import Login from "pages/Login";
 import RoleBasedHome from "pages/home/RoleBasedHome";
 
 function App() {
-  useStoreOwnerFromQuery();
-  const [userData] = useRecoilState(userState);
-  const { isUser, isSuperAdmin, isAdmin } = useCheckUserRole(userData?.role);
-
   return (
     <BrowserRouter>
       <DndProvider backend={HTML5Backend}>

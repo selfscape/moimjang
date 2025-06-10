@@ -9,6 +9,7 @@ import useSystemModal from "hooks/common/components/useSystemModal";
 import ProductImage from "components/common/image/ProductImage";
 import AddImageInput from "components/common/image/addImageInput";
 import { OWNER } from "configs";
+import useOwnerCookie from "hooks/auth/useOwnerCookie";
 
 type GalleryImage = { id?: number; url: string };
 const emptyImage: GalleryImage = { id: null, url: "" };
@@ -18,7 +19,7 @@ const Gallery = () => {
   const { mutate: uploadGalleryImage } = useUploadGalleryImage();
   const { mutate: deleteGalleryImage } = useDeleteGalleryImage();
 
-  const owner = localStorage.getItem(OWNER);
+  const owner = useOwnerCookie();
   const isTester = owner === "tester";
 
   const { showErrorModal, showAnyMessageModal } = useSystemModal();

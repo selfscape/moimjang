@@ -10,6 +10,7 @@ import useDeleteCategory from "hooks/questionCard/category/useDeleteCategory";
 import useUpdateCategory from "hooks/questionCard/category/useUpdateCategory";
 import useSystemModal from "hooks/common/components/useSystemModal";
 import { OWNER } from "configs";
+import useOwnerCookie from "hooks/auth/useOwnerCookie";
 
 interface Props {
   cardIndex: number;
@@ -19,7 +20,7 @@ interface Props {
 const CardFooter = ({ cardIndex, card }: Props) => {
   const queryClient = useQueryClient();
   const { brandId } = useParams();
-  const owner = localStorage.getItem(OWNER);
+  const owner = useOwnerCookie();
   const isTester = owner === "tester";
   const { openModal, showErrorModal, showAnyMessageModal } = useSystemModal();
 

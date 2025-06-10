@@ -5,6 +5,7 @@ import axiosInstance from "api/axiosInstance";
 import { GET_USERS } from "constants/queryKeys";
 import { ACCEESS_TOKEN, OWNER, serverUrl } from "configs";
 import { User } from "interfaces/user";
+import { getCookie } from "hooks/auth/useOwnerCookie";
 
 export interface GetUsersOutput {
   users: Array<User>;
@@ -22,7 +23,7 @@ export const getUsers = async (
   params: GetUserParams
 ): Promise<GetUsersOutput> => {
   const token = localStorage.getItem(ACCEESS_TOKEN);
-  const owner = localStorage.getItem(OWNER);
+  const owner = getCookie(OWNER);
 
   const response = await axiosInstance.get(`${serverUrl}/users`, {
     headers: {
