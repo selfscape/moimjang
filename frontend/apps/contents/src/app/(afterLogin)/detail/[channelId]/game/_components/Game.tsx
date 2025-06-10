@@ -59,11 +59,17 @@ export default function Game() {
             className={styles.image}
             src={explainGameRule1.src}
             alt="누가? 누구를"
+            style={{
+              height: "auto",
+            }}
           />
           <OptimizedNextImage
             className={styles.image}
             src={explainGameRule2.src}
             alt="누가? 누구를"
+            style={{
+              height: "auto",
+            }}
           />
         </div>
       </div>

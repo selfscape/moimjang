@@ -27,8 +27,7 @@ export const viewport = {
 };
 
 import SystemModal from "@ui/components/Modal/SystemModal";
-import RQProvider from "../_components/RQProvider";
-import { Suspense } from "react";
+import RQProvider from "@ui/components/Provider/RQProvider";
 
 export default function RootLayout({
   children,
@@ -38,9 +37,7 @@ export default function RootLayout({
   return (
     <html lang="ko">
       <body>
-        <Suspense>
-          <RQProvider>{children}</RQProvider>
-        </Suspense>
+        <RQProvider>{children}</RQProvider>
         <SystemModal />
       </body>
     </html>

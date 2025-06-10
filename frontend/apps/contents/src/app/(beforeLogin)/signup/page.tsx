@@ -6,6 +6,7 @@ import styles from "./page.module.css";
 import useSignup, { RequestBody } from "./_api/useSignup";
 import pathnames from "@/app/_constant/pathnames";
 import { useSystemModalStore } from "@ui/store/useSystemModalStore";
+import OwnerCookieSetter from "@util/hooks/OwnerCookieSetter";
 
 const MultiStepSignUpForm: React.FC = () => {
   const router = useRouter();
@@ -120,174 +121,181 @@ const MultiStepSignUpForm: React.FC = () => {
   };
 
   return (
-    <div className={styles.container}>
-      <div className={styles.cardContainer}>
-        <h2 className={styles.formTitle}>계정 만들기</h2>
+    <>
+      <OwnerCookieSetter />
+      <div className={styles.container}>
+        <div className={styles.cardContainer}>
+          <h2 className={styles.formTitle}>계정 만들기</h2>
 
-        <form className={styles.form} onSubmit={handleSubmit}>
-          {currentStep === 0 && (
-            <div className={styles.stepContainer}>
-              <div className={styles.field}>
-                <label className={styles.label}>이메일</label>
-                <input
-                  type="email"
-                  name="email"
-                  value={formData.email}
-                  onChange={handleInputChange}
-                  placeholder="name@company.com"
-                  required
-                  className={styles.input}
-                />
-                {errors.email && (
-                  <span className={styles.errorMessage}>{errors.email}</span>
-                )}
-              </div>
-              <div className={styles.field}>
-                <label className={styles.label}>비밀번호</label>
-                <input
-                  type="password"
-                  name="password"
-                  value={formData.password}
-                  onChange={handleInputChange}
-                  placeholder="••••••••"
-                  required
-                  className={styles.input}
-                />
-                {errors.password && (
-                  <span className={styles.errorMessage}>{errors.password}</span>
-                )}
-              </div>
-            </div>
-          )}
-
-          {currentStep === 1 && (
-            <div className={styles.stepContainer}>
-              <div className={styles.field}>
-                <label className={styles.usernameLabel}>사용자 이름</label>
-                <span className={styles.usernameNote}>
-                  문토를 통해 가입하시는 분들은
-                  <br />
-                  문토 닉네임과 동일하게 작성해주세요.
-                  <br />
-                  그렇지 않다면 소셜링에서 사용할 닉네임을 적어주세요!
-                </span>
-                <input
-                  type="text"
-                  name="username"
-                  value={formData.username}
-                  onChange={handleInputChange}
-                  placeholder="예: 소셜링 닉네임을 입력해주세요."
-                  required
-                  className={styles.input}
-                />
-                {errors.username && (
-                  <span className={styles.errorMessage}>{errors.username}</span>
-                )}
-              </div>
-            </div>
-          )}
-
-          {currentStep === 2 && (
-            <div className={styles.stepContainer}>
-              <div className={styles.field}>
-                <label className={styles.label}>성별</label>
-                <div className={styles.radioGroup}>
-                  <label>
-                    <input
-                      type="radio"
-                      name="gender"
-                      value="male"
-                      checked={formData.gender === "male"}
-                      onChange={handleGenderChange}
-                      required
-                    />
-                    남성
-                  </label>
-                  <label>
-                    <input
-                      type="radio"
-                      name="gender"
-                      value="female"
-                      checked={formData.gender === "female"}
-                      onChange={handleGenderChange}
-                    />
-                    여성
-                  </label>
+          <form className={styles.form} onSubmit={handleSubmit}>
+            {currentStep === 0 && (
+              <div className={styles.stepContainer}>
+                <div className={styles.field}>
+                  <label className={styles.label}>이메일</label>
+                  <input
+                    type="email"
+                    name="email"
+                    value={formData.email}
+                    onChange={handleInputChange}
+                    placeholder="name@company.com"
+                    required
+                    className={styles.input}
+                  />
+                  {errors.email && (
+                    <span className={styles.errorMessage}>{errors.email}</span>
+                  )}
                 </div>
-                {errors.gender && (
-                  <span className={styles.errorMessage}>{errors.gender}</span>
-                )}
+                <div className={styles.field}>
+                  <label className={styles.label}>비밀번호</label>
+                  <input
+                    type="password"
+                    name="password"
+                    value={formData.password}
+                    onChange={handleInputChange}
+                    placeholder="••••••••"
+                    required
+                    className={styles.input}
+                  />
+                  {errors.password && (
+                    <span className={styles.errorMessage}>
+                      {errors.password}
+                    </span>
+                  )}
+                </div>
               </div>
-              <div className={styles.field}>
-                <label className={styles.label}>출생년도</label>
-                <input
-                  type="number"
-                  name="birth_year"
-                  value={formData.birth_year || ""}
-                  onChange={handleInputChange}
-                  placeholder="YYYY"
-                  min={1900}
-                  max={2025}
-                  required
-                  className={styles.input}
-                />
-                {errors.birth_year && (
-                  <span className={styles.errorMessage}>
-                    {errors.birth_year}
-                  </span>
-                )}
-              </div>
-              <div className={styles.field}>
-                <label className={styles.label}>MBTI</label>
-                <select
-                  name="mbti"
-                  value={formData.mbti}
-                  onChange={handleInputChange}
-                  required
-                  className={styles.select}
-                >
-                  <option value="">Select MBTI</option>
-                  <option value="INTJ">INTJ</option>
-                  <option value="INTP">INTP</option>
-                  <option value="ENTJ">ENTJ</option>
-                  <option value="ENTP">ENTP</option>
-                  <option value="INFJ">INFJ</option>
-                  <option value="INFP">INFP</option>
-                  <option value="ENFJ">ENFJ</option>
-                  <option value="ENFP">ENFP</option>
-                  <option value="ISTJ">ISTJ</option>
-                  <option value="ISFJ">ISFJ</option>
-                  <option value="ESTJ">ESTJ</option>
-                  <option value="ESFJ">ESFJ</option>
-                  <option value="ISTP">ISTP</option>
-                  <option value="ISFP">ISFP</option>
-                  <option value="ESTP">ESTP</option>
-                  <option value="ESFP">ESFP</option>
-                </select>
-                {errors.mbti && (
-                  <span className={styles.errorMessage}>{errors.mbti}</span>
-                )}
-              </div>
-            </div>
-          )}
-
-          <div className={styles.buttonContainer}>
-            {currentStep > 0 && (
-              <button
-                type="button"
-                onClick={prevStep}
-                className={styles.secondaryButton}
-              >
-                이전
-              </button>
             )}
-            <button type="submit" className={styles.primaryButton}>
-              {currentStep < 2 ? "다음" : "계정 만들기"}
-            </button>
-          </div>
-        </form>
+
+            {currentStep === 1 && (
+              <div className={styles.stepContainer}>
+                <div className={styles.field}>
+                  <label className={styles.usernameLabel}>사용자 이름</label>
+                  <span className={styles.usernameNote}>
+                    문토를 통해 가입하시는 분들은
+                    <br />
+                    문토 닉네임과 동일하게 작성해주세요.
+                    <br />
+                    그렇지 않다면 소셜링에서 사용할 닉네임을 적어주세요!
+                  </span>
+                  <input
+                    type="text"
+                    name="username"
+                    value={formData.username}
+                    onChange={handleInputChange}
+                    placeholder="예: 소셜링 닉네임을 입력해주세요."
+                    required
+                    className={styles.input}
+                  />
+                  {errors.username && (
+                    <span className={styles.errorMessage}>
+                      {errors.username}
+                    </span>
+                  )}
+                </div>
+              </div>
+            )}
+
+            {currentStep === 2 && (
+              <div className={styles.stepContainer}>
+                <div className={styles.field}>
+                  <label className={styles.label}>성별</label>
+                  <div className={styles.radioGroup}>
+                    <label>
+                      <input
+                        type="radio"
+                        name="gender"
+                        value="male"
+                        checked={formData.gender === "male"}
+                        onChange={handleGenderChange}
+                        required
+                      />
+                      남성
+                    </label>
+                    <label>
+                      <input
+                        type="radio"
+                        name="gender"
+                        value="female"
+                        checked={formData.gender === "female"}
+                        onChange={handleGenderChange}
+                      />
+                      여성
+                    </label>
+                  </div>
+                  {errors.gender && (
+                    <span className={styles.errorMessage}>{errors.gender}</span>
+                  )}
+                </div>
+                <div className={styles.field}>
+                  <label className={styles.label}>출생년도</label>
+                  <input
+                    type="number"
+                    name="birth_year"
+                    value={formData.birth_year || ""}
+                    onChange={handleInputChange}
+                    placeholder="YYYY"
+                    min={1900}
+                    max={2025}
+                    required
+                    className={styles.input}
+                  />
+                  {errors.birth_year && (
+                    <span className={styles.errorMessage}>
+                      {errors.birth_year}
+                    </span>
+                  )}
+                </div>
+                <div className={styles.field}>
+                  <label className={styles.label}>MBTI</label>
+                  <select
+                    name="mbti"
+                    value={formData.mbti}
+                    onChange={handleInputChange}
+                    required
+                    className={styles.select}
+                  >
+                    <option value="">Select MBTI</option>
+                    <option value="INTJ">INTJ</option>
+                    <option value="INTP">INTP</option>
+                    <option value="ENTJ">ENTJ</option>
+                    <option value="ENTP">ENTP</option>
+                    <option value="INFJ">INFJ</option>
+                    <option value="INFP">INFP</option>
+                    <option value="ENFJ">ENFJ</option>
+                    <option value="ENFP">ENFP</option>
+                    <option value="ISTJ">ISTJ</option>
+                    <option value="ISFJ">ISFJ</option>
+                    <option value="ESTJ">ESTJ</option>
+                    <option value="ESFJ">ESFJ</option>
+                    <option value="ISTP">ISTP</option>
+                    <option value="ISFP">ISFP</option>
+                    <option value="ESTP">ESTP</option>
+                    <option value="ESFP">ESFP</option>
+                  </select>
+                  {errors.mbti && (
+                    <span className={styles.errorMessage}>{errors.mbti}</span>
+                  )}
+                </div>
+              </div>
+            )}
+
+            <div className={styles.buttonContainer}>
+              {currentStep > 0 && (
+                <button
+                  type="button"
+                  onClick={prevStep}
+                  className={styles.secondaryButton}
+                >
+                  이전
+                </button>
+              )}
+              <button type="submit" className={styles.primaryButton}>
+                {currentStep < 2 ? "다음" : "계정 만들기"}
+              </button>
+            </div>
+          </form>
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 
