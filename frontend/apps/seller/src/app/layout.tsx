@@ -1,8 +1,7 @@
 import "./globals.css";
-import RQProvider from "@/app/_components/RQProvider";
+import RQProvider from "@ui/components/Provider/RQProvider";
 import HeaderRoot from "@ui/components/Header/HeaderRoot";
 import SystemModal from "@ui/components/Modal/SystemModal";
-import { Suspense } from "react";
 
 export const metadata = {
   title: "모임장",
@@ -40,9 +39,7 @@ export default async function RootLayout({
     <html lang="ko">
       <body>
         <HeaderRoot />
-        <Suspense>
-          <RQProvider>{children}</RQProvider>
-        </Suspense>
+        <RQProvider>{children}</RQProvider>
         <SystemModal />
       </body>
     </html>
