@@ -12,7 +12,7 @@
 
 **테스트 계정**
 
-- 아이디: tester.naver.com
+- 아이디: tester@naver.com
 - 비밀번호: 123123123a
 
 ---
