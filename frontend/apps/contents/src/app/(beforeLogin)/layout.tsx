@@ -1,4 +1,6 @@
+import { Suspense } from "react";
 import "../globals.css";
+import LoadingSpinner from "@ui/components/Spinner/FadeLoader";
 
 export const metadata = {
   title: "모임장",
@@ -37,8 +39,10 @@ export default function RootLayout({
   return (
     <html lang="ko">
       <body>
-        <RQProvider>{children}</RQProvider>
-        <SystemModal />
+        <Suspense fallback={<LoadingSpinner />}>
+          <RQProvider>{children}</RQProvider>
+          <SystemModal />
+        </Suspense>
       </body>
     </html>
   );
