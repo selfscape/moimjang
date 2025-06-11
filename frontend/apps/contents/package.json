@@ -8,9 +8,6 @@
     "start": "next start",
     "lint": "next lint"
   },
-  "dependencies": {
-    "nonexistent-package-for-testing": "^999.999.999"
-  },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
     "eslint": "^9",
