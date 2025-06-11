@@ -13,7 +13,6 @@ export default function Form() {
   const [user, setUser] = useState<RequestBody>({
     id: 0,
     username: "",
-    user_name: "",
     gender: "male",
     birth_year: 0,
     created_at: "",
