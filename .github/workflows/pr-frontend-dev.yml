@@ -55,18 +55,6 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
       
-    - name: Setup Node.js
-      uses: actions/setup-node@v4
-      with:
-        node-version: '18'
-        cache: 'npm'
-        cache-dependency-path: 'frontend/package-lock.json'
-      
-    - name: Install dependencies
-      run: |
-        cd frontend
-        npm ci --include-workspace-root --workspaces
-      
     - name: Build Admin App
       run: |
         cd frontend
@@ -120,18 +108,6 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
       
-    - name: Setup Node.js
-      uses: actions/setup-node@v4
-      with:
-        node-version: '18'
-        cache: 'npm'
-        cache-dependency-path: 'frontend/package-lock.json'
-      
-    - name: Install dependencies
-      run: |
-        cd frontend
-        npm ci --include-workspace-root --workspaces
-      
     - name: Build Contents App
       run: |
         cd frontend
@@ -184,18 +160,6 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
-      
-    - name: Setup Node.js
-      uses: actions/setup-node@v4
-      with:
-        node-version: '18'
-        cache: 'npm'
-        cache-dependency-path: 'frontend/package-lock.json'
-      
-    - name: Install dependencies
-      run: |
-        cd frontend
-        npm ci --include-workspace-root --workspaces
       
     - name: Build Seller App
       run: |
