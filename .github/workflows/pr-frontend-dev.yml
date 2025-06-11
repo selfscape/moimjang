@@ -1,0 +1,290 @@
+name: Dev Frontend Build and Test
+
+on:
+  push:
+    branches: [ dev ]
+    paths:
+      - 'frontend/**'
+      - '.github/workflows/dev-frontend.yml'
+  workflow_dispatch:  # 수동 실행 버튼 활성화
+    inputs:
+      force_build_all:
+        description: 'Force build all apps (ignore change detection)'
+        required: false
+        default: false
+        type: boolean
+
+jobs:
+  # 변경된 앱 감지
+  detect-changes:
+    if: github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && github.event.inputs.force_build_all == 'false')
+    runs-on: ubuntu-24.04
+    outputs:
+      admin-changed: ${{ steps.changes.outputs.admin }}
+      contents-changed: ${{ steps.changes.outputs.contents }}
+      seller-changed: ${{ steps.changes.outputs.seller }}
+      packages-changed: ${{ steps.changes.outputs.packages }}
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 2  # 이전 커밋과 비교하기 위해
+      
+    - name: Detect changes
+      uses: dorny/paths-filter@v3
+      id: changes
+      with:
+        base: HEAD~1
+        filters: |
+          admin:
+            - 'frontend/apps/admin/**'
+          contents:
+            - 'frontend/apps/contents/**'
+          seller:
+            - 'frontend/apps/seller/**'
+          packages:
+            - 'frontend/packages/**'
+
+  # Admin 앱 빌드 및 테스트
+  build-admin:
+    needs: [detect-changes]
+    if: |
+      always() && (
+        (github.event_name == 'workflow_dispatch' && github.event.inputs.force_build_all == 'true') ||
+        (needs.detect-changes.result == 'success' && (needs.detect-changes.outputs.admin-changed == 'true' || needs.detect-changes.outputs.packages-changed == 'true')) ||
+        needs.detect-changes.result == 'skipped'
+      )
+    runs-on: ubuntu-24.04
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        cache: 'npm'
+        cache-dependency-path: 'frontend/package-lock.json'
+      
+    - name: Install dependencies
+      run: |
+        cd frontend
+        npm ci --include-workspace-root --workspaces
+      
+    - name: Build Admin App
+      run: |
+        cd frontend
+        echo "🔨 Building admin app for dev environment..."
+        docker build \
+          --build-arg REACT_APP_SERVER_URI="https://api-dev.example.com" \
+          --build-arg REACT_APP_NODE_ENV="development" \
+          --build-arg REACT_APP_DANGEROUSLY_DISABLE_HOST_CHECK="true" \
+          --build-arg REACT_APP_ENVIRONMENT="dev" \
+          --build-arg REACT_APP_SITE_URL="https://admin-dev.example.com" \
+          -f apps/admin/Dockerfile \
+          -t moimjang-admin-dev .
+          
+    - name: Test Admin App Container
+      run: |
+        echo "🧪 Testing admin app container..."
+        # 컨테이너를 백그라운드에서 실행
+        docker run -d --name test-admin -p 3001:3000 moimjang-admin-dev
+        
+        # 컨테이너가 시작될 때까지 대기
+        sleep 30
+        
+        # 헬스 체크
+        if curl -f http://localhost:3001 > /dev/null 2>&1; then
+          echo "✅ Admin app container is healthy"
+        else
+          echo "❌ Admin app container health check failed"
+          docker logs test-admin
+          exit 1
+        fi
+        
+        # 정리
+        docker stop test-admin
+        docker rm test-admin
+        
+    - name: Clean up Admin Images
+      run: |
+        echo "🧹 Cleaning up admin dev images..."
+        docker rmi moimjang-admin-dev || true
+
+  # Contents 앱 빌드 및 테스트
+  build-contents:
+    needs: [detect-changes]
+    if: |
+      always() && (
+        (github.event_name == 'workflow_dispatch' && github.event.inputs.force_build_all == 'true') ||
+        (needs.detect-changes.result == 'success' && (needs.detect-changes.outputs.contents-changed == 'true' || needs.detect-changes.outputs.packages-changed == 'true')) ||
+        needs.detect-changes.result == 'skipped'
+      )
+    runs-on: ubuntu-24.04
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        cache: 'npm'
+        cache-dependency-path: 'frontend/package-lock.json'
+      
+    - name: Install dependencies
+      run: |
+        cd frontend
+        npm ci --include-workspace-root --workspaces
+      
+    - name: Build Contents App
+      run: |
+        cd frontend
+        echo "🔨 Building contents app for dev environment..."
+        docker build \
+          --build-arg NEXT_PUBLIC_SERVER_URL="https://api-dev.example.com" \
+          --build-arg NEXT_PUBLIC_NODE_ENV="development" \
+          --build-arg NEXT_PUBLIC_DANGEROUSLY_DISABLE_HOST_CHECK="true" \
+          --build-arg NEXT_PUBLIC_ENVIRONMENT="dev" \
+          --build-arg NEXT_PUBLIC_SITE_URL="https://contents-dev.example.com" \
+          -f apps/contents/Dockerfile \
+          -t moimjang-contents-dev .
+          
+    - name: Test Contents App Container
+      run: |
+        echo "🧪 Testing contents app container..."
+        # 컨테이너를 백그라운드에서 실행
+        docker run -d --name test-contents -p 3002:3000 moimjang-contents-dev
+        
+        # 컨테이너가 시작될 때까지 대기
+        sleep 30
+        
+        # 헬스 체크
+        if curl -f http://localhost:3002 > /dev/null 2>&1; then
+          echo "✅ Contents app container is healthy"
+        else
+          echo "❌ Contents app container health check failed"
+          docker logs test-contents
+          exit 1
+        fi
+        
+        # 정리
+        docker stop test-contents
+        docker rm test-contents
+        
+    - name: Clean up Contents Images
+      run: |
+        echo "🧹 Cleaning up contents dev images..."
+        docker rmi moimjang-contents-dev || true
+
+  # Seller 앱 빌드 및 테스트
+  build-seller:
+    needs: [detect-changes]
+    if: |
+      always() && (
+        (github.event_name == 'workflow_dispatch' && github.event.inputs.force_build_all == 'true') ||
+        (needs.detect-changes.result == 'success' && (needs.detect-changes.outputs.seller-changed == 'true' || needs.detect-changes.outputs.packages-changed == 'true')) ||
+        needs.detect-changes.result == 'skipped'
+      )
+    runs-on: ubuntu-24.04
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        cache: 'npm'
+        cache-dependency-path: 'frontend/package-lock.json'
+      
+    - name: Install dependencies
+      run: |
+        cd frontend
+        npm ci --include-workspace-root --workspaces
+      
+    - name: Build Seller App
+      run: |
+        cd frontend
+        echo "🔨 Building seller app for dev environment..."
+        docker build \
+          --build-arg NEXT_PUBLIC_SERVER_URL="https://api-dev.example.com" \
+          --build-arg NEXT_PUBLIC_NODE_ENV="development" \
+          --build-arg NEXT_PUBLIC_DANGEROUSLY_DISABLE_HOST_CHECK="true" \
+          --build-arg NEXT_PUBLIC_ENVIRONMENT="dev" \
+          --build-arg NEXT_PUBLIC_SITE_URL="https://seller-dev.example.com" \
+          -f apps/seller/Dockerfile \
+          -t moimjang-seller-dev .
+          
+    - name: Test Seller App Container
+      run: |
+        echo "🧪 Testing seller app container..."
+        # 컨테이너를 백그라운드에서 실행
+        docker run -d --name test-seller -p 3003:3000 moimjang-seller-dev
+        
+        # 컨테이너가 시작될 때까지 대기
+        sleep 30
+        
+        # 헬스 체크
+        if curl -f http://localhost:3003 > /dev/null 2>&1; then
+          echo "✅ Seller app container is healthy"
+        else
+          echo "❌ Seller app container health check failed"
+          docker logs test-seller
+          exit 1
+        fi
+        
+        # 정리
+        docker stop test-seller
+        docker rm test-seller
+        
+    - name: Clean up Seller Images
+      run: |
+        echo "🧹 Cleaning up seller dev images..."
+        docker rmi moimjang-seller-dev || true
+
+  # 빌드 결과 요약
+  build-summary:
+    needs: [detect-changes, build-admin, build-contents, build-seller]
+    if: always()
+    runs-on: ubuntu-24.04
+    
+    steps:
+    - name: Build Summary
+      run: |
+        echo "🔨 Dev Frontend Build Summary:"
+        echo ""
+        
+        if [[ "${{ needs.build-admin.result }}" == "success" ]]; then
+          echo "✅ Admin App: 빌드 및 테스트 성공"
+        elif [[ "${{ needs.build-admin.result }}" == "failure" ]]; then
+          echo "❌ Admin App: 빌드 또는 테스트 실패"
+        elif [[ "${{ needs.build-admin.result }}" == "skipped" ]]; then
+          echo "⏭️ Admin App: 변경사항 없음 - 건너뜀"
+        fi
+        
+        if [[ "${{ needs.build-contents.result }}" == "success" ]]; then
+          echo "✅ Contents App: 빌드 및 테스트 성공"
+        elif [[ "${{ needs.build-contents.result }}" == "failure" ]]; then
+          echo "❌ Contents App: 빌드 또는 테스트 실패"
+        elif [[ "${{ needs.build-contents.result }}" == "skipped" ]]; then
+          echo "⏭️ Contents App: 변경사항 없음 - 건너뜀"
+        fi
+        
+        if [[ "${{ needs.build-seller.result }}" == "success" ]]; then
+          echo "✅ Seller App: 빌드 및 테스트 성공"
+        elif [[ "${{ needs.build-seller.result }}" == "failure" ]]; then
+          echo "❌ Seller App: 빌드 또는 테스트 실패"
+        elif [[ "${{ needs.build-seller.result }}" == "skipped" ]]; then
+          echo "⏭️ Seller App: 변경사항 없음 - 건너뜀"
+        fi
+        
+        echo ""
+        echo "🎯 빌드 트리거: ${{ github.event_name }}"
+        if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
+          echo "🔧 강제 전체 빌드: ${{ github.event.inputs.force_build_all }}"
+        fi 
