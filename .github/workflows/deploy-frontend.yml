@@ -65,8 +65,8 @@ jobs:
     - name: Stop Existing Admin Container
       run: |
         echo "🛑 Stopping existing admin container..."
-        docker stop moimjang-admin || echo "No running admin container found"
-        docker rm moimjang-admin || echo "No admin container to remove"
+        docker stop moimjang-frontend-admin || echo "No running admin container found"
+        docker rm moimjang-frontend-admin || echo "No admin container to remove"
         echo "✅ Existing admin container stopped and removed"
       continue-on-error: true
       
@@ -75,7 +75,7 @@ jobs:
         IMAGE_TAG="${{ github.event.inputs.image_tag || 'latest' }}"
         echo "🚀 Starting new admin container..."
         docker run -d \
-          --name moimjang-admin \
+          --name moimjang-frontend-admin \
           --restart unless-stopped \
           -p 4131:80 \
           ${{ env.ECR_REGISTRY }}-admin:$IMAGE_TAG
@@ -124,8 +124,8 @@ jobs:
     - name: Stop Existing Contents Container
       run: |
         echo "🛑 Stopping existing contents container..."
-        docker stop moimjang-contents || echo "No running contents container found"
-        docker rm moimjang-contents || echo "No contents container to remove"
+        docker stop moimjang-frontend-contents || echo "No running contents container found"
+        docker rm moimjang-frontend-contents || echo "No contents container to remove"
         echo "✅ Existing contents container stopped and removed"
       continue-on-error: true
       
@@ -134,7 +134,7 @@ jobs:
         IMAGE_TAG="${{ github.event.inputs.image_tag || 'latest' }}"
         echo "🚀 Starting new contents container..."
         docker run -d \
-          --name moimjang-contents \
+          --name moimjang-frontend-contents \
           --restart unless-stopped \
           -p 3132:3000 \
           ${{ env.ECR_REGISTRY }}-contents:$IMAGE_TAG
@@ -183,8 +183,8 @@ jobs:
     - name: Stop Existing Seller Container
       run: |
         echo "🛑 Stopping existing seller container..."
-        docker stop moimjang-seller || echo "No running seller container found"
-        docker rm moimjang-seller || echo "No seller container to remove"
+        docker stop moimjang-frontend-seller || echo "No running seller container found"
+        docker rm moimjang-frontend-seller || echo "No seller container to remove"
         echo "✅ Existing seller container stopped and removed"
       continue-on-error: true
       
@@ -193,7 +193,7 @@ jobs:
         IMAGE_TAG="${{ github.event.inputs.image_tag || 'latest' }}"
         echo "🚀 Starting new seller container..."
         docker run -d \
-          --name moimjang-seller \
+          --name moimjang-frontend-seller \
           --restart unless-stopped \
           -p 3133:3000 \
           ${{ env.ECR_REGISTRY }}-seller:$IMAGE_TAG
