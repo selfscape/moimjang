@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { OWNER } from "@constants/auth";
+import { USER_NAME } from "@constants/auth";
 import { serverUrl } from "@/app/_constant/config";
 import { Channel, ChannelState } from "@model/channel";
 import { GET_LANDING_CHANNELS } from "@/app/_constant/channel/queryKey";

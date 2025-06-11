@@ -3,8 +3,7 @@ import useUpdateSurveyState from "api/survey/hook/useUpdateSurveyState";
 import useSystemModal from "hooks/common/components/useSystemModal";
 import { useApplicationTableContext } from "hooks/channel/context/useApplicationTableContext";
 import { SurveyRegistState } from "interfaces/landing";
-import { OWNER } from "configs";
-import useOwnerCookie from "hooks/auth/useOwnerCookie";
+import { USER_NAME } from "configs";
 
 const Table = () => {
   const { setEnlargedImageUrl, surveyResponses, survey, refetch } =
@@ -13,7 +12,7 @@ const Table = () => {
   const { mutate: updateSurveyResponse } = useUpdateSurveyState();
   const { showErrorModal, openModal, showAnyMessageModal } = useSystemModal();
 
-  const owner = useOwnerCookie();
+  const owner = localStorage.getItem(USER_NAME);
   const isTester = owner === "tester";
 
   const handleUpdateButtonClick = (id: string, state: SurveyRegistState) => {

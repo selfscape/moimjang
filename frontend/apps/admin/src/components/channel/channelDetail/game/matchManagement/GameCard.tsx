@@ -4,9 +4,8 @@ import { FaDeleteLeft } from "react-icons/fa6";
 import { StructuredGame } from "utils/channel/structureGameData";
 import useDeleteGame from "hooks/game/useDeleteGame";
 import { Game } from "interfaces/game";
-import { OWNER } from "configs";
+import { USER_NAME } from "configs";
 import useSystemModal from "hooks/common/components/useSystemModal";
-import useOwnerCookie from "hooks/auth/useOwnerCookie";
 
 interface GameCardProps {
   game: StructuredGame;
@@ -17,7 +16,7 @@ const GameCard: React.FC<GameCardProps> = ({ game, setGameList }) => {
   const { mutate: deleteGame } = useDeleteGame();
   const { showAnyMessageModal } = useSystemModal();
 
-  const owner = useOwnerCookie();
+  const owner = localStorage.getItem(USER_NAME);
   const isTester = owner === "tester";
 
   const handleDelete = (id: number) => {

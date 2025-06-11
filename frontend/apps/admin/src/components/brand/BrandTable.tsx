@@ -15,7 +15,7 @@ import { Table, TableContainer } from "../common/Table";
 import Button from "../common/Button";
 import OptimizedImage from "components/common/image/OptimizedImage";
 import { GetBrandOutput } from "hooks/brand/useGetBrands";
-import useOwnerCookie from "hooks/auth/useOwnerCookie";
+import { USER_NAME } from "configs";
 
 const brandStateLabels: Record<BrandState, string> = {
   [BrandState.ONGOING]: "진행중",
@@ -25,7 +25,7 @@ const brandStateLabels: Record<BrandState, string> = {
 const BrandTable = () => {
   const [searchParams] = useSearchParams();
   const page = Number(searchParams.get("page")) || 1;
-  const owner = useOwnerCookie();
+  const owner = localStorage.getItem(USER_NAME);
   const isTester = owner === "tester";
 
   const queryClient = useQueryClient();
@@ -182,23 +182,6 @@ const BrandTable = () => {
     </TableContainer>
   );
 };
-
-const StyledImg = styled.img`
-  width: 40px;
-  height: 40px;
-  object-fit: cover;
-`;
-
-const Placeholder = styled.div`
-  width: 40px;
-  height: 40px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: #e5e7eb;
-  color: #9ca3af;
-  font-size: 24px;
-`;
 
 const StyledSelect = styled.select<{ state: BrandState }>`
   padding: 8px 12px;

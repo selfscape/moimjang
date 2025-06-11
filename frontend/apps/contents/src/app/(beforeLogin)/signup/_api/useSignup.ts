@@ -1,6 +1,6 @@
 import { useMutation } from "@tanstack/react-query";
 import useCookie from "@util/hooks/useCookie";
-import { OWNER } from "@constants/auth";
+import { USER_NAME } from "@constants/auth";
 import { serverUrl } from "@/app/_constant/config";
 
 export interface RequestBody {

@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { GET_BRAND_REVIEWS } from "@/app/_constant/barnd/queryKey";
-import { OWNER } from "@constants/auth";
+import { USER_NAME } from "@constants/auth";
 import { BrandReview } from "@model/review";
 
 import useCookie from "@util/hooks/useCookie";

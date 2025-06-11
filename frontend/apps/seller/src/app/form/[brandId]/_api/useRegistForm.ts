@@ -3,7 +3,7 @@ import { useMutation } from "@tanstack/react-query";
 import { SurveyRegistState } from "@model/form";
 import { serverUrl } from "@/app/_constant/config";
 import useCookie from "@util/hooks/useCookie";
-import { OWNER } from "@constants/auth";
+import { USER_NAME } from "@constants/auth";
 
 export interface RequestBody {
   channelId: string;

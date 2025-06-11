@@ -17,7 +17,7 @@ import { useReviewStore } from "../_store/useReviewStore";
 import useGetGroups from "../_api/useGetGroups";
 import { useParams } from "next/navigation";
 import useCookie from "@util/hooks/useCookie";
-import { OWNER } from "@constants/auth";
+import { USER_NAME } from "@constants/auth";
 import { useSystemModalStore } from "@ui/store/useSystemModalStore";
 import pathnames from "@/app/_constant/pathnames";
 import useCreateReview from "../_api/useCreateReview";

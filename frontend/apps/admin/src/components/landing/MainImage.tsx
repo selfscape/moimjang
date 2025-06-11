@@ -10,7 +10,7 @@ import useSystemModal from "hooks/common/components/useSystemModal";
 
 import AddImageInput from "components/common/image/addImageInput";
 import ProductImage from "../common/image/ProductImage";
-import useOwnerCookie from "hooks/auth/useOwnerCookie";
+import { USER_NAME } from "configs";
 
 const MainImage = () => {
   const { mutate: uploadMainImage } = useUploadMainImage();
@@ -19,7 +19,7 @@ const MainImage = () => {
   const { data } = useGetMainImage();
   const { showErrorModal, showAnyMessageModal } = useSystemModal();
 
-  const owner = useOwnerCookie();
+  const owner = localStorage.getItem(USER_NAME);
   const isTester = owner === "tester";
 
   const handleMainImageUpload = async (

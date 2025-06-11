@@ -3,9 +3,8 @@ import { AxiosError } from "axios";
 
 import axiosInstance from "api/axiosInstance";
 import { GET_BRANDS } from "constants/queryKeys";
-import { ACCEESS_TOKEN, OWNER, serverUrl } from "configs";
+import { ACCEESS_TOKEN, serverUrl, USER_NAME } from "configs";
 import { Brand, BrandState } from "interfaces/brand";
-import { getCookie } from "hooks/auth/useOwnerCookie";
 
 export interface GetBrandOutput {
   brands: Array<Brand>;
@@ -24,7 +23,7 @@ export const getBrands = async (
   params: GetBrandParams
 ): Promise<GetBrandOutput> => {
   const token = localStorage.getItem(ACCEESS_TOKEN);
-  const owner = getCookie(OWNER);
+  const owner = localStorage.getItem(USER_NAME);
 
   const response = await axiosInstance.get(`${serverUrl}/brands`, {
     headers: {

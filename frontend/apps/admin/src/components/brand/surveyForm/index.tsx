@@ -11,8 +11,7 @@ import useSurveyBuilder from "hooks/brand/context/useSurveyBuilder";
 
 import Preview from "./preview";
 import Builder from "./builder";
-import { OWNER } from "configs";
-import useOwnerCookie from "hooks/auth/useOwnerCookie";
+import { USER_NAME } from "configs";
 
 const SurveyFormSection: React.FC = () => {
   const { brandId } = useBrandFormContext();
@@ -23,7 +22,7 @@ const SurveyFormSection: React.FC = () => {
   const { showSaveBar, closeSaveBar } = useSaveBar();
   const { showErrorModal, showAnyMessageModal } = useSystemModal();
 
-  const owner = useOwnerCookie();
+  const owner = localStorage.getItem(USER_NAME);
   const isTester = owner === "tester";
 
   const handleSubmit = () => {
