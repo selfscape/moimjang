@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { USER_NAME } from "@constants/auth";
+import { OWNER } from "@constants/auth";
 import { GET_MAIN_IMAGE } from "@/app/_constant/queryKeys";
 import { Image } from "@model/common";
 import { serverUrl } from "@/app/_constant/config";

@@ -17,11 +17,11 @@ import { useReviewStore } from "../_store/useReviewStore";
 import useGetGroups from "../_api/useGetGroups";
 import { useParams } from "next/navigation";
 import useCookie from "@util/hooks/useCookie";
-import { USER_NAME } from "@constants/auth";
 import { useSystemModalStore } from "@ui/store/useSystemModalStore";
 import pathnames from "@/app/_constant/pathnames";
 import useCreateReview from "../_api/useCreateReview";
 import { USER_DATA } from "@/app/_constant/auth";
+import { OWNER } from "@constants/auth";
 
 export default function Form() {
   const router = useRouter();

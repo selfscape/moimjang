@@ -1,9 +1,9 @@
 import { useQuery } from "@tanstack/react-query";
-import { USER_NAME } from "@constants/auth";
 import { serverUrl } from "@/app/_constant/config";
 import { Channel, ChannelState } from "@model/channel";
 import { GET_LANDING_CHANNELS } from "@/app/_constant/channel/queryKey";
 import useCookie from "@util/hooks/useCookie";
+import { OWNER } from "@constants/auth";
 
 export interface Params {
   brand_id: string;

@@ -6,7 +6,7 @@ import { useParams } from "next/navigation";
 import styles from "./Game.module.css";
 import useGetMatchedUser from "../_api/useGetMatchedUser";
 import useCookie from "@util/hooks/useCookie";
-import { USER_NAME } from "@constants/auth";
+import { OWNER } from "@constants/auth";
 
 import explainGameRule0 from "@/app/_asset/game-0.png";
 import explainGameRule1 from "@/app/_asset/game-1.png";

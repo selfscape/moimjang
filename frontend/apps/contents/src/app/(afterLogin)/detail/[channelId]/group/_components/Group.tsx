@@ -5,13 +5,13 @@ import styles from "./Group.module.css";
 import { FaUsers } from "react-icons/fa";
 import { findMyGroup, getGenderEmoji } from "../_util";
 import useCookie from "@util/hooks/useCookie";
-import { USER_NAME } from "@constants/auth";
 import { useParams } from "next/navigation";
 import useGetGroups from "../_api/useGetGroups";
 import Loading from "@ui/components/Spinner/FadeLoader";
 import ErrorBox from "@ui/components/Error/ErrorBox";
 import HeaderConfigurator from "@ui/components/Header/HeaderConfigurator";
 import { USER_DATA } from "@/app/_constant/auth";
+import { OWNER } from "@constants/auth";
 
 export default function Group() {
   const user = JSON.parse(localStorage.getItem(USER_DATA) || "");

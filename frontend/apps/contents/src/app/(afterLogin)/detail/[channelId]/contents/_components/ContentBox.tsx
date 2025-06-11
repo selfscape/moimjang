@@ -5,9 +5,9 @@ import styles from "./ContentBox.module.css";
 import { useRouter, useSearchParams } from "next/navigation";
 import useGetQuestionCardCategories from "../_api/useGetQuestionCard";
 import useCookie from "@util/hooks/useCookie";
-import { USER_NAME } from "@constants/auth";
 import OptimizedNextImage from "@ui/components/Image/OptimizedNextImage";
 import HeaderConfigurator from "@ui/components/Header/HeaderConfigurator";
+import { OWNER } from "@constants/auth";
 
 export default function ContentBox() {
   const router = useRouter();

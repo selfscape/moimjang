@@ -1,10 +1,10 @@
 import { useQuery } from "@tanstack/react-query";
 import { GET_BRAND_REVIEWS } from "@/app/_constant/barnd/queryKey";
-import { USER_NAME } from "@constants/auth";
 import { BrandReview } from "@model/review";
 
 import useCookie from "@util/hooks/useCookie";
 import { serverUrl } from "@/app/_constant/config";
+import { OWNER } from "@constants/auth";
 
 export interface Response {
   reviews: Array<BrandReview>;

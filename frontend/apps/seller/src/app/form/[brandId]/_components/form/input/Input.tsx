@@ -12,8 +12,8 @@ import useRegistForm from "../../../_api/useRegistForm";
 import pathnames from "@/app/_constant/pathnames";
 
 import useCookie from "@util/hooks/useCookie";
-import { USER_NAME } from "@constants/auth";
 import { useSystemModalStore } from "@ui/store/useSystemModalStore";
+import { OWNER } from "@constants/auth";
 
 interface Props {
   surveys: Array<Survey>;

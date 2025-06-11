@@ -1,9 +1,9 @@
 import { Brand, BrandState } from "@model/brand";
 import { useQuery } from "@tanstack/react-query";
 import { GET_BRANDS } from "@/app/_constant/barnd/queryKey";
-import { USER_NAME } from "@constants/auth";
 import { serverUrl } from "@/app/_constant/config";
 import useCookie from "@util/hooks/useCookie";
+import { OWNER } from "@constants/auth";
 
 export interface Params {
   state: BrandState;

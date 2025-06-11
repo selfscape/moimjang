@@ -5,7 +5,7 @@ import useGetBrandById from "../_api/useGetBrandById";
 import styles from "./Thumbnail.module.css";
 import Image from "@ui/components/Image/OptimizedNextImage";
 import useCookie from "@util/hooks/useCookie";
-import { USER_NAME } from "@constants/auth";
+import { OWNER } from "@constants/auth";
 
 interface Props {
   brandId: number;
