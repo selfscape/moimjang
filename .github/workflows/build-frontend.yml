@@ -1,11 +1,11 @@
-name: PR Frontend Build and Push
+name: Build Frontend - Main
 
 on:
   pull_request:
     branches: [ main ]
     paths:
       - 'frontend/**'
-      - '.github/workflows/pr-frontend.yml'
+      - '.github/workflows/build-frontend.yml'
 
 env:
   ECR_REGISTRY: public.ecr.aws/x2l9m6x8/selfscape/moimjang
