@@ -2,10 +2,9 @@ import { AxiosError } from "axios";
 import { useQuery } from "@tanstack/react-query";
 import { GET_QUESTION_CATEGORIES } from "constants/queryKeys";
 
-import { ACCEESS_TOKEN, OWNER, serverUrl } from "configs";
+import { ACCEESS_TOKEN, serverUrl, USER_NAME } from "configs";
 import { QuestionCardDeck } from "interfaces/questionCardCategory";
 import axiosInstance from "api/axiosInstance";
-import { getCookie } from "hooks/auth/useOwnerCookie";
 
 export interface QuestionCategoriesOutput {
   id: number;
@@ -22,7 +21,7 @@ export const getQuestionCategories = async (
   brand_id: string
 ): Promise<QuestionCategoriesOutput> => {
   const token = localStorage.getItem(ACCEESS_TOKEN);
-  const owner = getCookie(OWNER);
+  const owner = localStorage.getItem(USER_NAME);
 
   const response = await axiosInstance.get(
     `${serverUrl}/brands/${brand_id}/questionCardCategories/questionCards`,

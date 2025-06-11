@@ -3,9 +3,8 @@ import { AxiosError } from "axios";
 
 import { GET_SURVEY_RESPONSES } from "constants/queryKeys";
 import { SurveyResponse } from "interfaces/landing";
-import { ACCEESS_TOKEN, OWNER, serverUrl } from "configs";
+import { ACCEESS_TOKEN, serverUrl, USER_NAME } from "configs";
 import axiosInstance from "api/axiosInstance";
-import { getCookie } from "hooks/auth/useOwnerCookie";
 
 export interface GetSurveyResponseParams {
   survey_id: string;
@@ -25,7 +24,7 @@ export const getSurveyResponses = async (
   params: GetSurveyResponseParams
 ): Promise<GetSurveyResponseOutput> => {
   const token = localStorage.getItem(ACCEESS_TOKEN);
-  const owner = getCookie(OWNER);
+  const owner = localStorage.getItem(USER_NAME);
 
   const response = await axiosInstance.get(`${serverUrl}/surveysResponses`, {
     headers: {

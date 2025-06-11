@@ -2,9 +2,8 @@ import { AxiosError } from "axios";
 import { useMutation } from "@tanstack/react-query";
 
 import axiosInstance from "api/axiosInstance";
-import { ACCEESS_TOKEN, OWNER, serverUrl } from "configs";
+import { ACCEESS_TOKEN, serverUrl, USER_NAME } from "configs";
 import { BrandReview } from "../types/brandReview";
-import { getCookie } from "hooks/auth/useOwnerCookie";
 
 export interface CreateBrandReviewInput {
   user_id: number;
@@ -15,7 +14,7 @@ export const createBrandReview = async (
   requestBody: CreateBrandReviewInput
 ): Promise<BrandReview> => {
   const token = localStorage.getItem(ACCEESS_TOKEN);
-  const owner = getCookie(OWNER);
+  const owner = localStorage.getItem(USER_NAME);
 
   const result = await axiosInstance.post(
     `${serverUrl}/customers/brandReviews`,

@@ -6,7 +6,7 @@ import styles from "./Form.module.css";
 import useUpdateBrandReview from "../_api/useUpdateBrandReview";
 import useCreateBrandReview from "../_api/useCreateBrandReview";
 import useCookie from "@util/hooks/useCookie";
-import { OWNER } from "@constants/auth";
+import { USER_NAME } from "@constants/auth";
 
 import { useSystemModalStore } from "@ui/store/useSystemModalStore";
 import { uploadBrandReviewImage } from "../_api/uploadBrandReviewImage";

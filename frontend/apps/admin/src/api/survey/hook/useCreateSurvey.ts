@@ -1,10 +1,9 @@
-import { ACCEESS_TOKEN, OWNER, serverUrl } from "configs";
+import { ACCEESS_TOKEN, serverUrl, USER_NAME } from "configs";
 
 import axiosInstance from "../../axiosInstance";
 import { Question } from "interfaces/brand/survey";
 import { useMutation } from "@tanstack/react-query";
 import { AxiosError } from "axios";
-import { getCookie } from "hooks/auth/useOwnerCookie";
 
 export interface SurveyType {
   brand_id: string;
@@ -17,7 +16,7 @@ export const fetchCreateSurvey = async (
   requestBody: SurveyType
 ): Promise<Array<SurveyType>> => {
   const token = localStorage.getItem(ACCEESS_TOKEN);
-  const owner = getCookie(OWNER);
+  const owner = localStorage.getItem(USER_NAME);
 
   const result = await axiosInstance.post(`${serverUrl}/surveys`, requestBody, {
     headers: {

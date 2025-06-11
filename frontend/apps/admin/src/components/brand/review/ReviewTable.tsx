@@ -7,14 +7,13 @@ import { useBrandReviewContext } from "hooks/brand/context/useBrandReviewContext
 import useSystemModal from "hooks/common/components/useSystemModal";
 import { BRAND_REVIEWS } from "constants/queryKeys";
 import OptimizedImage from "components/common/image/OptimizedImage";
-import { OWNER } from "configs";
-import useOwnerCookie from "hooks/auth/useOwnerCookie";
+import { USER_NAME } from "configs";
 
 const ReviewTable = () => {
   const { isLoading, brandReviews, error, setEnlargedImageUrl } =
     useBrandReviewContext();
   const queryClient = useQueryClient();
-  const owner = useOwnerCookie();
+  const owner = localStorage.getItem(USER_NAME);
   const isTester = owner === "tester";
 
   const { mutate: deleteBrandReview } = useDeleteBrandReview();

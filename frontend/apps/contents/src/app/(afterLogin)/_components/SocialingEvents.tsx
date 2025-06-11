@@ -6,7 +6,7 @@ import { ChannelState } from "@model/channel";
 import useGetChannelList from "../_api/useGetChannelList";
 import ErrorBox from "@ui/components/Error/ErrorBox";
 import LoadingSpinner from "@ui/components/Spinner/FadeLoader";
-import { OWNER } from "@constants/auth";
+import { USER_NAME } from "@constants/auth";
 import useCookie from "@util/hooks/useCookie";
 import HasNoSocialing from "./HasNoSocialing";
 import Event from "./Event";

@@ -1,9 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
 import { BrandReview } from "../types/brandReview";
 import { BRAND_REVIEWS } from "constants/queryKeys";
-import { ACCEESS_TOKEN, OWNER, serverUrl } from "configs";
+import { ACCEESS_TOKEN, serverUrl, USER_NAME } from "configs";
 import axios from "axios";
-import { getCookie } from "hooks/auth/useOwnerCookie";
 
 export interface GetBrandReviewsOutput {
   reviews: Array<BrandReview>;
@@ -21,7 +20,7 @@ export const getBrandReviews = async (
   params: GetBrandReviewsParams
 ): Promise<GetBrandReviewsOutput> => {
   const token = localStorage.getItem(ACCEESS_TOKEN);
-  const owner = getCookie(OWNER);
+  const owner = localStorage.getItem(USER_NAME);
 
   const response = await axios.get(`${serverUrl}/brandReviews`, {
     headers: {

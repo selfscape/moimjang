@@ -9,7 +9,7 @@ import GameCard from "./GameCard";
 import matchValidation from "utils/channel/matchValidation";
 import useDeleteGame from "hooks/game/useDeleteGame";
 import useSystemModal from "hooks/common/components/useSystemModal";
-import useOwnerCookie from "hooks/auth/useOwnerCookie";
+import { USER_NAME } from "configs";
 
 interface Props {
   gameList: Array<Game>;
@@ -21,7 +21,7 @@ const GameContainer = ({ gameList, setGameList, joinedUsers }: Props) => {
   const { mutateAsync: deleteGame } = useDeleteGame();
   const { showAnyMessageModal } = useSystemModal();
 
-  const owner = useOwnerCookie();
+  const owner = localStorage.getItem(USER_NAME);
   const isTester = owner === "tester";
 
   // gameList나 joinedUsers가 없으면 파생 상태 계산하지 않음

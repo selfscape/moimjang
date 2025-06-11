@@ -1,17 +1,16 @@
 import { AxiosError } from "axios";
 import { useQuery } from "@tanstack/react-query";
 
-import { ACCEESS_TOKEN, OWNER, serverUrl } from "configs";
+import { ACCEESS_TOKEN, serverUrl, USER_NAME } from "configs";
 import axiosInstance from "api/axiosInstance";
 import { GET_SURVEYS } from "constants/queryKeys";
 import { Survey } from "interfaces/brand/survey";
-import { getCookie } from "hooks/auth/useOwnerCookie";
 
 export const fetchGetSurvey = async (
   brand_id: string
 ): Promise<Array<Survey>> => {
   const token = localStorage.getItem(ACCEESS_TOKEN);
-  const owner = getCookie(OWNER);
+  const owner = localStorage.getItem(USER_NAME);
 
   const response = await axiosInstance.get(`${serverUrl}/surveys`, {
     headers: {

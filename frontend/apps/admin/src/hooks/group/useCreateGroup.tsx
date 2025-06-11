@@ -1,9 +1,8 @@
 import { QueryClient, useMutation } from "@tanstack/react-query";
 import { GET_SERACH_GROUPS } from "constants/queryKeys";
 import { Group } from "interfaces/group";
-import { ACCEESS_TOKEN, OWNER, serverUrl } from "configs";
+import { ACCEESS_TOKEN, serverUrl, USER_NAME } from "configs";
 import axiosInstance from "api/axiosInstance";
-import { getCookie } from "hooks/auth/useOwnerCookie";
 
 export interface CreateGroupInput {
   channel_id: number;
@@ -14,7 +13,7 @@ export const createGroup = async (
   requestBody: CreateGroupInput
 ): Promise<Group> => {
   const token = localStorage.getItem(ACCEESS_TOKEN);
-  const owner = getCookie(OWNER);
+  const owner = localStorage.getItem(USER_NAME);
 
   const response = await axiosInstance.post(
     `${serverUrl}/groups`,

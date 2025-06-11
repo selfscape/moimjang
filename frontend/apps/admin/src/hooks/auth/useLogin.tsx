@@ -1,6 +1,6 @@
 import { useMutation } from "@tanstack/react-query";
 import axios, { AxiosError } from "axios";
-import { ACCEESS_TOKEN, serverUrl } from "configs";
+import { ACCEESS_TOKEN, serverUrl, USER_NAME } from "configs";
 import { User } from "interfaces/user";
 
 export interface LoginOutput {
@@ -36,6 +36,7 @@ const useLogin = () => {
     mutationFn: ({ username, password }) => login(username, password),
     onSuccess: (data) => {
       localStorage.setItem(ACCEESS_TOKEN, data.access_token);
+      localStorage.setItem(USER_NAME, data.user.username);
     },
   });
 };

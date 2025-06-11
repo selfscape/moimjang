@@ -11,9 +11,8 @@ import useCreateChannel from "hooks/channel/useCreateChannel";
 import useEditChannel from "hooks/channel/useEditChannel";
 import { ChannelState } from "interfaces/channels";
 import { ChannelFeatureButton } from "constants/common";
-import { OWNER } from "configs";
+import { USER_NAME } from "configs";
 import useSystemModal from "hooks/common/components/useSystemModal";
-import useOwnerCookie from "hooks/auth/useOwnerCookie";
 
 interface Errors {
   title?: string;
@@ -35,7 +34,7 @@ const Socialing = () => {
   const { isEditMode, formData, setFormData, channelId } =
     useChannelFormContext();
   const { showAnyMessageModal } = useSystemModal();
-  const owner = useOwnerCookie();
+  const owner = localStorage.getItem(USER_NAME);
   const isTester = owner === "tester";
 
   const { showSaveBar, closeSaveBar } = useSaveBar();

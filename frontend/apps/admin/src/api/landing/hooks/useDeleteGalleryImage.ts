@@ -1,15 +1,14 @@
 import { useMutation } from "@tanstack/react-query";
 import { AxiosError } from "axios";
-import { ACCEESS_TOKEN, OWNER, serverUrl } from "configs";
+import { ACCEESS_TOKEN, serverUrl, USER_NAME } from "configs";
 
 import axiosInstance from "api/axiosInstance";
-import { getCookie } from "hooks/auth/useOwnerCookie";
 
 export const fetchDeleteGalleryImage = async (
   image_id: number
 ): Promise<void> => {
   const token = localStorage.getItem(ACCEESS_TOKEN);
-  const owner = getCookie(OWNER);
+  const owner = localStorage.getItem(USER_NAME);
 
   const result = await axiosInstance.delete(
     `${serverUrl}/landingAdmin/deleteImage/gallery`,

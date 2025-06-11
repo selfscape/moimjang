@@ -3,9 +3,8 @@ import { useQuery } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import axiosInstance from "api/axiosInstance";
 import { GET_USERS } from "constants/queryKeys";
-import { ACCEESS_TOKEN, OWNER, serverUrl } from "configs";
+import { ACCEESS_TOKEN, serverUrl, USER_NAME } from "configs";
 import { User } from "interfaces/user";
-import { getCookie } from "hooks/auth/useOwnerCookie";
 
 export interface GetUsersOutput {
   users: Array<User>;
@@ -23,7 +22,7 @@ export const getUsers = async (
   params: GetUserParams
 ): Promise<GetUsersOutput> => {
   const token = localStorage.getItem(ACCEESS_TOKEN);
-  const owner = getCookie(OWNER);
+  const owner = localStorage.getItem(USER_NAME);
 
   const response = await axiosInstance.get(`${serverUrl}/users`, {
     headers: {

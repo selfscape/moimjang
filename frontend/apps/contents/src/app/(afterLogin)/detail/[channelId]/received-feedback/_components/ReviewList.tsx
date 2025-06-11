@@ -6,7 +6,7 @@ import useGetReviewList from "../_api/useGetReviewList";
 import styles from "./Review.module.css";
 import ReviewCard from "./ReviewCard";
 import useCookie from "@util/hooks/useCookie";
-import { OWNER } from "@constants/auth";
+import { USER_NAME } from "@constants/auth";
 import HasNoReview from "./HasNoReview";
 import Loading from "@ui/components/Spinner/FadeLoader";
 import ErrorBox from "@ui/components/Error/ErrorBox";

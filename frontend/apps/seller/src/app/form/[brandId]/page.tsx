@@ -5,7 +5,7 @@ import { getSurveys } from "./_api/useGetSurvey";
 import { cookies } from "next/headers";
 import Header from "./_components/Header";
 import Form from "./_components/form/Form";
-import { OWNER } from "@constants/auth";
+import { USER_NAME } from "@constants/auth";
 import { getLandingBrandById } from "@/app/brand/[brandId]/_api/useGetLandingBrandById";
 import HeaderConfigurator from "@ui/components/Header/HeaderConfigurator";
 import OwnerCookieSetter from "@util/hooks/OwnerCookieSetter";
