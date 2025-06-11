@@ -136,7 +136,7 @@ jobs:
         docker run -d \
           --name moimjang-frontend-contents \
           --restart unless-stopped \
-          -p 3132:3000 \
+          -p 3133:3000 \
           ${{ env.ECR_REGISTRY }}-contents:$IMAGE_TAG
         echo "✅ New contents container started successfully"
           
@@ -144,7 +144,7 @@ jobs:
       run: |
         echo "🔍 Performing health check for contents app..."
         sleep 10
-        if curl -f http://localhost:3132 > /dev/null 2>&1; then
+        if curl -f http://localhost:3133 > /dev/null 2>&1; then
           echo "✅ Contents app is healthy and responding"
         else
           echo "❌ Contents app health check failed"
@@ -195,7 +195,7 @@ jobs:
         docker run -d \
           --name moimjang-frontend-seller \
           --restart unless-stopped \
-          -p 3133:3000 \
+          -p 3132:3000 \
           ${{ env.ECR_REGISTRY }}-seller:$IMAGE_TAG
         echo "✅ New seller container started successfully"
           
@@ -203,7 +203,7 @@ jobs:
       run: |
         echo "🔍 Performing health check for seller app..."
         sleep 10
-        if curl -f http://localhost:3133 > /dev/null 2>&1; then
+        if curl -f http://localhost:3132 > /dev/null 2>&1; then
           echo "✅ Seller app is healthy and responding"
         else
           echo "❌ Seller app health check failed"
