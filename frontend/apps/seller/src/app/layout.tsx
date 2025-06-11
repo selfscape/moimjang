@@ -2,6 +2,8 @@ import "./globals.css";
 import RQProvider from "@ui/components/Provider/RQProvider";
 import HeaderRoot from "@ui/components/Header/HeaderRoot";
 import SystemModal from "@ui/components/Modal/SystemModal";
+import LoadingSpinner from "@ui/components/Spinner/FadeLoader";
+import { Suspense } from "react";
 
 export const metadata = {
   title: "모임장",
@@ -38,9 +40,11 @@ export default async function RootLayout({
   return (
     <html lang="ko">
       <body>
-        <HeaderRoot />
-        <RQProvider>{children}</RQProvider>
-        <SystemModal />
+        <Suspense fallback={<LoadingSpinner />}>
+          <HeaderRoot />
+          <RQProvider>{children}</RQProvider>
+          <SystemModal />
+        </Suspense>
       </body>
     </html>
   );

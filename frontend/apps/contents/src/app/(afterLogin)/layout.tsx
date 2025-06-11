@@ -1,9 +1,11 @@
 import "../globals.css";
 
+import { Suspense } from "react";
 import SystemModal from "@ui/components/Modal/SystemModal";
 import HeaderRoot from "@ui/components/Header/HeaderRoot";
 import RQProvider from "@ui/components/Provider/RQProvider";
 import NavigationRoot from "./_components/Navigation/NavigationRoot";
+import LoadingSpinner from "@ui/components/Spinner/FadeLoader";
 import styles from "./layout.module.css";
 
 export const metadata = {
@@ -41,10 +43,12 @@ export default function RootLayout({
   return (
     <html lang="ko">
       <body className={styles.layout}>
-        <HeaderRoot />
-        <RQProvider>{children}</RQProvider>
-        <NavigationRoot />
-        <SystemModal />
+        <Suspense fallback={<LoadingSpinner />}>
+          <HeaderRoot />
+          <RQProvider>{children}</RQProvider>
+          <NavigationRoot />
+          <SystemModal />
+        </Suspense>
       </body>
     </html>
   );
