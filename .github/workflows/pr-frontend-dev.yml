@@ -1,11 +1,11 @@
-name: Dev Frontend Build and Test
+name: PR Frontend Build and Test - Dev
 
 on:
-  push:
+  pull_request:
     branches: [ dev ]
     paths:
       - 'frontend/**'
-      - '.github/workflows/dev-frontend.yml'
+      - '.github/workflows/pr-frontend-dev.yml'
   workflow_dispatch:  # 수동 실행 버튼 활성화
     inputs:
       force_build_all:
@@ -17,7 +17,6 @@ on:
 jobs:
   # 변경된 앱 감지
   detect-changes:
-    if: github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && github.event.inputs.force_build_all == 'false')
     runs-on: ubuntu-24.04
     outputs:
       admin-changed: ${{ steps.changes.outputs.admin }}
@@ -28,14 +27,11 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
-      with:
-        fetch-depth: 2  # 이전 커밋과 비교하기 위해
       
     - name: Detect changes
       uses: dorny/paths-filter@v3
       id: changes
       with:
-        base: HEAD~1
         filters: |
           admin:
             - 'frontend/apps/admin/**'
@@ -48,13 +44,11 @@ jobs:
 
   # Admin 앱 빌드 및 테스트
   build-admin:
-    needs: [detect-changes]
+    needs: detect-changes
     if: |
-      always() && (
-        (github.event_name == 'workflow_dispatch' && github.event.inputs.force_build_all == 'true') ||
-        (needs.detect-changes.result == 'success' && (needs.detect-changes.outputs.admin-changed == 'true' || needs.detect-changes.outputs.packages-changed == 'true')) ||
-        needs.detect-changes.result == 'skipped'
-      )
+      (github.event_name == 'workflow_dispatch' && github.event.inputs.force_build_all == 'true') ||
+      needs.detect-changes.outputs.admin-changed == 'true' || 
+      needs.detect-changes.outputs.packages-changed == 'true'
     runs-on: ubuntu-24.04
     
     steps:
@@ -115,13 +109,11 @@ jobs:
 
   # Contents 앱 빌드 및 테스트
   build-contents:
-    needs: [detect-changes]
+    needs: detect-changes
     if: |
-      always() && (
-        (github.event_name == 'workflow_dispatch' && github.event.inputs.force_build_all == 'true') ||
-        (needs.detect-changes.result == 'success' && (needs.detect-changes.outputs.contents-changed == 'true' || needs.detect-changes.outputs.packages-changed == 'true')) ||
-        needs.detect-changes.result == 'skipped'
-      )
+      (github.event_name == 'workflow_dispatch' && github.event.inputs.force_build_all == 'true') ||
+      needs.detect-changes.outputs.contents-changed == 'true' || 
+      needs.detect-changes.outputs.packages-changed == 'true'
     runs-on: ubuntu-24.04
     
     steps:
@@ -182,13 +174,11 @@ jobs:
 
   # Seller 앱 빌드 및 테스트
   build-seller:
-    needs: [detect-changes]
+    needs: detect-changes
     if: |
-      always() && (
-        (github.event_name == 'workflow_dispatch' && github.event.inputs.force_build_all == 'true') ||
-        (needs.detect-changes.result == 'success' && (needs.detect-changes.outputs.seller-changed == 'true' || needs.detect-changes.outputs.packages-changed == 'true')) ||
-        needs.detect-changes.result == 'skipped'
-      )
+      (github.event_name == 'workflow_dispatch' && github.event.inputs.force_build_all == 'true') ||
+      needs.detect-changes.outputs.seller-changed == 'true' || 
+      needs.detect-changes.outputs.packages-changed == 'true'
     runs-on: ubuntu-24.04
     
     steps:
@@ -256,7 +246,7 @@ jobs:
     steps:
     - name: Build Summary
       run: |
-        echo "🔨 Dev Frontend Build Summary:"
+        echo "🔨 Dev PR Frontend Build Summary:"
         echo ""
         
         if [[ "${{ needs.build-admin.result }}" == "success" ]]; then
@@ -284,7 +274,9 @@ jobs:
         fi
         
         echo ""
-        echo "🎯 빌드 트리거: ${{ github.event_name }}"
         if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
+          echo "🎯 빌드 트리거: Manual Dispatch"
           echo "🔧 강제 전체 빌드: ${{ github.event.inputs.force_build_all }}"
+        else
+          echo "🎯 빌드 트리거: Pull Request to dev branch"
         fi 
