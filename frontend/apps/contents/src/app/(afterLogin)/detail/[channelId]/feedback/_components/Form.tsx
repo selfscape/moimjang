@@ -166,10 +166,10 @@ export default function Form() {
           }}
         >
           <option value="">선택해주세요</option>
-          {groupMembers.map(({ id, username, gender }) => (
+          {groupMembers.map(({ id, user_name, gender }) => (
             <option key={id} value={id}>
               {gender === "male" ? "🙋‍♂️" : "🙋‍♀️"}
-              {username}
+              {user_name}
             </option>
           ))}
         </select>
