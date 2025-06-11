@@ -1,11 +1,11 @@
-name: PR Frontend Build and Test - Dev
+name: Build Frontend - Dev
 
 on:
   pull_request:
     branches: [ dev ]
     paths:
       - 'frontend/**'
-      - '.github/workflows/pr-frontend-dev.yml'
+      - '.github/workflows/build-frontend-dev.yml'
   workflow_dispatch:  # 수동 실행 버튼 활성화
     inputs:
       force_build_all:
@@ -210,7 +210,7 @@ jobs:
     steps:
     - name: Build Summary
       run: |
-        echo "🔨 Dev PR Frontend Build Summary:"
+        echo "🔨 Dev Frontend Build Summary:"
         echo ""
         
         if [[ "${{ needs.build-admin.result }}" == "success" ]]; then

@@ -753,6 +753,23 @@ class MinioRepository:
         except S3Error:
             return False
 
+    def get_presigned_url(
+        self, object_key: str, expires: timedelta = timedelta(days=1)
+    ) -> str:
+        try:
+            stat = self.client.stat_object(self.bucket_name, object_key)
+            content_type = stat.content_type
+            response_headers = {"response-content-type": content_type}
+            return self.client.presigned_get_object(
+                self.bucket_name,
+                object_key,
+                expires=expires,
+                response_headers=response_headers,  # type: ignore
+            )
+        except S3Error as e:
+            logger.error(f"Failed to generate presigned URL: {str(e)}")
+            return ""
+        
     def get_img_proxy_url(self, object_path: str) -> str:
         """
         S3 오브젝트 경로를 이미지 프록시 URL로 변환합니다.
