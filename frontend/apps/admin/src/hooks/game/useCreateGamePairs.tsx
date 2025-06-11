@@ -2,10 +2,9 @@ import { QueryClient, useMutation } from "@tanstack/react-query";
 
 import { AxiosError } from "axios";
 import axiosInstance from "api/axiosInstance";
-import { ACCEESS_TOKEN, OWNER, serverUrl } from "configs";
+import { ACCEESS_TOKEN, serverUrl, USER_NAME } from "configs";
 import { GET_SEARCH_GAMES } from "constants/queryKeys";
 import { Game } from "interfaces/game";
-import { getCookie } from "hooks/auth/useOwnerCookie";
 
 export interface IRequestBody {
   group_id: number;
@@ -16,7 +15,7 @@ export const createGamePairs = async (
   requestBody: IRequestBody
 ): Promise<Array<Game>> => {
   const token = localStorage.getItem(ACCEESS_TOKEN);
-  const owner = getCookie(OWNER);
+  const owner = localStorage.getItem(USER_NAME);
 
   const result = await axiosInstance.post(
     `${serverUrl}/games/pairs`,

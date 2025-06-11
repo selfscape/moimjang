@@ -7,7 +7,6 @@ import logo from "assets/images/logo.png";
 import { Pathnames } from "constants/index";
 import useLogin from "hooks/auth/useLogin";
 import userState from "recoils/atoms/auth/userState";
-import useOwnerCookie from "hooks/auth/useOwnerCookie";
 
 const Login = () => {
   const navigate = useNavigate();

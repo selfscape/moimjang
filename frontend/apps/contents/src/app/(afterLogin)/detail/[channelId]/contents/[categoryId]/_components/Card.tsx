@@ -5,11 +5,11 @@ import { useParams, useSearchParams } from "next/navigation";
 import styles from "./Card.module.css";
 import Carousel from "@ui/components/Swiper/SwiperSlide";
 import useCookie from "@util/hooks/useCookie";
-import { OWNER } from "@constants/auth";
 import useGetQuestionCards from "../_api/useGetQuestionCards";
 import Loading from "@ui/components/Spinner/FadeLoader";
 import ErrorBox from "@ui/components/Error/ErrorBox";
 import HeaderConfigurator from "@ui/components/Header/HeaderConfigurator";
+import { OWNER } from "@constants/auth";
 
 export default function Card() {
   const owner = useCookie(OWNER);

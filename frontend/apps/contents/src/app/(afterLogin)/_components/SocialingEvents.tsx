@@ -6,12 +6,12 @@ import { ChannelState } from "@model/channel";
 import useGetChannelList from "../_api/useGetChannelList";
 import ErrorBox from "@ui/components/Error/ErrorBox";
 import LoadingSpinner from "@ui/components/Spinner/FadeLoader";
-import { OWNER } from "@constants/auth";
 import useCookie from "@util/hooks/useCookie";
 import HasNoSocialing from "./HasNoSocialing";
 import Event from "./Event";
 import HeaderConfigurator from "@ui/components/Header/HeaderConfigurator";
 import styles from "./SocialingEvents.module.css";
+import { OWNER } from "@constants/auth";
 
 export default function SocialingEvents() {
   const owner = useCookie(OWNER);

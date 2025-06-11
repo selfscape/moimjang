@@ -2,15 +2,14 @@ import { useQuery } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 
 import axiosInstance from "api/axiosInstance";
-import { ACCEESS_TOKEN, OWNER, serverUrl } from "configs";
+import { ACCEESS_TOKEN, serverUrl, USER_NAME } from "configs";
 import { GET_GALLERY_IMAGES } from "constants/queryKeys";
-import { getCookie } from "hooks/auth/useOwnerCookie";
 
 export const fetchGetGalleryImages = async (): Promise<
   Array<{ id: number; url: string }>
 > => {
   const token = localStorage.getItem(ACCEESS_TOKEN);
-  const owner = getCookie(OWNER);
+  const owner = localStorage.getItem(USER_NAME);
 
   const response = await axiosInstance.get(
     `${serverUrl}/landingAdmin/galleryImages`,

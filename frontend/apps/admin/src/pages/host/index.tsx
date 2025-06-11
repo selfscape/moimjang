@@ -3,10 +3,10 @@ import styled from "styled-components";
 
 import AdminLayout from "components/common/AdminLayout";
 import RequireAuth from "components/common/RequireAuth";
-import useOwnerCookie from "hooks/auth/useOwnerCookie";
+import { USER_NAME } from "configs";
 
 const Host = () => {
-  const hostName = useOwnerCookie();
+  const hostName = localStorage.getItem(USER_NAME);
 
   const contentSiteUrl = `https://contents.moimjang.com/?host=${hostName}`;
   const sellerSiteUrl = `https://seller.moimjang.com?host=${hostName}`;
@@ -129,14 +129,6 @@ const CopyButton = styled.button`
   &:hover {
     background-color: ${({ theme }) => theme.palette.grey900};
   }
-`;
-
-const Notice = styled.p`
-  font-size: 0.85rem;
-  color: #666;
-  margin-bottom: 12px;
-  align-self: flex-start;
-  padding: 0 24px;
 `;
 
 export default RequireAuth(Host);

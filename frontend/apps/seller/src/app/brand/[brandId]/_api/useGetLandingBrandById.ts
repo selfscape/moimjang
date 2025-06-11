@@ -1,9 +1,9 @@
 import { Brand } from "@model/brand";
 import { useQuery } from "@tanstack/react-query";
 import { GET_LANDING_BRAND_BY_ID } from "@/app/_constant/barnd/queryKey";
-import { OWNER } from "@constants/auth";
 import { serverUrl } from "@/app/_constant/config";
 import useCookie from "@util/hooks/useCookie";
+import { OWNER } from "@constants/auth";
 
 export const getLandingBrandById = async (
   brand_id: string,

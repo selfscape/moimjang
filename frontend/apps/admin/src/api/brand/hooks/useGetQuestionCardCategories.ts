@@ -1,8 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { GET_QUESTION_CATEGORIES } from "constants/queryKeys";
-import { ACCEESS_TOKEN, OWNER, serverUrl } from "configs";
+import { ACCEESS_TOKEN, serverUrl, USER_NAME } from "configs";
 import axiosInstance from "api/axiosInstance";
-import { getCookie } from "hooks/auth/useOwnerCookie";
 
 export interface GetQuestionCardCategoriesOutput {
   id: number;
@@ -15,7 +14,7 @@ export const getQuestionCardCategories = async (
   brandId: number
 ): Promise<Array<GetQuestionCardCategoriesOutput>> => {
   const token = localStorage.getItem(ACCEESS_TOKEN);
-  const owner = getCookie(OWNER);
+  const owner = localStorage.getItem(USER_NAME);
 
   const response = await axiosInstance.get(
     `${serverUrl}/customers/questionCardCategories`,

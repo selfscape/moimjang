@@ -6,11 +6,11 @@ import Thumbnail from "./Thumbnail";
 import ActionButtons from "./ActionButtons";
 import Details from "./Details";
 import useCookie from "@util/hooks/useCookie";
-import { OWNER } from "@constants/auth";
 import useGetChannelById from "../_api/useGetChannelById";
 import ErrorBox from "@ui/components/Error/ErrorBox";
 import LoadingSpinner from "react-spinners/FadeLoader";
 import HeaderConfigurator from "@ui/components/Header/HeaderConfigurator";
+import { OWNER } from "@constants/auth";
 
 export default function ChannelInfo() {
   const { channelId } = useParams();

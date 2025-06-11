@@ -1,5 +1,6 @@
 export const OWNER = "Owner";
 export const ACCEESS_TOKEN = "ACCEESS_TOKEN";
+export const USER_NAME = "USER_NAME";
 export const USER_ROLE = "USER_ROLE";
 export const USER_EMAIL = "USER_EMAIL";
 

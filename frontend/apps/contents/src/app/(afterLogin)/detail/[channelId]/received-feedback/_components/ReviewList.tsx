@@ -6,13 +6,13 @@ import useGetReviewList from "../_api/useGetReviewList";
 import styles from "./Review.module.css";
 import ReviewCard from "./ReviewCard";
 import useCookie from "@util/hooks/useCookie";
-import { OWNER } from "@constants/auth";
 import HasNoReview from "./HasNoReview";
 import Loading from "@ui/components/Spinner/FadeLoader";
 import ErrorBox from "@ui/components/Error/ErrorBox";
 import { Review } from "@model/channel/review";
 import HeaderConfigurator from "@ui/components/Header/HeaderConfigurator";
 import { USER_DATA } from "@/app/_constant/auth";
+import { OWNER } from "@constants/auth";
 
 const ReviewList: React.FC = () => {
   const user = JSON.parse(localStorage.getItem(USER_DATA) || "");

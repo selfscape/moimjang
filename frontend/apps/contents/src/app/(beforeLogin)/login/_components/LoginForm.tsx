@@ -7,8 +7,8 @@ import { useRouter, useSearchParams } from "next/navigation";
 import pathnames from "@/app/_constant/pathnames";
 import useLogin from "../_api/useLogin";
 import useCookie from "@util/hooks/useCookie";
-import { OWNER } from "@constants/auth";
 import { USER_DATA } from "@/app/_constant/auth";
+import { OWNER } from "@constants/auth";
 
 export default function LoginForm() {
   const redirectUrl = useSearchParams().get("redirectUrl");
