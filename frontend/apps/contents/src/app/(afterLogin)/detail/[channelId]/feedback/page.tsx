@@ -12,7 +12,7 @@ export default function page() {
       <RequireAuth />
       <HeaderConfigurator
         config={{
-          title: "리뷰 남기기",
+          title: "대화 후기 남기기",
           onBack: true,
         }}
       />

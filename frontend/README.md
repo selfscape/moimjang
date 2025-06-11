@@ -8,7 +8,7 @@
 
 - 소비자(유저) 사이트: [https://contents.moimjang.com](https://contents.moimjang.com/?host=tester)
 - 판매자(호스트) 사이트: [https://seller.moimjang.com](https://seller.moimjang.com/?host=tester)
-- 콘텐츠 관리자(어드민) 사이트: [https://admin.moimjang.com](https://admin.moimjang.com/?host=tester)
+- 콘텐츠 관리자(어드민) 사이트: [https://admin.moimjang.com](https://admin.moimjang.com)
 
 **테스트 계정**
 
