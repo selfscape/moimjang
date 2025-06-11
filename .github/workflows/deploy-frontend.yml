@@ -1,4 +1,4 @@
-name: Deploy Frontend to Self-hosted
+name: Deploy Frontend Apps to Self-Host
 
 on:
   push:
@@ -13,88 +13,238 @@ on:
         required: false
         default: 'latest'
         type: string
-      port:
-        description: 'Port to expose (default: 3133)'
+      deploy_admin:
+        description: 'Deploy admin app'
         required: false
-        default: '3133'
-        type: string
+        default: true
+        type: boolean
+      deploy_contents:
+        description: 'Deploy contents app'
+        required: false
+        default: true
+        type: boolean
+      deploy_seller:
+        description: 'Deploy seller app'
+        required: false
+        default: true
+        type: boolean
 
 env:
   ECR_REGISTRY: public.ecr.aws/x2l9m6x8/selfscape/moimjang
-  CONTAINER_NAME: moimjang-frontend-container
-  IMAGE_NAME: moimjang-frontend
 
 jobs:
-  deploy:
-    runs-on: [self-hosted, home]
+  # Admin 앱 배포
+  deploy-admin:
+    if: |
+      (github.event_name == 'workflow_dispatch' && github.event.inputs.deploy_admin == 'true') ||
+      (github.event_name == 'push')
+    runs-on: self-hosted
     environment: 'production'
     
     steps:
-    - name: Set deployment parameters
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v4
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: us-east-1
+        
+    - name: Login to Amazon ECR Public
+      id: login-ecr-public
+      uses: aws-actions/amazon-ecr-login@v2
+      with:
+        registry-type: public
+      
+    - name: Pull Admin App Image
       run: |
-        if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
-          echo "IMAGE_TAG=${{ github.event.inputs.image_tag }}" >> $GITHUB_ENV
-          echo "DEPLOY_PORT=${{ github.event.inputs.port }}" >> $GITHUB_ENV
-        else
-          echo "IMAGE_TAG=latest" >> $GITHUB_ENV
-          echo "DEPLOY_PORT=3133" >> $GITHUB_ENV
-        fi
-        echo "Using image tag: ${{ env.IMAGE_TAG || 'latest' }}"
-        echo "Using port: ${{ env.DEPLOY_PORT || '3133' }}"
+        IMAGE_TAG="${{ github.event.inputs.image_tag || 'latest' }}"
+        echo "🔄 Pulling admin app image with tag: $IMAGE_TAG"
+        docker pull ${{ env.ECR_REGISTRY }}-admin:$IMAGE_TAG
+        echo "✅ Successfully pulled admin app image"
         
-    # - name: Configure AWS credentials
-    #   uses: aws-actions/configure-aws-credentials@v4
-    #   with:
-    #     aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-    #     aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-    #     aws-region: us-east-1
-        
-    # - name: Login to Amazon ECR Public
-    #   id: login-ecr-public
-    #   uses: aws-actions/amazon-ecr-login@v2
-    #   with:
-    #     registry-type: public
-        
-    - name: Pull image from ECR
+    - name: Stop Existing Admin Container
       run: |
-        IMAGE_TAG=${{ env.IMAGE_TAG || 'latest' }}
-        echo "Pulling image from ECR with tag: $IMAGE_TAG"
-        docker pull ${{ env.ECR_REGISTRY }}:$IMAGE_TAG
-        
-    - name: Stop and remove existing container
+        echo "🛑 Stopping existing admin container..."
+        docker stop moimjang-admin || echo "No running admin container found"
+        docker rm moimjang-admin || echo "No admin container to remove"
+        echo "✅ Existing admin container stopped and removed"
+      continue-on-error: true
+      
+    - name: Start New Admin Container
       run: |
-        echo "Stopping and removing existing container..."
-        docker stop ${{ env.CONTAINER_NAME }} || true
-        docker rm ${{ env.CONTAINER_NAME }} || true
-        docker image prune -f || true
-        
-    - name: Run new container
-      run: |
-        IMAGE_TAG=${{ env.IMAGE_TAG || 'latest' }}
-        DEPLOY_PORT=${{ env.DEPLOY_PORT || '3133' }}
-        echo "Starting new container with image: ${{ env.ECR_REGISTRY }}:$IMAGE_TAG"
-        echo "Exposing on port: $DEPLOY_PORT"
-        
+        IMAGE_TAG="${{ github.event.inputs.image_tag || 'latest' }}"
+        echo "🚀 Starting new admin container..."
         docker run -d \
-          --name ${{ env.CONTAINER_NAME }} \
+          --name moimjang-admin \
           --restart unless-stopped \
-          -p $DEPLOY_PORT:80 \
-          ${{ env.ECR_REGISTRY }}:$IMAGE_TAG
+          -p 4131:80 \
+          ${{ env.ECR_REGISTRY }}-admin:$IMAGE_TAG
+        echo "✅ New admin container started successfully"
           
-        echo "Container started successfully!"
-        
-    - name: Verify deployment
+    - name: Health Check Admin App
       run: |
-        DEPLOY_PORT=${{ env.DEPLOY_PORT || '3133' }}
-        echo "Verifying container status..."
-        docker ps | grep ${{ env.CONTAINER_NAME }}
-        
-        echo "Checking container logs..."
-        docker logs ${{ env.CONTAINER_NAME }} --tail 20
-        
-        echo "Waiting for container to be ready..."
+        echo "🔍 Performing health check for admin app..."
         sleep 10
+        if curl -f http://localhost:3131 > /dev/null 2>&1; then
+          echo "✅ Admin app is healthy and responding"
+        else
+          echo "❌ Admin app health check failed"
+          exit 1
+        fi
+
+  # Contents 앱 배포
+  deploy-contents:
+    if: |
+      (github.event_name == 'workflow_dispatch' && github.event.inputs.deploy_contents == 'true') ||
+      (github.event_name == 'push')
+    runs-on: self-hosted
+    environment: 'production'
+    
+    steps:
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v4
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: us-east-1
         
-        echo "Testing HTTP response on port $DEPLOY_PORT..."
-        curl -f -s http://localhost:$DEPLOY_PORT > /dev/null && echo "✅ HTTP test successful!" || echo "⚠️ HTTP test failed, but container might still be starting..."
+    - name: Login to Amazon ECR Public
+      id: login-ecr-public
+      uses: aws-actions/amazon-ecr-login@v2
+      with:
+        registry-type: public
+      
+    - name: Pull Contents App Image
+      run: |
+        IMAGE_TAG="${{ github.event.inputs.image_tag || 'latest' }}"
+        echo "🔄 Pulling contents app image with tag: $IMAGE_TAG"
+        docker pull ${{ env.ECR_REGISTRY }}-contents:$IMAGE_TAG
+        echo "✅ Successfully pulled contents app image"
         
+    - name: Stop Existing Contents Container
+      run: |
+        echo "🛑 Stopping existing contents container..."
+        docker stop moimjang-contents || echo "No running contents container found"
+        docker rm moimjang-contents || echo "No contents container to remove"
+        echo "✅ Existing contents container stopped and removed"
+      continue-on-error: true
+      
+    - name: Start New Contents Container
+      run: |
+        IMAGE_TAG="${{ github.event.inputs.image_tag || 'latest' }}"
+        echo "🚀 Starting new contents container..."
+        docker run -d \
+          --name moimjang-contents \
+          --restart unless-stopped \
+          -p 3132:3000 \
+          ${{ env.ECR_REGISTRY }}-contents:$IMAGE_TAG
+        echo "✅ New contents container started successfully"
+          
+    - name: Health Check Contents App
+      run: |
+        echo "🔍 Performing health check for contents app..."
+        sleep 10
+        if curl -f http://localhost:3132 > /dev/null 2>&1; then
+          echo "✅ Contents app is healthy and responding"
+        else
+          echo "❌ Contents app health check failed"
+          exit 1
+        fi
+
+  # Seller 앱 배포
+  deploy-seller:
+    if: |
+      (github.event_name == 'workflow_dispatch' && github.event.inputs.deploy_seller == 'true') ||
+      (github.event_name == 'push')
+    runs-on: self-hosted
+    environment: 'production'
+    
+    steps:
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v4
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: us-east-1
+        
+    - name: Login to Amazon ECR Public
+      id: login-ecr-public
+      uses: aws-actions/amazon-ecr-login@v2
+      with:
+        registry-type: public
+      
+    - name: Pull Seller App Image
+      run: |
+        IMAGE_TAG="${{ github.event.inputs.image_tag || 'latest' }}"
+        echo "🔄 Pulling seller app image with tag: $IMAGE_TAG"
+        docker pull ${{ env.ECR_REGISTRY }}-seller:$IMAGE_TAG
+        echo "✅ Successfully pulled seller app image"
+        
+    - name: Stop Existing Seller Container
+      run: |
+        echo "🛑 Stopping existing seller container..."
+        docker stop moimjang-seller || echo "No running seller container found"
+        docker rm moimjang-seller || echo "No seller container to remove"
+        echo "✅ Existing seller container stopped and removed"
+      continue-on-error: true
+      
+    - name: Start New Seller Container
+      run: |
+        IMAGE_TAG="${{ github.event.inputs.image_tag || 'latest' }}"
+        echo "🚀 Starting new seller container..."
+        docker run -d \
+          --name moimjang-seller \
+          --restart unless-stopped \
+          -p 3133:3000 \
+          ${{ env.ECR_REGISTRY }}-seller:$IMAGE_TAG
+        echo "✅ New seller container started successfully"
+          
+    - name: Health Check Seller App
+      run: |
+        echo "🔍 Performing health check for seller app..."
+        sleep 10
+        if curl -f http://localhost:3133 > /dev/null 2>&1; then
+          echo "✅ Seller app is healthy and responding"
+        else
+          echo "❌ Seller app health check failed"
+          exit 1
+        fi
+
+  # 배포 상태 알림
+  notify-deployment-status:
+    needs: [deploy-admin, deploy-contents, deploy-seller]
+    if: always()
+    runs-on: ubuntu-24.04
+    
+    steps:
+    - name: Deployment Summary
+      run: |
+        echo "🚀 Frontend Apps 배포 결과:"
+        echo ""
+        
+        if [[ "${{ needs.deploy-admin.result }}" == "success" ]]; then
+          echo "✅ Admin App: 배포 성공 (포트: 3131)"
+        elif [[ "${{ needs.deploy-admin.result }}" == "failure" ]]; then
+          echo "❌ Admin App: 배포 실패"
+        elif [[ "${{ needs.deploy-admin.result }}" == "skipped" ]]; then
+          echo "⏭️ Admin App: 건너뜀"
+        fi
+        
+        if [[ "${{ needs.deploy-contents.result }}" == "success" ]]; then
+          echo "✅ Contents App: 배포 성공 (포트: 3132)"
+        elif [[ "${{ needs.deploy-contents.result }}" == "failure" ]]; then
+          echo "❌ Contents App: 배포 실패"
+        elif [[ "${{ needs.deploy-contents.result }}" == "skipped" ]]; then
+          echo "⏭️ Contents App: 건너뜀"
+        fi
+        
+        if [[ "${{ needs.deploy-seller.result }}" == "success" ]]; then
+          echo "✅ Seller App: 배포 성공 (포트: 3133)"
+        elif [[ "${{ needs.deploy-seller.result }}" == "failure" ]]; then
+          echo "❌ Seller App: 배포 실패"
+        elif [[ "${{ needs.deploy-seller.result }}" == "skipped" ]]; then
+          echo "⏭️ Seller App: 건너뜀"
+        fi
+        
+        echo ""
+        echo "📝 배포된 이미지 태그: ${{ github.event.inputs.image_tag || 'latest' }}"

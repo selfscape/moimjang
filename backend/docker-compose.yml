@@ -3,6 +3,7 @@ version: "3.7"
 services:
   postgres:
     image: postgres
+    container_name: moimjang-backend-postgres
     environment:
       POSTGRES_USER: ${MOIMJANG_POSTGRES_USER}
       POSTGRES_PASSWORD: ${MOIMJANG_POSTGRES_PASSWORD}
@@ -22,6 +23,7 @@ services:
 
   mongodb:
     image: mongo:latest
+    container_name: moimjang-backend-mongodb
     ports:
       - "27017:27017"
     environment:
@@ -40,6 +42,7 @@ services:
 
   migrate:
     image: webapp
+    container_name: moimjang-backend-migrate
     build: ./
     depends_on:
       - postgres
@@ -59,6 +62,7 @@ services:
         condition: service_healthy
     build: ./
     image: webapp
+    container_name: moimjang-backend-webapp
     ports:
       - "8001:8000"
     volumes:
@@ -70,6 +74,7 @@ services:
     restart: unless-stopped
     networks:
       - moimjang-network
+      - minio_minio_network
 
 volumes:
   postgres_data:
@@ -81,3 +86,5 @@ networks:
   moimjang-network:
     driver: bridge
     name: moimjang-network-default
+  minio_minio_network:
+    external: true

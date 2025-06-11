@@ -1,0 +1,83 @@
+.form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.label {
+  font-size: 0.9rem;
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+}
+
+.input {
+  width: 100%;
+  padding: 0.8rem;
+  font-size: 1rem;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+  outline: none;
+  transition: border 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.input:focus {
+  border: 1px solid #442d1c;
+  box-shadow: 0 0 3px #442d1c;
+}
+
+.passwordWrapper {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.toggleButton {
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-25%);
+  background: none;
+  border: none;
+  font-size: 14px;
+  line-height: 14px;
+  cursor: pointer;
+  outline: none;
+}
+
+.submitButton {
+  width: 100%;
+  padding: 0.8rem;
+  font-size: 1rem;
+  font-weight: 600;
+  border-radius: 8px;
+  background: #442d1c;
+  color: white;
+  cursor: pointer;
+  border: none;
+  margin-top: 1rem;
+  transition: background 0.2s;
+}
+
+.submitButton:disabled {
+  background: #a5b4fc;
+  cursor: not-allowed;
+}
+
+.signUpButton {
+  width: 100%;
+  padding: 0.8rem;
+  font-size: 1rem;
+  font-weight: 600;
+  border-radius: 8px;
+  background: transparent;
+  color: #442d1c;
+  border: 2px solid #442d1c;
+  margin-top: 0.5rem;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+
+.signUpButton:hover {
+  background: #442d1c;
+  color: white;
+}

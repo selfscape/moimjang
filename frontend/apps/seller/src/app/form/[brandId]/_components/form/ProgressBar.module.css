@@ -1,0 +1,42 @@
+.progressBar {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  max-width: 430px;
+  margin: 20px 0px;
+  padding: 0px 20px;
+}
+
+.progressContainer {
+  flex: 1;
+  background-color: #e0e0e0;
+  border-radius: 4px;
+  height: 10px;
+  overflow: hidden;
+}
+
+.progressBarStyled {
+  height: 100%;
+  background-color: #111;
+  transition: width 0.5s ease;
+}
+
+.roundPrevButton {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background-color: #111;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  margin-right: 10px;
+}
+
+.roundPrevButton:hover {
+  opacity: 0.9;
+}
+
+.roundPrevButton:disabled {
+  opacity: 0.5;
+  cursor: default;
+}

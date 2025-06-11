@@ -8,16 +8,40 @@ on:
       - '.github/workflows/pr-frontend.yml'
 
 env:
-  REACT_APP_SERVER_URI: ${{ vars.REACT_APP_SERVER_URI }}
-  REACT_APP_NODE_ENV: ${{ vars.REACT_APP_NODE_ENV }}
-  REACT_APP_DANGEROUSLY_DISABLE_HOST_CHECK: ${{ vars.REACT_APP_DANGEROUSLY_DISABLE_HOST_CHECK }}
-  REACT_APP_ENVIRONMENT: ${{ vars.REACT_APP_ENVIRONMENT }}
-  REACT_APP_SITE_URL: ${{ vars.REACT_APP_SITE_URL }}
   ECR_REGISTRY: public.ecr.aws/x2l9m6x8/selfscape/moimjang
-  IMAGE_NAME: moimjang-frontend
 
 jobs:
-  build-and-push:
+  # 변경된 앱 감지
+  detect-changes:
+    runs-on: ubuntu-24.04
+    outputs:
+      admin-changed: ${{ steps.changes.outputs.admin }}
+      contents-changed: ${{ steps.changes.outputs.contents }}
+      seller-changed: ${{ steps.changes.outputs.seller }}
+      packages-changed: ${{ steps.changes.outputs.packages }}
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Detect changes
+      uses: dorny/paths-filter@v3
+      id: changes
+      with:
+        filters: |
+          admin:
+            - 'frontend/apps/admin/**'
+          contents:
+            - 'frontend/apps/contents/**'
+          seller:
+            - 'frontend/apps/seller/**'
+          packages:
+            - 'frontend/packages/**'
+
+  # Admin 앱 빌드
+  build-admin:
+    needs: detect-changes
+    if: needs.detect-changes.outputs.admin-changed == 'true' || needs.detect-changes.outputs.packages-changed == 'true'
     runs-on: ubuntu-24.04
     environment: 'production'
     
@@ -38,47 +62,140 @@ jobs:
       with:
         registry-type: public
       
-    - name: Verify environment variables
+    - name: Build Docker image
       run: |
-        echo "Environment variables loaded:"
-        echo "REACT_APP_SERVER_URI: ${{ env.REACT_APP_SERVER_URI }}"
-        echo "REACT_APP_NODE_ENV: ${{ env.REACT_APP_NODE_ENV }}"
-        echo "REACT_APP_DANGEROUSLY_DISABLE_HOST_CHECK: ${{ env.REACT_APP_DANGEROUSLY_DISABLE_HOST_CHECK }}"
-        echo "REACT_APP_ENVIRONMENT: ${{ env.REACT_APP_ENVIRONMENT }}"
-        echo "REACT_APP_SITE_URL: ${{ env.REACT_APP_SITE_URL }}"
+        cd frontend
+        echo "Building admin app..."
+        docker build \
+          --build-arg REACT_APP_SERVER_URI="${{ vars.REACT_APP_SERVER_URI }}" \
+          --build-arg REACT_APP_NODE_ENV="${{ vars.REACT_APP_NODE_ENV }}" \
+          --build-arg REACT_APP_DANGEROUSLY_DISABLE_HOST_CHECK="${{ vars.REACT_APP_DANGEROUSLY_DISABLE_HOST_CHECK }}" \
+          --build-arg REACT_APP_ENVIRONMENT="${{ vars.REACT_APP_ENVIRONMENT }}" \
+          --build-arg REACT_APP_SITE_URL="${{ vars.REACT_APP_SITE_URL }}" \
+          -f apps/admin/Dockerfile \
+          -t moimjang-admin .
+          
+    - name: Tag and Push Docker images
+      run: |
+        TODAY=$(date +%Y-%m-%d)
+        PR_NUMBER=${{ github.event.number }}
+        
+        # Tag images
+        docker tag moimjang-admin ${{ env.ECR_REGISTRY }}-admin:pr-$PR_NUMBER
+        docker tag moimjang-admin ${{ env.ECR_REGISTRY }}-admin:latest
+        docker tag moimjang-admin ${{ env.ECR_REGISTRY }}-admin:$TODAY
+        
+        # Push images
+        docker push ${{ env.ECR_REGISTRY }}-admin:pr-$PR_NUMBER
+        docker push ${{ env.ECR_REGISTRY }}-admin:latest
+        docker push ${{ env.ECR_REGISTRY }}-admin:$TODAY
+        
+        echo "Successfully pushed admin app to ECR"
+
+  # Contents 앱 빌드
+  build-contents:
+    needs: detect-changes
+    if: needs.detect-changes.outputs.contents-changed == 'true' || needs.detect-changes.outputs.packages-changed == 'true'
+    runs-on: ubuntu-24.04
+    environment: 'production'
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v4
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: us-east-1
+        
+    - name: Login to Amazon ECR Public
+      id: login-ecr-public
+      uses: aws-actions/amazon-ecr-login@v2
+      with:
+        registry-type: public
       
     - name: Build Docker image
       run: |
         cd frontend
+        echo "Building contents app..."
         docker build \
-          --build-arg REACT_APP_SERVER_URI="${{ env.REACT_APP_SERVER_URI }}" \
-          --build-arg REACT_APP_NODE_ENV="${{ env.REACT_APP_NODE_ENV }}" \
-          --build-arg REACT_APP_DANGEROUSLY_DISABLE_HOST_CHECK="${{ env.REACT_APP_DANGEROUSLY_DISABLE_HOST_CHECK }}" \
-          --build-arg REACT_APP_ENVIRONMENT="${{ env.REACT_APP_ENVIRONMENT }}" \
-          --build-arg REACT_APP_SITE_URL="${{ env.REACT_APP_SITE_URL }}" \
-          -t ${{ env.IMAGE_NAME }} .
+          --build-arg NEXT_PUBLIC_SERVER_URL="${{ vars.REACT_APP_SERVER_URI }}" \
+          --build-arg NEXT_PUBLIC_NODE_ENV="${{ vars.REACT_APP_NODE_ENV }}" \
+          --build-arg NEXT_PUBLIC_DANGEROUSLY_DISABLE_HOST_CHECK="${{ vars.REACT_APP_DANGEROUSLY_DISABLE_HOST_CHECK }}" \
+          --build-arg NEXT_PUBLIC_ENVIRONMENT="${{ vars.REACT_APP_ENVIRONMENT }}" \
+          --build-arg NEXT_PUBLIC_SITE_URL="${{ vars.REACT_APP_SITE_URL }}" \
+          -f apps/contents/Dockerfile \
+          -t moimjang-contents .
           
-    - name: Tag Docker images
-      run: |
-        # Get today's date in YYYY-MM-DD format
-        TODAY=$(date +%Y-%m-%d)
-        
-        # Tag with latest and today's date
-        docker tag ${{ env.IMAGE_NAME }} ${{ env.ECR_REGISTRY }}:latest
-        docker tag ${{ env.IMAGE_NAME }} ${{ env.ECR_REGISTRY }}:$TODAY
-        
-        echo "Tagged images:"
-        echo "- ${{ env.ECR_REGISTRY }}:latest"
-        echo "- ${{ env.ECR_REGISTRY }}:$TODAY"
-        
-    - name: Push to ECR
+    - name: Tag and Push Docker images
       run: |
         TODAY=$(date +%Y-%m-%d)
+        PR_NUMBER=${{ github.event.number }}
         
-        # Push both tags
-        docker push ${{ env.ECR_REGISTRY }}:latest
-        docker push ${{ env.ECR_REGISTRY }}:$TODAY
+        # Tag images
+        docker tag moimjang-contents ${{ env.ECR_REGISTRY }}-contents:pr-$PR_NUMBER
+        docker tag moimjang-contents ${{ env.ECR_REGISTRY }}-contents:latest
+        docker tag moimjang-contents ${{ env.ECR_REGISTRY }}-contents:$TODAY
         
-        echo "Successfully pushed to ECR:"
-        echo "- ${{ env.ECR_REGISTRY }}:latest"
-        echo "- ${{ env.ECR_REGISTRY }}:$TODAY" 
+        # Push images
+        docker push ${{ env.ECR_REGISTRY }}-contents:pr-$PR_NUMBER
+        docker push ${{ env.ECR_REGISTRY }}-contents:latest
+        docker push ${{ env.ECR_REGISTRY }}-contents:$TODAY
+        
+        echo "Successfully pushed contents app to ECR"
+
+  # Seller 앱 빌드
+  build-seller:
+    needs: detect-changes
+    if: needs.detect-changes.outputs.seller-changed == 'true' || needs.detect-changes.outputs.packages-changed == 'true'
+    runs-on: ubuntu-24.04
+    environment: 'production'
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v4
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: us-east-1
+        
+    - name: Login to Amazon ECR Public
+      id: login-ecr-public
+      uses: aws-actions/amazon-ecr-login@v2
+      with:
+        registry-type: public
+      
+    - name: Build Docker image
+      run: |
+        cd frontend
+        echo "Building seller app..."
+        docker build \
+          --build-arg NEXT_PUBLIC_SERVER_URL="${{ vars.REACT_APP_SERVER_URI }}" \
+          --build-arg NEXT_PUBLIC_NODE_ENV="${{ vars.REACT_APP_NODE_ENV }}" \
+          --build-arg NEXT_PUBLIC_DANGEROUSLY_DISABLE_HOST_CHECK="${{ vars.REACT_APP_DANGEROUSLY_DISABLE_HOST_CHECK }}" \
+          --build-arg NEXT_PUBLIC_ENVIRONMENT="${{ vars.REACT_APP_ENVIRONMENT }}" \
+          --build-arg NEXT_PUBLIC_SITE_URL="${{ vars.REACT_APP_SITE_URL }}" \
+          -f apps/seller/Dockerfile \
+          -t moimjang-seller .
+          
+    - name: Tag and Push Docker images
+      run: |
+        TODAY=$(date +%Y-%m-%d)
+        PR_NUMBER=${{ github.event.number }}
+        
+        # Tag images
+        docker tag moimjang-seller ${{ env.ECR_REGISTRY }}-seller:pr-$PR_NUMBER
+        docker tag moimjang-seller ${{ env.ECR_REGISTRY }}-seller:latest
+        docker tag moimjang-seller ${{ env.ECR_REGISTRY }}-seller:$TODAY
+        
+        # Push images
+        docker push ${{ env.ECR_REGISTRY }}-seller:pr-$PR_NUMBER
+        docker push ${{ env.ECR_REGISTRY }}-seller:latest
+        docker push ${{ env.ECR_REGISTRY }}-seller:$TODAY
+        
+        echo "Successfully pushed seller app to ECR" 

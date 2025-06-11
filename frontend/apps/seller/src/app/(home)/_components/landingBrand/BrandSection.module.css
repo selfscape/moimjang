@@ -1,0 +1,104 @@
+.container {
+}
+
+.cardOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 1;
+  border-radius: 24px;
+  transition: opacity 0.3s ease;
+  pointer-events: auto;
+}
+
+.brandCardWrapper {
+  position: relative;
+  width: 100%;
+  max-width: 430px;
+  margin: 0 auto;
+  padding: 0px 20px;
+  cursor: pointer;
+  border-radius: 24px;
+}
+
+.detailButton {
+  padding: 12px 24px;
+  background: rgba(0, 0, 0, 0.6);
+  color: #ffffff;
+  border: none;
+  border-radius: 30px;
+  font-size: 14px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  backdrop-filter: blur(10px);
+  cursor: pointer;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  transition: background 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.detailButton:hover {
+  background: rgba(0, 0, 0, 0.8);
+  transform: translateY(-3px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3);
+}
+
+.sectionTitle {
+  display: flex;
+  justify-content: center;
+  height: 42px;
+  padding: 0 35px;
+  border: 1.5px solid #111;
+  border-radius: 30px;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 40px;
+  margin: 0 20px 20px;
+  font-family: HurmeGeometricSans3, NotoSansCJKkr, Roboto, Droid Sans,
+    Malgun Gothic, Helvetica, Apple-Gothic, 애플고딕, Tahoma, dotum, 돋움, gulim,
+    굴림, sans-serif;
+}
+
+.cardContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.brandImage {
+  width: 100%;
+  height: 360px;
+  object-fit: cover;
+  border-radius: 24px;
+}
+
+.cardInfo {
+  padding: 16px;
+  text-align: center;
+}
+
+.cardTitle {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.cardDescription {
+  margin: 8px 0 0;
+  font-size: 14px;
+  color: #666;
+}
+
+.loadingWrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  height: 300px;
+  width: 100%;
+}

@@ -1,0 +1,25 @@
+.container {
+  /* Container wrapper for the review section */
+}
+
+.sectionTitle {
+  display: flex;
+  justify-content: center;
+  height: 42px;
+  padding: 0 35px;
+  border: 1.5px solid #111;
+  border-radius: 30px;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 40px;
+  margin: 0 20px 20px;
+  font-family: HurmeGeometricSans3, NotoSansCJKkr, Roboto, Droid Sans,
+    Malgun Gothic, Helvetica, Apple-Gothic, 애플고딕, Tahoma, dotum, 돋움, gulim,
+    굴림, sans-serif;
+}
+
+.message {
+  padding: 40px 0;
+  text-align: center;
+  color: #666666;
+}
