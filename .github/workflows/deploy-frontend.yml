@@ -77,7 +77,7 @@ jobs:
         docker run -d \
           --name moimjang-frontend-admin \
           --restart unless-stopped \
-          -p 4131:80 \
+          -p 3131:80 \
           ${{ env.ECR_REGISTRY }}-admin:$IMAGE_TAG
         echo "✅ New admin container started successfully"
           
